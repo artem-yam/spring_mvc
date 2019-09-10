@@ -65,7 +65,7 @@
         </dependency>
 
         <!-- Hibernate -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.2.12.Final</version>
@@ -81,32 +81,26 @@
             <groupId>oracle</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>18.3</version>
-        </dependency>
+        </dependency>-->
 
 
     </dependencies>
 
 
-    <repositories>
-
-
+    <!--<repositories>
         <repository>
             <id>imc</id>
             <url>http://maven.icm.edu.pl/artifactory/repo/</url>
         </repository>
-
         <repository>
             <id>openmind</id>
             <url>http://repository.openmindonline.it/</url>
         </repository>
-
         <repository>
             <id>jeecg</id>
             <url>http://maven.jeecg.org/nexus/content/repositories/jeecg/</url>
         </repository>
-
-
-    </repositories>
+    </repositories>-->
 
     <build>
         <plugins>

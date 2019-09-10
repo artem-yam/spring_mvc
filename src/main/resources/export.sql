@@ -84,33 +84,34 @@ REM INSERTING into SYSTEM.BOOK_TAGS
 SET DEFINE OFF;
 REM INSERTING into SYSTEM.BOOKS
 SET DEFINE OFF;
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('3','Jewels of Nizam','Geeta Devi','5','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('4','Cakes & Bakes','Sanjeev Kapoor','5','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('1','Fight Club','Chuck Palahniuk','0','1');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('2','The Trial','Franz Kafka','0','1');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('5','Jamie''s Kitchen','Jamie Oliver','4','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('6','Inexpensive Family Meals','Simon Holst','3','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('7','Paleo Slow Cooking','Chrissy Gawer','1','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('8','Cook Like an Italian','Toble Puttock','3','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('9','Suneeta Vaswani','Geeta Devi','5','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('10','Jamie Does','Jamie Oliver','3','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('11','Jamie''s Italy','Jamie Oliver','5','0');
-Insert into SYSTEM.BOOKS (ID,TITLE,AUTHOR,RATING,IS_DELETED) values ('12','Vegetables Cookbook','Matthew Biggs','3','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Fight Club','Chuck Palahniuk','0','1');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('The Trial','Franz Kafka','0','1');
+
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Jewels of Nizam','Geeta Devi','5','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Cakes & Bakes','Sanjeev Kapoor','5','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Jamie''s Kitchen','Jamie Oliver','4','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Inexpensive Family Meals','Simon Holst','3','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Paleo Slow Cooking','Chrissy Gawer','1','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Cook Like an Italian','Toble Puttock','3','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Suneeta Vaswani','Geeta Devi','5','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Jamie Does','Jamie Oliver','3','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Jamie''s Italy','Jamie Oliver','5','0');
+Insert into SYSTEM.BOOKS (TITLE,AUTHOR,RATING,IS_DELETED) values ('Vegetables Cookbook','Matthew Biggs','3','0');
 REM INSERTING into SYSTEM.NOTIFICATION_TYPES
 SET DEFINE OFF;
-Insert into SYSTEM.NOTIFICATION_TYPES (ID,TYPE) values ('1','ADD_BOOK');
-Insert into SYSTEM.NOTIFICATION_TYPES (ID,TYPE) values ('2','SEARCH');
-Insert into SYSTEM.NOTIFICATION_TYPES (ID,TYPE) values ('3','RATING');
+Insert into SYSTEM.NOTIFICATION_TYPES (TYPE) values ('ADD_BOOK');
+Insert into SYSTEM.NOTIFICATION_TYPES (TYPE) values ('SEARCH');
+Insert into SYSTEM.NOTIFICATION_TYPES (TYPE) values ('RATING');
 REM INSERTING into SYSTEM.NOTIFICATIONS
 SET DEFINE OFF;
-Insert into SYSTEM.NOTIFICATIONS (ID,BOOK,SEARCHTEXT,CATEGORY,TYPE,"date") values ('1','1',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
-Insert into SYSTEM.NOTIFICATIONS (ID,BOOK,SEARCHTEXT,CATEGORY,TYPE,"date") values ('2','2',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
+Insert into SYSTEM.NOTIFICATIONS (BOOK,SEARCHTEXT,CATEGORY,TYPE,"date") values ('1',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
+Insert into SYSTEM.NOTIFICATIONS (BOOK,SEARCHTEXT,CATEGORY,TYPE,"date") values ('2',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
 REM INSERTING into SYSTEM.AVAILABLE_TAGS
 SET DEFINE OFF;
-Insert into SYSTEM.AVAILABLE_TAGS (ID,TAG) values ('1','Must Read Titles');
-Insert into SYSTEM.AVAILABLE_TAGS (ID,TAG) values ('2','Best Of List');
-Insert into SYSTEM.AVAILABLE_TAGS (ID,TAG) values ('3','Classic Novels');
-Insert into SYSTEM.AVAILABLE_TAGS (ID,TAG) values ('4','Non Fiction');
+Insert into SYSTEM.AVAILABLE_TAGS (TAG) values ('Must Read Titles');
+Insert into SYSTEM.AVAILABLE_TAGS (TAG) values ('Best Of List');
+Insert into SYSTEM.AVAILABLE_TAGS (TAG) values ('Classic Novels');
+Insert into SYSTEM.AVAILABLE_TAGS (TAG) values ('Non Fiction');
 --------------------------------------------------------
 --  DDL for Index BOOKS_PK
 --------------------------------------------------------

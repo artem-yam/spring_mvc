@@ -56,5 +56,5 @@ insert into NOTIFICATIONS (BOOK, SEARCHTEXT, CATEGORY, TYPE)
             ?,
             (select id
              from NOTIFICATION_TYPES
-                where "type" = ?))
+                where type = ?))
                 
