@@ -4,6 +4,9 @@ import com.epam.jtc.spring.datalayer.BookDAO;
 import com.epam.jtc.spring.datalayer.DAOFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

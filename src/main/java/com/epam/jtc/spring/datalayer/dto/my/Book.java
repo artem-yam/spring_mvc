@@ -1,4 +1,4 @@
-package com.epam.jtc.spring.datalayer.dto;
+package com.epam.jtc.spring.datalayer.dto.my;
 
 import java.io.File;
 import java.util.HashSet;

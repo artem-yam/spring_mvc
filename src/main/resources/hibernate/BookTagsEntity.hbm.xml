@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.epam.jtc.spring.datalayer.dto.BookTagsEntity"
+           table="BOOK_TAGS" schema="SYSTEM">
+        <id name="id">
+            <type name="com.epam.jtc.spring.datalayer.dto.BookTagsEntityPK"/>
+        </id>
+    </class>
+</hibernate-mapping>

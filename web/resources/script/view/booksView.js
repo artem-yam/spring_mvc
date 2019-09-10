@@ -169,9 +169,14 @@ function BooksView(controller, model) {
 
         if (tagSelect === "Not selected") {
             if (!Utils.isEmpty(tagInput)) {
-                Utils.resetValue(window.document.querySelector(
-                    "#modal" + bookId + " .modal-body input"));
-                newTag = tagInput;
+                if (!booksModel.tags.includes(tagInput)) {
+                    Utils.resetValue(window.document.querySelector(
+                        "#modal" + bookId + " .modal-body input"));
+                    newTag = tagInput;
+                } else {
+                    alert('Tag \'' + tagInput + '\' already exists! \n' +
+                        'Please, correct your tag or choose from the list!');
+                }
             } else {
                 alert('You trying to add empty tag! \n' +
                     'Please, correct your tag or choose from the list!');

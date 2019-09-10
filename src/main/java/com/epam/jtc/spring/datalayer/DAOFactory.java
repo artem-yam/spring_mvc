@@ -4,7 +4,7 @@ package com.epam.jtc.spring.datalayer;
  * Factory of DAO
  */
 public interface DAOFactory {
-
+    
     /**
      * Gets instance of certain DAOFactory
      *
@@ -14,7 +14,7 @@ public interface DAOFactory {
     static DAOFactory getInstance(DataSourceType type) {
         return type.getDAOFactory();
     }
-
+    
     /**
      * Employee DAO getter
      *
