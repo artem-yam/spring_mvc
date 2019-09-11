@@ -25,6 +25,9 @@ public class Book {
         this.author = author;
     }
     
+    public Book() {
+    }
+    
     public int getId() {
         return id;
     }
@@ -71,5 +74,16 @@ public class Book {
     
     public void setTags(Set<String> tags) {
         this.tags = tags;
+    }
+    
+    @Override public String toString() {
+        return "Book{" +
+                   "id=" + id +
+                   ", title='" + title + '\'' +
+                   ", author='" + author + '\'' +
+                   ", image=" + image +
+                   ", rating=" + rating +
+                   ", tags=" + tags +
+                   '}';
     }
 }

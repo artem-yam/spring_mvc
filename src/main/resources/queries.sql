@@ -6,12 +6,12 @@ from books
 -- 2) поиск по книгам
 select * 
 from books
-    where instr(title||' '||author, ?)>0
+    where instr(lower(title)||' '||lower(author), ?)>0
     
 -- 3) most popular
 select * 
 from books
-    where rating=5
+    where rating=?
     
 -- 4) добавление книги
 insert into books(title, author,image)
@@ -41,16 +41,21 @@ from AVAILABLE_TAGS
             where book=?)
 
 -- 9) все нотификации 
-select * 
+select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "date"
 from NOTIFICATIONS
+    inner join NOTIFICATION_TYPES on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE
 
 -- 10) последние n нотификаций
-select * 
-from NOTIFICATIONS
-    where rownum <= ?
-    
+select *
+from (select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "date"
+    from NOTIFICATIONS
+       inner join NOTIFICATION_TYPES on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE
+    order by "date" desc) 
+where rownum <= ?
+   
+        
 -- 11) добавление нотификации
-insert into NOTIFICATIONS (BOOK, SEARCHTEXT, CATEGORY, TYPE) 
+insert into NOTIFICATIONS (BOOK, SEARCH_TEXT, CATEGORY, TYPE) 
     values (?, 
             ?, 
             ?,

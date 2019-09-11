@@ -1,30 +1,29 @@
 package com.epam.jtc.spring;
 
-import com.epam.jtc.spring.datalayer.dao.BookDAO;
-import com.epam.jtc.spring.datalayer.oracle.dao.OracleBookDAO;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.epam.jtc.spring.datalayer.DAOFactory;
+import com.epam.jtc.spring.datalayer.DataSourceType;
+import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
+import com.epam.jtc.spring.datalayer.dto.Notification;
+import com.epam.jtc.spring.datalayer.dto.NotificationTypes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tester {
-
+    
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext ctx;
-        // ctx =   new ClassPathXmlApplicationContext("spring.xml");
-
-        ctx = new AnnotationConfigApplicationContext();
-        ctx.scan("com.epam.jtc.spring.datalayer");
-        ctx.refresh();
-
-
-        //DAOFactory daoFactory = DAOFactory.getInstance(DataSourceType.ORACLE);
-
-        BookDAO dao;
-        dao = ctx.getBean(OracleBookDAO.class);
-
-        //dao = daoFactory.getBookDAO();
-
-        dao.getAllBooks();
-
-        ctx.close();
+        DAOFactory daoFactory = DAOFactory.getInstance(DataSourceType.ORACLE);
+        
+        NotificationDAO dao;
+        //dao = ctx.getBean(OracleBookDAO.class);
+        
+        dao = daoFactory.getNotificationDAO();
+        
+        List<Notification> result = new ArrayList<>();
+        
+        dao.addNotification(2, null, null, NotificationTypes.SEARCH);
+        
+        System.out.println(result);
     }
-
+    
 }

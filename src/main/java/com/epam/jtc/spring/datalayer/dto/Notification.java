@@ -7,7 +7,7 @@ public class Notification {
     
     private int id;
     
-    private Book book;
+    private int bookId;
     private String searchText;
     private String category;
     
@@ -15,22 +15,26 @@ public class Notification {
     
     private Date date = DEFAULT_DATE;
     
-    public Notification(int id, Book book, String searchText,
+    public Notification(int id, int bookId, String searchText,
                         String category,
-                        NotificationTypes type) {
+                        NotificationTypes type, Date date) {
         this.id = id;
-        this.book = book;
+        this.bookId = bookId;
         this.searchText = searchText;
         this.category = category;
         this.type = type;
+        this.date = date;
     }
     
-    public Book getBook() {
-        return book;
+    public Notification() {
     }
     
-    public void setBook(Book book) {
-        this.book = book;
+    public int getBookId() {
+        return bookId;
+    }
+    
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
     
     public String getSearchText() {
@@ -71,5 +75,16 @@ public class Notification {
     
     public void setDate(Date date) {
         this.date = date;
+    }
+    
+    @Override public String toString() {
+        return "Notification{" +
+                   "id=" + id +
+                   ", bookId=" + bookId +
+                   ", searchText='" + searchText + '\'' +
+                   ", category='" + category + '\'' +
+                   ", type=" + type +
+                   ", date=" + date +
+                   '}';
     }
 }

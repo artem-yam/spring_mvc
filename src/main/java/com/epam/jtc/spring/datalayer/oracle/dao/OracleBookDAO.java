@@ -2,15 +2,21 @@ package com.epam.jtc.spring.datalayer.oracle.dao;
 
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dto.Book;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Employee DAO for oracle DB
@@ -21,88 +27,80 @@ public class OracleBookDAO implements BookDAO {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
+    private static final int BOOK_MAX_RATING = 5;
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public OracleBookDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    public OracleBookDAO() {
-    }
-
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
+    
+    private RowMapper<Book> bookRowMapper = new BeanPropertyRowMapper<Book>() {
+        @Override
+        public Book mapRow(ResultSet rs, int rowNum)
+            throws SQLException {
+            Book book = new Book();
+            book.setId(rs.getInt(1));
+            book.setTitle(rs.getString(2));
+            book.setAuthor(rs.getString(3));
+            
+            if (rs.getBlob(4) != null) {
+                InputStream input = rs.getBlob(4).getBinaryStream();
+                
+                File targetFile =
+                    new File("src/main/resources/booksCovers/"
+                                 + book.getAuthor() + " " +
+                                 book.getTitle() +
+                                 ".jpg");
+                
+                try {
+                    FileUtils.copyInputStreamToFile(input, targetFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                
+                book.setImage(targetFile);
+            }
+            
+            book.setRating(rs.getInt(5));
+            return book;
+        }
+    };
+    
     @Override
     public List<Book> getAllBooks() {
-        
-        /*jdbcTemplate.queryForObject("select * from AVAILABLE_TAGS",
-            new RowMapper<Object>() {
-                public Object mapRow(ResultSet rs, int rowNum)
-                    throws SQLException {
-                    Spitter spitter = new Spitter(); // Отображение
-                    spitter.setId(rs.getLong(1)); // результатов
-                    spitter.setUsername(rs.getString(2)); // в объект
-                    spitter.setPassword(rs.getString(3));
-                    spitter.setFullName(rs.getString(4));
-                    return spitter;
-                }
-            }
-        );
-        */
-
-        List<Map<String, Object>> tags = jdbcTemplate
-                .queryForList(
-                        "select * from AVAILABLE_TAGS");
-  
-       /* jdbcTemplate
-            .update("insert into AVAILABLE_TAGS(tag) values ('test tag')");*/
-
-
-        for (Object tag : tags) {
-            System.out.println(tag);
-        }
-
-        List<Book> employees = new ArrayList<>();
-        
-        /*try (ResultSet rs = new OracleResultSetsGetter(
-            dataSource.getConnection()).getAllBooks()) {
-            while (rs.next()) {
-               *//* employees.add(
-                    new Employee(rs.getLong(ID_COLUMN), rs.getString(
-                        LAST_NAME_COLUMN), rs.getString(
-                        FIRST_NAME_COLUMN)));*//*
-            }
-        } catch (SQLException employeesSQLException) {
-        }
-        
-        logger.debug("Received employees list {}", employees);*/
-
-        return employees;
+        return jdbcTemplate
+                   .query("select * from books where is_deleted = '0'",
+                       bookRowMapper);
     }
-
+    
     @Override
     public List<Book> searchBooks(String searchText) {
-        return null;
+        return jdbcTemplate
+                   .query("select * from books where " +
+                              "instr(lower(title)||' '||lower(author), ?)>0",
+                       bookRowMapper, searchText);
     }
-
+    
     @Override
     public List<Book> getMostPopular() {
-        return null;
+        return jdbcTemplate
+                   .query("select * from books where rating = ?",
+                       bookRowMapper, BOOK_MAX_RATING);
     }
-
+    
     @Override
-    public void addBook(String title, String author, String coverImage) {
-
+    public void addBook(String title, String author, File coverImage) {
+        
+        try {
+            byte[] file = FileUtils.readFileToByteArray(coverImage);
+            
+            jdbcTemplate
+                .update("insert into books(title, author,image) " +
+                            "values (?, ?, ?)", title, author, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
+    
 }

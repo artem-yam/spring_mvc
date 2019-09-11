@@ -8,7 +8,7 @@ import com.epam.jtc.spring.datalayer.dao.TagDAO;
  * Factory of DAO
  */
 public interface DAOFactory {
-
+    
     /**
      * Gets instance of certain DAOFactory
      *
@@ -18,10 +18,10 @@ public interface DAOFactory {
     static DAOFactory getInstance(DataSourceType type) {
         return type.getDAOFactory();
     }
-
+    
     BookDAO getBookDAO();
-
+    
     TagDAO getTagDAO();
-
+    
     NotificationDAO getNotificationDAO();
 }
