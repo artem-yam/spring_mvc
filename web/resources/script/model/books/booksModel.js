@@ -1,11 +1,11 @@
-function BooksModel(storage, tags) {
+function BooksModel(tags) {
     "use strict";
 
     const MAX_RATING = 5;
     const MOST_POPULAR_FILTER = "Most Popular";
     const TEXT_NOT_FOUND = -1;
 
-    let booksStorage = storage;
+    let booksStorage = [];
     let availableTags = tags;
     let onBookAdd = new EventEmitter();
     let onTagsChange = new EventEmitter();
@@ -108,6 +108,36 @@ function BooksModel(storage, tags) {
         return foundBook;
     }
 
+    function getAllBooks() {
+        return $.ajax({
+            url: "books/getAll",
+            async: true,
+            dataType: "json",
+            success: function (data) {
+                //alert("Прибыли данные: " + data);
+                booksStorage = data;
+                //return data;
+            }
+        });
+
+        /*
+                return await fetch('books/getAll', {
+                    method: 'GET',
+                    /!*headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    }*!/
+                }).then(function (response) {
+                    //booksStorage = response.json();
+                    return response.json();
+                });*/
+    }
+
+    function initModel() {
+        getAllBooks().then(function () {
+            setInterval(getAllBooks, 1000);
+        });
+    }
+
     return {
         search,
         updateRating,
@@ -115,9 +145,11 @@ function BooksModel(storage, tags) {
         addBookTag,
         findBook,
         getMostPopular,
+        getAllBooks,
         storage: booksStorage,
         tags: availableTags,
         onBookAdd,
-        onTagsChange
+        onTagsChange,
+        initModel
     }
 }

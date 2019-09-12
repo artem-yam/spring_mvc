@@ -210,6 +210,12 @@ function BooksView(controller, model) {
         for (let i = 0; i < booksModel.storage.length; i++) {
             createBlock(booksModel.storage[i]);
         }
+
+        /*booksModel.getAllBooks().then(function (booksStorage) {
+            for (let i = 0; i < booksStorage.length; i++) {
+                createBlock(booksStorage[i]);
+            }
+        });*/
     }
 
     function filter(filterMethod, category) {
@@ -217,6 +223,17 @@ function BooksView(controller, model) {
             chooseCategory(category);
         }
         let result = filterMethod() || booksModel.storage;
+
+        /*result.then(function (booksStorage) {
+            if (booksStorage.length !== 0) {
+                for (let i = 0; i < booksStorage.length; i++) {
+                    createBlock(booksStorage[i]);
+                }
+            } else {
+                window.document.querySelector(".main_content").innerHTML =
+                    "<h2>Not found!</h2>";
+            }
+        });*/
 
         if (result.length !== 0) {
             for (let i = 0; i < result.length; i++) {

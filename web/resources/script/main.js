@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    function pageLoad() {
+    async function pageLoad() {
         let notificationsModel = new NotificationsModel(
             new NotificationsStorage());
         let booksModel = new BooksModel(new BooksStorage(),
@@ -13,13 +13,15 @@
             notificationsModel);
         let booksView = new BooksView(controller, booksModel);
 
+        await booksModel.initModel();
+
         booksView.browsePage();
         notificationsView.loadHistoryBar();
 
         //--------------------------------------------------------------------
         // ${pageContext.request.contextPath}
 
-        fetch('test', {
+        /*fetch('test', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -34,7 +36,7 @@
             return result;
         }).then(function (data) {
             alert(data);
-        });
+        });*/
 
         /*let xhr = new XMLHttpRequest();
         xhr.onload = function () {

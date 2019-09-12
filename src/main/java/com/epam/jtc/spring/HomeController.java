@@ -18,9 +18,9 @@ public class HomeController {
                                              .getLogger(new Object() {
                                              }.getClass().getEnclosingClass());
     
-    public HomeController() {
+   /* public HomeController() {
         logger.info("Controller created");
-    }
+    }*/
     
     @RequestMapping(value = "/test" /*,
             headers={"Content-Type=application/json",

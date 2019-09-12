@@ -12,7 +12,7 @@ import java.util.List;
 public class Tester {
     
     public static void main(String[] args) {
-        DAOFactory daoFactory = DAOFactory.getInstance(DataSourceType.ORACLE);
+        /*DAOFactory daoFactory = DAOFactory.getInstance(DataSourceType.ORACLE);
         
         NotificationDAO dao;
         //dao = ctx.getBean(OracleBookDAO.class);
@@ -23,7 +23,7 @@ public class Tester {
         
         dao.addNotification(2, null, null, NotificationTypes.SEARCH);
         
-        System.out.println(result);
+        System.out.println(result);*/
     }
     
 }

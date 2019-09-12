@@ -19,7 +19,7 @@ public class OracleNotificationDAO implements NotificationDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    private RowMapper<Notification> notificationRowMapper =
+    private final RowMapper<Notification> notificationRowMapper =
         new BeanPropertyRowMapper<Notification>() {
             @Override
             public Notification mapRow(ResultSet rs, int rowNum)

@@ -35,7 +35,7 @@ public class OracleBookDAO implements BookDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    private RowMapper<Book> bookRowMapper = new BeanPropertyRowMapper<Book>() {
+    private final RowMapper<Book> bookRowMapper = new BeanPropertyRowMapper<Book>() {
         @Override
         public Book mapRow(ResultSet rs, int rowNum)
             throws SQLException {

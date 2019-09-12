@@ -231,6 +231,8 @@
     <script type="text/javascript"
             src="resources/script/utils/jquery-3.4.1.slim.min.js"></script>
     <script type="text/javascript"
+            src="resources/script/utils/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript"
             src="resources/script/utils/bootstrap.min.js"></script>
 
     <script type="text/javascript"
