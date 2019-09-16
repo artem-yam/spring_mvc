@@ -25,11 +25,21 @@ function NotificationsModel() {
         }
     }
 
-    function addNotification(book, searchText, category, type) {
+    function addNotification(bookId, searchText, category, type) {
         let newNotify = new NotificationTO(getNextId(),
-            Object.assign(new Book, book), searchText, category, type);
+            bookId, searchText, category, type);
 
-        notificationStorage.push(newNotify);
+        $.ajax({
+            url: "notifications/add",
+            method: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(newNotify),
+            dataType: "json"
+        }).then(function () {
+            alert("Notification added");
+        });
+
+        //notificationStorage.push(newNotify);
         onNotificationAdd.notify();
     }
 
@@ -38,12 +48,12 @@ function NotificationsModel() {
             notificationType.SEARCH);
     }
 
-    function addNewRatingNotification(book) {
-        addNotification(book, null, null, notificationType.RATING);
+    function addNewRatingNotification(bookId) {
+        addNotification(bookId, null, null, notificationType.RATING);
     }
 
-    function addNewBookNotification(book) {
-        addNotification(book, null, NEW_BOOK_CATEGORY,
+    function addNewBookNotification(bookId) {
+        addNotification(bookId, null, NEW_BOOK_CATEGORY,
             notificationType.ADD_BOOK);
     }
 
@@ -60,7 +70,9 @@ function NotificationsModel() {
             url: "notifications/getAll",
             dataType: "json"
         }).then(function (data) {
-            alert(data);
+            for (let note of data) {
+                note.date = new Date(note.date);
+            }
             notificationStorage = data;
         });
     }
@@ -79,6 +91,7 @@ function NotificationsModel() {
         getNotificationsStorage,
         addSearchNotification,
         addNewRatingNotification,
-        addNewBookNotification
+        addNewBookNotification,
+        getAllNotifications
     }
 }

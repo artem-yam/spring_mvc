@@ -4,13 +4,24 @@ function BooksView(controller, model) {
     let mainController = controller;
     let booksModel = model;
 
+    function setDefaultNewBookImage() {
+        let defaultImage = window.document.querySelector("#default_book_image").getAttribute("src")
+
+        window.document.querySelector("#loaded_image img")
+            .setAttribute("src", defaultImage);
+    }
+
+    (function init() {
+        setDefaultNewBookImage();
+    })();
+
     function createBlock(book) {
         let template = window.document.querySelector("#book_template");
         let booksPage = window.document.querySelector(".main_content");
 
         let bookBlock = template.content.cloneNode(true);
 
-        bookBlock.querySelector("img").setAttribute("src", book.imagePath);
+        bookBlock.querySelector("img").setAttribute("src", book.image);
         bookBlock.querySelector("img").setAttribute("alt", book.title);
         bookBlock.querySelector(".book_description a")
             .setAttribute("href", "#modal" + book.id);
@@ -119,9 +130,9 @@ function BooksView(controller, model) {
         Utils.resetInnerHTML(window.document.querySelector(".main_content"));
         let searchText = window.document.querySelector("#search").value;
         let activeCategory = window.document.querySelector(
-            ".main_sort .sort .active").textContent;
+            ".main_sort .sort .active").innerText;
 
-        return model.search(searchText, activeCategory);
+        return booksModel.search(searchText, activeCategory);
     }
 
     function updateRating(bookId, newRating) {
@@ -212,34 +223,14 @@ function BooksView(controller, model) {
                 createBlock(booksModel.getBooksStorage()[i]);
             }
         }
-
-        /*booksModel.getAllBooks().then(function (booksStorage) {
-            for (let i = 0; i < booksStorage.length; i++) {
-                createBlock(booksStorage[i]);
-            }
-        });*/
     }
 
-    function filter(filterMethod, category) {
-        if (category !== undefined) {
-            chooseCategory(category);
-        }
+    function filter(filterMethod) {
         let result = filterMethod() || booksModel.getBooksStorage();
-
-        /*result.then(function (booksStorage) {
-            if (booksStorage.length !== 0) {
-                for (let i = 0; i < booksStorage.length; i++) {
-                    createBlock(booksStorage[i]);
-                }
-            } else {
-                window.document.querySelector(".main_content").innerHTML =
-                    "<h2>Not found!</h2>";
-            }
-        });*/
 
         if (result.length !== 0) {
             for (let i = 0; i < result.length; i++) {
-                if (!result.getBooksStorage()[i].isDeleted) {
+                if (!result[i].isDeleted) {
                     createBlock(result[i]);
                 }
             }
@@ -288,12 +279,17 @@ function BooksView(controller, model) {
 
     window.document.querySelector("#most_popular")
         .addEventListener("click", function () {
-            filter(booksModel.getMostPopular, "most_popular");
+            chooseCategory("most_popular");
+            filter(booksModel.getMostPopular);
         });
 
     window.document.querySelector("#search")
         .addEventListener("input", function () {
-            filter(search);
+            let searchText = window.document.querySelector("#search").value;
+
+            if (searchText.trim() !== '') {
+                filter(search);
+            }
         });
 
     model.onBookAdd.subscribe(function (title, author) {
@@ -305,8 +301,8 @@ function BooksView(controller, model) {
         window.document.querySelector("#loaded_image").classList
             .add("hidden");
 
-        window.document.querySelector("#loaded_image img")
-            .setAttribute("src", "");
+        setDefaultNewBookImage();
+
         Utils.resetValue(window.document.querySelector("#add_book_title"));
         Utils.resetValue(window.document.querySelector("#add_book_author"));
 

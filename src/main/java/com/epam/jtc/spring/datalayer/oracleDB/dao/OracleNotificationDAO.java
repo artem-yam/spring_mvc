@@ -54,6 +54,7 @@ public class OracleNotificationDAO implements NotificationDAO {
                 return notification;
             }
         };
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
@@ -64,7 +65,8 @@ public class OracleNotificationDAO implements NotificationDAO {
                               "category, NOTIFICATION_TYPES.type, \"DATE\"" +
                               "from NOTIFICATIONS " +
                               "inner join NOTIFICATION_TYPES on " +
-                              "NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE",
+                              "NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE " +
+                              "order by \"DATE\"",
                        notificationRowMapper);
     }
     
@@ -73,7 +75,7 @@ public class OracleNotificationDAO implements NotificationDAO {
         return jdbcTemplate
                    .query("select * from (" +
                               "select NOTIFICATIONS.id, book, search_text, " +
-                              "category, NOTIFICATION_TYPES.type, \"date\" " +
+                              "category, NOTIFICATION_TYPES.type, \"DATE\" " +
                               "from NOTIFICATIONS inner join NOTIFICATION_TYPES " +
                               "on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE " +
                               "order by \"date\" desc) where rownum <= ?",
@@ -83,11 +85,20 @@ public class OracleNotificationDAO implements NotificationDAO {
     @Override
     public void addNotification(int bookId, String searchText, String category,
                                 NotificationTypes type) {
+        Notification notify = new Notification();
+        notify.setBookId(bookId);
+        notify.setSearchText(searchText);
+        notify.setCategory(category);
+        notify.setType(type);
+        
+        loggerDAO.info("New notification = {}", notify);
+        
         jdbcTemplate
             .update("insert into NOTIFICATIONS " +
                         "(BOOK, SEARCH_TEXT, CATEGORY, TYPE) values " +
                         "(?, ?, ?, (select id from NOTIFICATION_TYPES " +
                         "where type = ?))",
-                bookId, searchText, category, type.toString());
+                bookId > 0 ? bookId : null, searchText, category,
+                type.toString());
     }
 }

@@ -21,29 +21,16 @@ public class NotificationsController {
     
     @RequestMapping(value = "/getAll")
     public List<Notification> getAllNotifications() {
-        List<Notification> notes = DAOFactory.getInstance(DataSourceType.ORACLE)
-                                       .getNotificationDAO()
-                                       .getAllNotifications();
-        
-        logger.info("Notes: {}", notes);
-        
-        return notes;
+        return DAOFactory.getInstance(DataSourceType.ORACLE)
+                   .getNotificationDAO().getAllNotifications();
     }
-    
-    /*public List<Book> searchBooks(String searchText) {
-        return null;
-    }*/
     
     @RequestMapping(value = "/add")
     public void addNotification(@RequestBody Notification newNote) {
-        /*logger.info("NewBook = {}", newBook);
-        if (newBook.getImagePath().contains(",")) {
-            newBook.setImagePath(newBook.getImagePath()
-                    .substring(newBook.getImagePath().indexOf(',') + 1));
-        }
-
-        DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
-                .addBook(newBook.getTitle(), newBook.getAuthor(),
-                        newBook.getImagePath());*/
+        logger.info("Adding new notify: {}", newNote);
+        
+        DAOFactory.getInstance(DataSourceType.ORACLE).getNotificationDAO()
+            .addNotification(newNote.getBookId(), newNote.getSearchText(),
+                newNote.getCategory(), newNote.getType());
     }
 }

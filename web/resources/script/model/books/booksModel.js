@@ -35,7 +35,7 @@ function BooksModel(tags) {
     function checkWithFilter(book, filter) {
         let result = true;
 
-        switch (filter) {
+        switch (filter.trim()) {
             case (MOST_POPULAR_FILTER):
                 result = (book.rating === MAX_RATING);
                 break;
@@ -57,21 +57,24 @@ function BooksModel(tags) {
     function addBook(title, author, bookImage) {
         let newBook = new Book(getNextId(), title, author, bookImage);
 
-        //booksStorage.push(newBook);
-
-        $.ajax({
+        return $.ajax({
             url: "books/add",
             method: 'POST',
             contentType: "application/json",
-            data: JSON.stringify(newBook),
-            dataType: "json" //,
-        }).then(function () {
-            alert("Book added");
+            data:
+                JSON.stringify({
+                    'title': title,
+                    'author': author,
+                    'image': bookImage
+                }),
+            //JSON.stringify(newBook),
+            dataType: "json"
+        }).then(function (addedBookId) {
+            onBookAdd.notify(title, author);
+
+            return addedBookId;
         });
 
-        onBookAdd.notify(title, author);
-
-        return newBook;
     }
 
     function getNextId() {

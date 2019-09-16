@@ -1,7 +1,7 @@
 -- 1) все книги
 select * 
 from books
-    where is_deleted='0'
+    order by id
     
 -- 2) поиск по книгам
 select * 
@@ -41,16 +41,17 @@ from AVAILABLE_TAGS
             where book=?)
 
 -- 9) все нотификации 
-select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "date"
+select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "DATE"
 from NOTIFICATIONS
     inner join NOTIFICATION_TYPES on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE
+    Order by "DATE"
 
 -- 10) последние n нотификаций
 select *
-from (select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "date"
+from (select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "DATE"
     from NOTIFICATIONS
        inner join NOTIFICATION_TYPES on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE
-    order by "date" desc) 
+    order by "date") 
 where rownum <= ?
    
         

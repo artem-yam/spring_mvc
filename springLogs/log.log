@@ -1,0 +1,27 @@
+2019-09-16 18:22:10,578  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:22:28,681   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:23:47,553  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:23:49,149   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:24:04,309  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:24:05,220   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:24:19,087  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:24:21,076   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:25:31,890  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:25:31,916   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:26:01,406  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:26:01,427   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:27:48,523  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:27:48,555   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:27:49,518   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Success 
+2019-09-16 18:28:00,865  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:28:00,890   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:28:01,551   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Success 
+2019-09-16 18:28:29,572  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:28:29,598   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:28:30,370   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Success 
+2019-09-16 18:28:45,671  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:28:47,745   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:28:48,407   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Success 
+2019-09-16 18:31:36,588  DEBUG com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory New instance of class com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory created 
+2019-09-16 18:31:36,705   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Adding book = title,author 
+2019-09-16 18:31:37,503   INFO com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO Success 

@@ -14,29 +14,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BooksController {
-
+    
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     @RequestMapping(value = "/getAll")
             /*  headers = {"Content-Type=application/json",
                   "Accept=application/json"})*/
     //, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Book> getAllBooks() {
         return DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
-                .getAllBooks();
+                   .getAllBooks();
     }
-
+    
     @RequestMapping(value = "/add")
-    public void addBook(@RequestBody Book newBook) {
-        if (newBook.getImagePath().contains(",")) {
-            newBook.setImagePath(newBook.getImagePath()
-                    .substring(newBook.getImagePath().indexOf(',') + 1));
+    public int addBook(@RequestBody Book newBook) {
+        logger.info("Adding new book {}", newBook);
+        
+        if (newBook.getImage() == null) {
+            newBook.setImage(new Book().getImage());
         }
-
-        DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
-                .addBook(newBook.getTitle(), newBook.getAuthor(),
-                        newBook.getImagePath());
+        if (newBook.getImage().contains(",")) {
+            newBook.setImage(newBook.getImage()
+                                 .substring(
+                                     newBook.getImage().indexOf(',') + 1));
+        }
+        
+        return DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
+                   .addBook(newBook.getTitle(), newBook.getAuthor(),
+                       newBook.getImage());
     }
 }

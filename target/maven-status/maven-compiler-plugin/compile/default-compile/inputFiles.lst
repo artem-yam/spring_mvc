@@ -1,0 +1,17 @@
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\dto\Notification.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\oracleDB\OracleDataSource.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\dao\TagDAO.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\dto\Book.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\oracleDB\dao\OracleNotificationDAO.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\oracleDB\OracleDAOFactory.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\oracleDB\dao\OracleTagDAO.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\dao\BookDAO.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\Tester.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\controllers\NotificationsController.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\dto\NotificationTypes.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\controllers\BooksController.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\DAOFactory.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\CustomJdbcTemplate.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\oracleDB\dao\OracleBookDAO.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\dao\NotificationDAO.java
+D:\Projects\Spring\SpringMVC_task\src\main\java\com\epam\jtc\spring\datalayer\DataSourceType.java

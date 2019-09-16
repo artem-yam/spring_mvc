@@ -262,6 +262,7 @@ a {
 .history_block .history_text {
     font-size: 0.9em;
     padding-right: 20px;
+    padding-left: 50px;
 }
 
 .history_block .history_pic {

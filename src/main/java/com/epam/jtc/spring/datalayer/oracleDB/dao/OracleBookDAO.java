@@ -56,8 +56,8 @@ public class OracleBookDAO implements BookDAO {
                             imageBlobBytes =
                                 Base64.encodeBase64(imageBlobBytes);
                         }
-                        book.setImagePath("data:image/jpeg;base64," +
-                                              new String(imageBlobBytes));
+                        book.setImage("data:image/jpeg;base64," +
+                                          new String(imageBlobBytes));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -76,7 +76,7 @@ public class OracleBookDAO implements BookDAO {
     @Override
     public List<Book> getAllBooks() {
         return jdbcTemplate
-                   .query("select * from books",
+                   .query("select * from books order by id",
                        bookRowMapper);
     }
 
@@ -96,30 +96,34 @@ public class OracleBookDAO implements BookDAO {
     }*/
     
     @Override
-    public void addBook(String title, String author,
-                        String coverImage) {
-        logger.info("Adding book = {},{},{}",
-            title, author, coverImage);
-            /*logger.info("coverImage = {}",
-                    coverImage.getAbsoluteFile());
-            byte[] file =
-                    FileUtils.readFileToByteArray(
-                            coverImage.getAbsoluteFile());*/
+    public int addBook(String title, String author,
+                       String coverImage) {
+/*        logger.info("Adding book = {},{}",
+            title, author);*/
         
         byte[] blobImage = null; //Base64.getDecoder().decode(coverImage);
         
-        try {
-            blobImage = toByteArray(IOUtils.toInputStream(coverImage));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (coverImage != null) {
+            try {
+                blobImage = toByteArray(IOUtils.toInputStream(coverImage));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            if (Base64.isBase64(blobImage)) {
+                blobImage =
+                    Base64.decodeBase64(blobImage);
+            }
         }
         
-        logger.info("Blob image = {}", blobImage);
+        jdbcTemplate.update("insert into books(title, author,image) " +
+                                "values (?, ?, ?)",
+            title, author, blobImage);
         
-        jdbcTemplate
-            .update("insert into books(title, author,image) " +
-                        "values (?, ?, ?)", title, author, blobImage);
-        
+        return jdbcTemplate
+                   .queryForObject("select id from books " +
+                                       "where title=? and author=?",
+                       int.class, title, author);
     }
     
 }

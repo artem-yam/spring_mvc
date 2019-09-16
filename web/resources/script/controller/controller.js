@@ -7,14 +7,15 @@ function Controller(booksModel, notificationsModel) {
     function updateRating(bookId, newRating) {
         controlledBooksModel.updateRating(bookId, newRating);
 
-        controlledNotificationsModel.addNewRatingNotification(
-            booksModel.findBook(bookId), newRating);
+        controlledNotificationsModel.addNewRatingNotification(bookId, newRating);
     }
 
     function addBook(title, author, bookImage) {
-        let newBook = controlledBooksModel.addBook(title, author, bookImage);
+        let newBookRequest = controlledBooksModel.addBook(title, author, bookImage);
 
-        controlledNotificationsModel.addNewBookNotification(newBook);
+        newBookRequest.then(function (newBookId) {
+            controlledNotificationsModel.addNewBookNotification(newBookId);
+        })
     }
 
     function addBookTag(bookId, newTag) {

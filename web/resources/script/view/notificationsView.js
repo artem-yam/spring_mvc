@@ -133,19 +133,25 @@ function NotificationsView(controller, model) {
     window.document.querySelector("#search")
         .addEventListener("input", function () {
             let searchText = window.document.querySelector("#search").value;
-            let activeCategory = window.document.querySelector(
-                ".main_sort .sort .active");
-            appController.addSearchNotification(searchText,
-                activeCategory.innerHTML);
+
+            if (searchText.trim() !== '') {
+                let activeCategory = window.document.querySelector(
+                    ".main_sort .sort .active").innerText;
+                appController.addSearchNotification(searchText,
+                    activeCategory);
+            }
         });
 
-    model.onNotificationAdd.subscribe(function () {
-        loadHistoryBar();
+    model.onNotificationAdd.subscribe(async function () {
+        await notificationsModel.getAllNotifications()
+            .then(function () {
+                loadHistoryBar();
 
-        if (window.document.querySelector(".history_content").innerHTML !==
-            "") {
-            loadHistoryPage();
-        }
+                if (window.document.querySelector(".history_content").innerHTML !==
+                    "") {
+                    loadHistoryPage();
+                }
+            });
     });
 
     return {
