@@ -1,6 +1,6 @@
 package com.epam.jtc.spring.datalayer;
 
-import com.epam.jtc.spring.datalayer.oracle.OracleDAOFactory;
+import com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory;
 
 /**
  * Enum of supported DAO types

@@ -90,6 +90,12 @@
             <version>2.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.13</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -98,14 +104,6 @@
         <repository>
             <id>imc</id>
             <url>http://maven.icm.edu.pl/artifactory/repo/</url>
-        </repository>
-        <repository>
-            <id>openmind</id>
-            <url>http://repository.openmindonline.it/</url>
-        </repository>
-        <repository>
-            <id>jeecg</id>
-            <url>http://maven.jeecg.org/nexus/content/repositories/jeecg/</url>
         </repository>
     </repositories>-->
 

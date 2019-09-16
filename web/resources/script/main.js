@@ -2,10 +2,8 @@
     "use strict";
 
     async function pageLoad() {
-        let notificationsModel = new NotificationsModel(
-            new NotificationsStorage());
-        let booksModel = new BooksModel(new BooksStorage(),
-            new AvailableTags());
+        let notificationsModel = new NotificationsModel();
+        let booksModel = new BooksModel(new AvailableTags());
 
         let controller = new Controller(booksModel, notificationsModel);
 
@@ -14,6 +12,7 @@
         let booksView = new BooksView(controller, booksModel);
 
         await booksModel.initModel();
+        await notificationsModel.initModel();
 
         booksView.browsePage();
         notificationsView.loadHistoryBar();

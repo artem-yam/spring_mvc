@@ -9,9 +9,9 @@ public interface BookDAO {
     
     List<Book> getAllBooks();
     
-    List<Book> searchBooks(String searchText);
+    //List<Book> searchBooks(String searchText);
     
-    List<Book> getMostPopular();
+    //List<Book> getMostPopular();
     
-    void addBook(String title, String author, File coverImage);
+    void addBook(String title, String author, String coverImage);
 }

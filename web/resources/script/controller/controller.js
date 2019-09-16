@@ -1,4 +1,4 @@
-    function Controller(booksModel, notificationsModel) {
+function Controller(booksModel, notificationsModel) {
     "use strict";
 
     let controlledBooksModel = booksModel;
@@ -7,7 +7,8 @@
     function updateRating(bookId, newRating) {
         controlledBooksModel.updateRating(bookId, newRating);
 
-        controlledNotificationsModel.addNewRatingNotification(booksModel.findBook(bookId), newRating);
+        controlledNotificationsModel.addNewRatingNotification(
+            booksModel.findBook(bookId), newRating);
     }
 
     function addBook(title, author, bookImage) {
@@ -21,13 +22,19 @@
     }
 
     function addSearchNotification(searchText, category) {
-        controlledNotificationsModel.addSearchNotification(searchText, category);
+        controlledNotificationsModel.addSearchNotification(searchText,
+            category);
+    }
+
+    function getBookById(id) {
+        return controlledBooksModel.findBook(id);
     }
 
     return {
         updateRating,
         addBook,
         addBookTag,
-        addSearchNotification
+        addSearchNotification,
+        getBookById
     };
 }

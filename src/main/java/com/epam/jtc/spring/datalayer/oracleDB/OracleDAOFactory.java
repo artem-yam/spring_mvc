@@ -1,12 +1,12 @@
-package com.epam.jtc.spring.datalayer.oracle;
+package com.epam.jtc.spring.datalayer.oracleDB;
 
 import com.epam.jtc.spring.datalayer.DAOFactory;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
 import com.epam.jtc.spring.datalayer.dao.TagDAO;
-import com.epam.jtc.spring.datalayer.oracle.dao.OracleBookDAO;
-import com.epam.jtc.spring.datalayer.oracle.dao.OracleNotificationDAO;
-import com.epam.jtc.spring.datalayer.oracle.dao.OracleTagDAO;
+import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO;
+import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleNotificationDAO;
+import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleTagDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 
 /**
- * Factory for oracle DB DAO
+ * Factory for oracleDB DB DAO
  */
 @Component
 public class OracleDAOFactory implements DAOFactory, AutoCloseable {

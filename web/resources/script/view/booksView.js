@@ -10,7 +10,7 @@ function BooksView(controller, model) {
 
         let bookBlock = template.content.cloneNode(true);
 
-        bookBlock.querySelector("img").setAttribute("src", book.image);
+        bookBlock.querySelector("img").setAttribute("src", book.imagePath);
         bookBlock.querySelector("img").setAttribute("alt", book.title);
         bookBlock.querySelector(".book_description a")
             .setAttribute("href", "#modal" + book.id);
@@ -72,7 +72,8 @@ function BooksView(controller, model) {
 
         changeSelectTagList(book);
 
-        window.document.querySelector("#modal" + book.id + " .modal-body button")
+        window.document.querySelector(
+            "#modal" + book.id + " .modal-body button")
             .addEventListener('click', function () {
                 addBookTag(book.id);
             });
@@ -135,7 +136,6 @@ function BooksView(controller, model) {
 
         if (!Utils.isEmpty(title) || !Utils.isEmpty(author)) {
             mainController.addBook(title, author, bookImage);
-
         } else {
             alert("Fill \"Title\" and \"Author\" fields to add a new book");
         }
@@ -207,8 +207,8 @@ function BooksView(controller, model) {
         chooseCategory("all_books");
         Utils.resetInnerHTML(window.document.querySelector(".main_content"));
 
-        for (let i = 0; i < booksModel.storage.length; i++) {
-            createBlock(booksModel.storage[i]);
+        for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
+            createBlock(booksModel.getBooksStorage()[i]);
         }
 
         /*booksModel.getAllBooks().then(function (booksStorage) {
@@ -222,7 +222,7 @@ function BooksView(controller, model) {
         if (category !== undefined) {
             chooseCategory(category);
         }
-        let result = filterMethod() || booksModel.storage;
+        let result = filterMethod() || booksModel.getBooksStorage();
 
         /*result.then(function (booksStorage) {
             if (booksStorage.length !== 0) {
@@ -301,10 +301,13 @@ function BooksView(controller, model) {
         window.document.querySelector("#loaded_image").classList
             .add("hidden");
 
+        window.document.querySelector("#loaded_image img")
+            .setAttribute("src", "");
         Utils.resetValue(window.document.querySelector("#add_book_title"));
         Utils.resetValue(window.document.querySelector("#add_book_author"));
 
-        if (Utils.isEmpty(window.document.querySelector(".history_content").innerHTML)) {
+        if (Utils.isEmpty(
+            window.document.querySelector(".history_content").innerHTML)) {
             let activeCategory = window.document.querySelector(
                 ".main_sort .sort .active");
             if (window.document.getElementById("all_books") ===
@@ -318,7 +321,7 @@ function BooksView(controller, model) {
         changeModalBody(updatedBook);
 
         if (userTagPushed === true) {
-            for (let book of booksModel.storage) {
+            for (let book of booksModel.getBooksStorage()) {
                 changeSelectTagList(book);
             }
         }

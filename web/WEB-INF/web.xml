@@ -6,16 +6,10 @@
 
     <display-name>SpringMVC</display-name>
 
-    <!--  <context-param>
-          <param-name>contextConfigLocation</param-name>
-          <param-value>/WEB-INF/applicationContext.xml</param-value>
-      </context-param>
-
-      <listener>
-          <listener-class>org.springframework.web.context.ContextLoaderListener
-          </listener-class>
-      </listener>
-  -->
+    <!--<listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>-->
 
     <servlet>
         <servlet-name>dispatcher</servlet-name>

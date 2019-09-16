@@ -1,4 +1,4 @@
-package com.epam.jtc.spring.datalayer.oracle.dao;
+package com.epam.jtc.spring.datalayer.oracleDB.dao;
 
 import com.epam.jtc.spring.datalayer.dao.TagDAO;
 import org.springframework.beans.factory.annotation.Autowired;

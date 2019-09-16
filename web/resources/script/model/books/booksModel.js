@@ -15,9 +15,11 @@ function BooksModel(tags) {
 
         for (let i = 0; i < booksStorage.length; i++) {
             let book = booksStorage[i];
+
             if (checkWithFilter(book, filter) &&
-                substringSearch(book.title, text) ||
-                substringSearch(book.author, text)) {
+                (text === "" ||
+                    substringSearch(book.title, text) ||
+                    substringSearch(book.author, text))) {
                 result.push(book);
             }
         }
@@ -55,7 +57,18 @@ function BooksModel(tags) {
     function addBook(title, author, bookImage) {
         let newBook = new Book(getNextId(), title, author, bookImage);
 
-        booksStorage.push(newBook);
+        //booksStorage.push(newBook);
+
+        $.ajax({
+            url: "books/add",
+            method: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(newBook),
+            dataType: "json" //,
+        }).then(function () {
+            alert("Book added");
+        });
+
         onBookAdd.notify(title, author);
 
         return newBook;
@@ -100,7 +113,8 @@ function BooksModel(tags) {
     function findBook(bookId) {
         let foundBook;
 
-        for (let i = 0; i < booksStorage.length && foundBook === undefined; i++) {
+        for (let i = 0; i < booksStorage.length && foundBook === undefined;
+             i++) {
             if (booksStorage[i].id === bookId) {
                 foundBook = booksStorage[i];
             }
@@ -111,31 +125,21 @@ function BooksModel(tags) {
     function getAllBooks() {
         return $.ajax({
             url: "books/getAll",
-            async: true,
             dataType: "json",
-            success: function (data) {
-                //alert("Прибыли данные: " + data);
-                booksStorage = data;
-                //return data;
-            }
+        }).then(function (data) {
+            booksStorage = data;
         });
-
-        /*
-                return await fetch('books/getAll', {
-                    method: 'GET',
-                    /!*headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    }*!/
-                }).then(function (response) {
-                    //booksStorage = response.json();
-                    return response.json();
-                });*/
     }
 
-    function initModel() {
-        getAllBooks().then(function () {
-            setInterval(getAllBooks, 1000);
-        });
+    async function initModel() {
+        await getAllBooks()
+            .then(function () {
+                setInterval(getAllBooks, 1000);
+            });
+    }
+
+    function getBooksStorage() {
+        return booksStorage;
     }
 
     return {
@@ -145,8 +149,8 @@ function BooksModel(tags) {
         addBookTag,
         findBook,
         getMostPopular,
-        getAllBooks,
-        storage: booksStorage,
+
+        getBooksStorage,
         tags: availableTags,
         onBookAdd,
         onTagsChange,

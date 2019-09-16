@@ -1,9 +1,9 @@
-function NotificationsModel(storage) {
+function NotificationsModel() {
     "use strict";
 
     const NEW_BOOK_CATEGORY = "Library";
 
-    let notificationStorage = storage;
+    let notificationStorage = [];
     let onNotificationAdd = new EventEmitter();
 
     function getFlowedTime(date) {
@@ -26,14 +26,16 @@ function NotificationsModel(storage) {
     }
 
     function addNotification(book, searchText, category, type) {
-        let newNotify = new NotificationTO(getNextId(), Object.assign(new Book, book), searchText, category, type);
+        let newNotify = new NotificationTO(getNextId(),
+            Object.assign(new Book, book), searchText, category, type);
 
         notificationStorage.push(newNotify);
         onNotificationAdd.notify();
     }
 
     function addSearchNotification(searchText, searchCategory) {
-        addNotification(null, searchText, searchCategory, notificationType.SEARCH);
+        addNotification(null, searchText, searchCategory,
+            notificationType.SEARCH);
     }
 
     function addNewRatingNotification(book) {
@@ -41,17 +43,39 @@ function NotificationsModel(storage) {
     }
 
     function addNewBookNotification(book) {
-        addNotification(book, null, NEW_BOOK_CATEGORY, notificationType.ADD_BOOK);
+        addNotification(book, null, NEW_BOOK_CATEGORY,
+            notificationType.ADD_BOOK);
     }
 
     function getNextId() {
         return notificationStorage.length + 1;
     }
 
+    function getNotificationsStorage() {
+        return notificationStorage;
+    }
+
+    function getAllNotifications() {
+        return $.ajax({
+            url: "notifications/getAll",
+            dataType: "json"
+        }).then(function (data) {
+            notificationStorage = data;
+        });
+    }
+
+    async function initModel() {
+        await getAllNotifications()
+            .then(function () {
+                setInterval(getAllNotifications, 1000);
+            });
+    }
+
     return {
         getFlowedTime,
-        storage: notificationStorage,
         onNotificationAdd,
+        initModel,
+        getNotificationsStorage,
         addSearchNotification,
         addNewRatingNotification,
         addNewBookNotification

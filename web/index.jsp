@@ -245,15 +245,12 @@
     <script type="text/javascript"
             src="resources/script/model/books/book.js"></script>
     <script type="text/javascript"
-            src="resources/script/model/books/booksStorage.js"></script>
-    <script type="text/javascript"
             src="resources/script/model/books/booksModel.js"></script>
     <script type="text/javascript"
             src="resources/script/model/notifications/notificationTypes.js"></script>
     <script type="text/javascript"
             src="resources/script/model/notifications/notificationTO.js"></script>
-    <script type="text/javascript"
-            src="resources/script/model/notifications/notificationsStorage.js"></script>
+
     <script type="text/javascript"
             src="resources/script/model/notifications/notificationsModel.js"></script>
 

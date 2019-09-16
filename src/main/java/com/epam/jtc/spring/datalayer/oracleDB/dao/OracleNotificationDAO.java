@@ -1,4 +1,4 @@
-package com.epam.jtc.spring.datalayer.oracle.dao;
+package com.epam.jtc.spring.datalayer.oracleDB.dao;
 
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
 import com.epam.jtc.spring.datalayer.dto.Notification;

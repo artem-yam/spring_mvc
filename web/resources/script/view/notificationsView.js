@@ -3,7 +3,7 @@ function NotificationsView(controller, model) {
 
     const HISTORY_BAR_LENGTH = 5;
 
-    let notificationsController = controller;
+    let appController = controller;
     let notificationsModel = model;
 
     function createHistoryBarBlock(notification) {
@@ -16,19 +16,21 @@ function NotificationsView(controller, model) {
         historyBlock.querySelector("p").innerHTML =
             formNotificationMessage(notification);
         historyBlock.querySelector(".history_text").innerHTML +=
-            formTimeMessage(notificationsModel.getFlowedTime(notification.date));
+            formTimeMessage(
+                notificationsModel.getFlowedTime(notification.date));
 
         historyBar.append(historyBlock);
     }
 
     function formNotificationMessage(notification) {
         let message = "";
+        let relatedBook = appController.getBookById(notification.book);
 
         switch (notification.type) {
             case 'ADD_BOOK':
                 message += "You added <b>" +
-                    notification.book.title + "</b> by <b>" +
-                    notification.book.author + "</b>";
+                    relatedBook.title + "</b> by <b>" +
+                    relatedBook.author + "</b>";
 
                 if (notification.category) {
                     message += " to your <b>" + notification.category + "</b>";
@@ -43,9 +45,9 @@ function NotificationsView(controller, model) {
                 break;
             case 'RATING':
                 message += "You rated <b>" +
-                    notification.book.title + "</b> by <b>" +
-                    notification.book.author + "</b>" +
-                    " with " + notification.book.rating + " stars";
+                    relatedBook.title + "</b> by <b>" +
+                    relatedBook.author + "</b>" +
+                    " with " + relatedBook.rating + " stars";
                 break;
         }
 
@@ -75,9 +77,11 @@ function NotificationsView(controller, model) {
     function loadHistoryBar() {
         Utils.resetInnerHTML(window.document.querySelector(".history_block"));
 
-        for (let i = notificationsModel.storage.length - 1;
-             i > notificationsModel.storage.length - HISTORY_BAR_LENGTH - 1 && i >= 0; i--) {
-            createHistoryBarBlock(notificationsModel.storage[i]);
+        for (let i = notificationsModel.getNotificationsStorage().length - 1;
+             i > notificationsModel.getNotificationsStorage().length -
+             HISTORY_BAR_LENGTH - 1 && i >= 0; i--) {
+            createHistoryBarBlock(
+                notificationsModel.getNotificationsStorage()[i]);
         }
     }
 
@@ -95,7 +99,7 @@ function NotificationsView(controller, model) {
         window.document.querySelector(
             ".main .browse").classList.add("hidden");
 
-        for (let notification of notificationsModel.storage) {
+        for (let notification of notificationsModel.getNotificationsStorage()) {
             createHistoryPageBlock(notification);
         }
     }
@@ -131,13 +135,15 @@ function NotificationsView(controller, model) {
             let searchText = window.document.querySelector("#search").value;
             let activeCategory = window.document.querySelector(
                 ".main_sort .sort .active");
-            notificationsController.addSearchNotification(searchText, activeCategory.innerHTML);
+            appController.addSearchNotification(searchText,
+                activeCategory.innerHTML);
         });
 
     model.onNotificationAdd.subscribe(function () {
         loadHistoryBar();
 
-        if (window.document.querySelector(".history_content").innerHTML !== "") {
+        if (window.document.querySelector(".history_content").innerHTML !==
+            "") {
             loadHistoryPage();
         }
     });
