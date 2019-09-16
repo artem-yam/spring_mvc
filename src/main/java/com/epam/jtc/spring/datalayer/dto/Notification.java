@@ -14,6 +14,7 @@ public class Notification {
     private NotificationTypes type;
     
     private Date date = DEFAULT_DATE;
+    private long dateMilliSeconds = date.getTime();
     
     public Notification(int id, int bookId, String searchText,
                         String category,
@@ -75,6 +76,11 @@ public class Notification {
     
     public void setDate(Date date) {
         this.date = date;
+        this.dateMilliSeconds = date.getTime();
+    }
+    
+    public long getDateMilliSeconds() {
+        return dateMilliSeconds;
     }
     
     @Override public String toString() {

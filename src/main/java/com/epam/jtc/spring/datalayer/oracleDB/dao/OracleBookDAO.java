@@ -29,55 +29,55 @@ public class OracleBookDAO implements BookDAO {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     //private static final int BOOK_MAX_RATING = 5;
-
+    
     private final RowMapper<Book> bookRowMapper =
-            new BeanPropertyRowMapper<Book>() {
-
-                @Override
-                public Book mapRow(ResultSet rs, int rowNum)
-                        throws SQLException {
-                    Book book = new Book();
-                    book.setId(rs.getInt(1));
-                    book.setTitle(rs.getString(2));
-                    book.setAuthor(rs.getString(3));
-
-
-                    if (rs.getBlob(4) != null) {
-                        InputStream imageBlobStream =
-                                rs.getBlob(4).getBinaryStream();
-                        try {
-                            byte[] imageBlobBytes =
-                                    IOUtils.toByteArray(imageBlobStream);
-
-                            if (!Base64.isBase64(imageBlobBytes)) {
-                                imageBlobBytes =
-                                        Base64.encodeBase64(imageBlobBytes);
-                            }
-                            book.setImagePath("data:image/jpeg;base64," +
-                                    new String(imageBlobBytes));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+        new BeanPropertyRowMapper<Book>() {
+            
+            @Override
+            public Book mapRow(ResultSet rs, int rowNum)
+                throws SQLException {
+                Book book = new Book();
+                book.setId(rs.getInt(1));
+                book.setTitle(rs.getString(2));
+                book.setAuthor(rs.getString(3));
+                
+                if (rs.getBlob(4) != null) {
+                    InputStream imageBlobStream =
+                        rs.getBlob(4).getBinaryStream();
+                    try {
+                        byte[] imageBlobBytes =
+                            IOUtils.toByteArray(imageBlobStream);
+                        
+                        if (!Base64.isBase64(imageBlobBytes)) {
+                            imageBlobBytes =
+                                Base64.encodeBase64(imageBlobBytes);
                         }
+                        book.setImagePath("data:image/jpeg;base64," +
+                                              new String(imageBlobBytes));
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                    book.setRating(rs.getInt(5));
-
-                    return book;
                 }
-            };
-
+                
+                book.setRating(rs.getInt(5));
+                book.setDeleted(rs.getBoolean(6));
+                
+                return book;
+            }
+        };
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
+    
     @Override
     public List<Book> getAllBooks() {
         return jdbcTemplate
-                .query("select * from books where is_deleted = 0",
-                        bookRowMapper);
+                   .query("select * from books",
+                       bookRowMapper);
     }
 
     /*@Override
@@ -94,32 +94,32 @@ public class OracleBookDAO implements BookDAO {
                 .query("select * from books where rating = ?",
                         bookRowMapper, BOOK_MAX_RATING);
     }*/
-
+    
     @Override
     public void addBook(String title, String author,
                         String coverImage) {
         logger.info("Adding book = {},{},{}",
-                title, author, coverImage);
+            title, author, coverImage);
             /*logger.info("coverImage = {}",
                     coverImage.getAbsoluteFile());
             byte[] file =
                     FileUtils.readFileToByteArray(
                             coverImage.getAbsoluteFile());*/
-
+        
         byte[] blobImage = null; //Base64.getDecoder().decode(coverImage);
-
+        
         try {
             blobImage = toByteArray(IOUtils.toInputStream(coverImage));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
         logger.info("Blob image = {}", blobImage);
-
+        
         jdbcTemplate
-                .update("insert into books(title, author,image) " +
+            .update("insert into books(title, author,image) " +
                         "values (?, ?, ?)", title, author, blobImage);
-
+        
     }
-
+    
 }

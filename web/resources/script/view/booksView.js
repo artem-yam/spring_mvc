@@ -208,7 +208,9 @@ function BooksView(controller, model) {
         Utils.resetInnerHTML(window.document.querySelector(".main_content"));
 
         for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
-            createBlock(booksModel.getBooksStorage()[i]);
+            if (!booksModel.getBooksStorage()[i].isDeleted) {
+                createBlock(booksModel.getBooksStorage()[i]);
+            }
         }
 
         /*booksModel.getAllBooks().then(function (booksStorage) {
@@ -237,7 +239,9 @@ function BooksView(controller, model) {
 
         if (result.length !== 0) {
             for (let i = 0; i < result.length; i++) {
-                createBlock(result[i]);
+                if (!result.getBooksStorage()[i].isDeleted) {
+                    createBlock(result[i]);
+                }
             }
         } else {
             window.document.querySelector(".main_content").innerHTML =

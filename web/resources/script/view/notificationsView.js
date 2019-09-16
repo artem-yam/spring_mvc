@@ -24,7 +24,7 @@ function NotificationsView(controller, model) {
 
     function formNotificationMessage(notification) {
         let message = "";
-        let relatedBook = appController.getBookById(notification.book);
+        let relatedBook = appController.getBookById(notification.bookId);
 
         switch (notification.type) {
             case 'ADD_BOOK':

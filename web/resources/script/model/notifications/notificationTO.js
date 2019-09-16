@@ -1,14 +1,14 @@
-function NotificationTO(id, book, searchText, category, type, date) {
+function NotificationTO(id, bookId, searchText, category, type, date, dateMilliSeconds) {
     const DEFAULT_DATE = new Date();
 
     this.id = id;
 
-    this.book = book;
+    this.bookId = bookId;
     this.searchText = searchText;
     this.category = category;
 
     this.type = type;
 
-    this.date = date || DEFAULT_DATE;
+    this.date = new Date(dateMilliSeconds) || date || DEFAULT_DATE;
 }
 

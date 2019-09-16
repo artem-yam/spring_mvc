@@ -60,6 +60,7 @@ function NotificationsModel() {
             url: "notifications/getAll",
             dataType: "json"
         }).then(function (data) {
+            alert(data);
             notificationStorage = data;
         });
     }
