@@ -1,4 +1,4 @@
-function Book(id, title, author, image, rating, tags, isDeleted) {
+function Book(id, title, author, image, rating, tags, deleted) {
     const DEFAULT_RATING = 0;
 
     this.id = id;
@@ -10,6 +10,6 @@ function Book(id, title, author, image, rating, tags, isDeleted) {
     this.rating = rating || DEFAULT_RATING;
     this.tags = tags || [];
 
-    this.isDeleted = isDeleted || false;
+    this.deleted = deleted || false;
 }
 

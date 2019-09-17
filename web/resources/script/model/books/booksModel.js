@@ -17,8 +17,7 @@ function BooksModel(tags) {
             let book = booksStorage[i];
 
             if (checkWithFilter(book, filter) &&
-                (text === "" ||
-                    substringSearch(book.title, text) ||
+                (substringSearch(book.title, text) ||
                     substringSearch(book.author, text))) {
                 result.push(book);
             }
@@ -50,8 +49,21 @@ function BooksModel(tags) {
 
     function updateRating(bookId, newRating) {
         let bookToUpdate = findBook(bookId);
-
         bookToUpdate.rating = newRating;
+
+        return $.ajax({
+            url: "books/add",
+            method: 'POST',
+            contentType: "application/json",
+            data:
+            /*JSON.stringify({
+                title: title,
+                author: author,
+                image: bookImage
+            }),*/
+                JSON.stringify(bookToUpdate),
+            dataType: "json"
+        });
     }
 
     function addBook(title, author, bookImage) {
@@ -62,12 +74,12 @@ function BooksModel(tags) {
             method: 'POST',
             contentType: "application/json",
             data:
-                JSON.stringify({
-                    'title': title,
-                    'author': author,
-                    'image': bookImage
-                }),
-            //JSON.stringify(newBook),
+            /*JSON.stringify({
+                title: title,
+                author: author,
+                image: bookImage
+            }),*/
+                JSON.stringify(newBook),
             dataType: "json"
         }).then(function (addedBookId) {
             onBookAdd.notify(title, author);

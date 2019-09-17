@@ -5,7 +5,8 @@ function BooksView(controller, model) {
     let booksModel = model;
 
     function setDefaultNewBookImage() {
-        let defaultImage = window.document.querySelector("#default_book_image").getAttribute("src")
+        let defaultImage = window.document.querySelector("#default_book_image")
+            .getAttribute("src")
 
         window.document.querySelector("#loaded_image img")
             .setAttribute("src", defaultImage);
@@ -219,7 +220,7 @@ function BooksView(controller, model) {
         Utils.resetInnerHTML(window.document.querySelector(".main_content"));
 
         for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
-            if (!booksModel.getBooksStorage()[i].isDeleted) {
+            if (!booksModel.getBooksStorage()[i].deleted) {
                 createBlock(booksModel.getBooksStorage()[i]);
             }
         }
@@ -230,7 +231,7 @@ function BooksView(controller, model) {
 
         if (result.length !== 0) {
             for (let i = 0; i < result.length; i++) {
-                if (!result[i].isDeleted) {
+                if (!result[i].deleted) {
                     createBlock(result[i]);
                 }
             }
@@ -285,11 +286,12 @@ function BooksView(controller, model) {
 
     window.document.querySelector("#search")
         .addEventListener("input", function () {
-            let searchText = window.document.querySelector("#search").value;
+            filter(search);
+        });
 
-            if (searchText.trim() !== '') {
-                filter(search);
-            }
+    window.document.querySelector("#search")
+        .addEventListener("change", function () {
+            filter(search);
         });
 
     model.onBookAdd.subscribe(function (title, author) {

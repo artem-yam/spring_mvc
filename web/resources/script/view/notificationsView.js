@@ -142,16 +142,17 @@ function NotificationsView(controller, model) {
             }
         });
 
-    model.onNotificationAdd.subscribe(async function () {
-        await notificationsModel.getAllNotifications()
-            .then(function () {
-                loadHistoryBar();
+    model.onNotificationAdd.subscribe(function () {
+        /*notificationsModel.getAllNotifications()
+            .then(function () {*/
+        loadHistoryBar();
 
-                if (window.document.querySelector(".history_content").innerHTML !==
-                    "") {
-                    loadHistoryPage();
-                }
-            });
+        if (window.document.querySelector(
+            ".history_content").innerHTML !==
+            "") {
+            loadHistoryPage();
+        }
+        // });
     });
 
     return {

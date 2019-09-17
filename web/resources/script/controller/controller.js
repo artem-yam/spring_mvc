@@ -5,17 +5,18 @@ function Controller(booksModel, notificationsModel) {
     let controlledNotificationsModel = notificationsModel;
 
     function updateRating(bookId, newRating) {
-        controlledBooksModel.updateRating(bookId, newRating);
-
-        controlledNotificationsModel.addNewRatingNotification(bookId, newRating);
+        controlledBooksModel.updateRating(bookId, newRating)
+            .then(function (bookId) {
+                controlledNotificationsModel.addNewRatingNotification(bookId,
+                    newRating);
+            })
     }
 
     function addBook(title, author, bookImage) {
-        let newBookRequest = controlledBooksModel.addBook(title, author, bookImage);
-
-        newBookRequest.then(function (newBookId) {
-            controlledNotificationsModel.addNewBookNotification(newBookId);
-        })
+        controlledBooksModel.addBook(title, author, bookImage)
+            .then(function (newBookId) {
+                controlledNotificationsModel.addNewBookNotification(newBookId);
+            })
     }
 
     function addBookTag(bookId, newTag) {

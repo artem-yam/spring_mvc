@@ -14,23 +14,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/notifications")
 public class NotificationsController {
-    
+
     private static final Logger logger = LogManager
-                                             .getLogger(new Object() {
-                                             }.getClass().getEnclosingClass());
-    
+            .getLogger(new Object() {
+            }.getClass().getEnclosingClass());
+
     @RequestMapping(value = "/getAll")
     public List<Notification> getAllNotifications() {
         return DAOFactory.getInstance(DataSourceType.ORACLE)
-                   .getNotificationDAO().getAllNotifications();
+                .getNotificationDAO().getAllNotifications();
     }
-    
+
     @RequestMapping(value = "/add")
-    public void addNotification(@RequestBody Notification newNote) {
-        logger.info("Adding new notify: {}", newNote);
-        
-        DAOFactory.getInstance(DataSourceType.ORACLE).getNotificationDAO()
-            .addNotification(newNote.getBookId(), newNote.getSearchText(),
-                newNote.getCategory(), newNote.getType());
+    public int addNotification(@RequestBody Notification newNote) {
+        //logger.info("Adding new notify: {}", newNote);
+
+        return DAOFactory.getInstance(DataSourceType.ORACLE)
+                .getNotificationDAO()
+                .addNotification(newNote.getBookId(), newNote.getSearchText(),
+                        newNote.getCategory(), newNote.getType());
     }
 }

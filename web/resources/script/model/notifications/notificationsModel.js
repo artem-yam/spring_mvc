@@ -36,11 +36,11 @@ function NotificationsModel() {
             data: JSON.stringify(newNotify),
             dataType: "json"
         }).then(function () {
-            alert("Notification added");
+            //alert("Notification added");
+
+            onNotificationAdd.notify();
         });
 
-        //notificationStorage.push(newNotify);
-        onNotificationAdd.notify();
     }
 
     function addSearchNotification(searchText, searchCategory) {

@@ -11,7 +11,7 @@ public interface NotificationDAO {
 
     List<Notification> getLastNotifications(int count);
 
-    void addNotification(int bookId, String searchText, String category,
-                         NotificationTypes type);
+    int addNotification(int bookId, String searchText, String category,
+                        NotificationTypes type);
 
 }

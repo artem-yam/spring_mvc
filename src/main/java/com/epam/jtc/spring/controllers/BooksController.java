@@ -14,35 +14,46 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BooksController {
-    
+
     private static final Logger logger = LogManager
-                                             .getLogger(new Object() {
-                                             }.getClass().getEnclosingClass());
-    
+            .getLogger(new Object() {
+            }.getClass().getEnclosingClass());
+
     @RequestMapping(value = "/getAll")
             /*  headers = {"Content-Type=application/json",
                   "Accept=application/json"})*/
     //, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Book> getAllBooks() {
-        return DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
-                   .getAllBooks();
+        List<Book> books =
+                DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
+                        .getAllBooks();
+        //logger.info("All books: {}", books);
+        return books;
     }
-    
+
     @RequestMapping(value = "/add")
     public int addBook(@RequestBody Book newBook) {
         logger.info("Adding new book {}", newBook);
-        
+
         if (newBook.getImage() == null) {
             newBook.setImage(new Book().getImage());
         }
         if (newBook.getImage().contains(",")) {
             newBook.setImage(newBook.getImage()
-                                 .substring(
-                                     newBook.getImage().indexOf(',') + 1));
+                    .substring(
+                            newBook.getImage().indexOf(',') + 1));
         }
-        
+
         return DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
-                   .addBook(newBook.getTitle(), newBook.getAuthor(),
-                       newBook.getImage());
+                .addBook(newBook.getTitle(), newBook.getAuthor(),
+                        newBook.getImage());
+    }
+
+    @RequestMapping(value = "/add")
+    public int changeBookRating(@RequestBody Book book) {
+        DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
+                .changeRating(book.getId(), book.getRating());
+
+        return book.getId();
     }
 }

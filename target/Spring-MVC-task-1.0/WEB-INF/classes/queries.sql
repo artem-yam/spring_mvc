@@ -51,7 +51,7 @@ select *
 from (select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "DATE"
     from NOTIFICATIONS
        inner join NOTIFICATION_TYPES on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE
-    order by "date") 
+    order by "DATE")
 where rownum <= ?
    
         
@@ -63,4 +63,11 @@ insert into NOTIFICATIONS (BOOK, SEARCH_TEXT, CATEGORY, TYPE)
             (select id
              from NOTIFICATION_TYPES
                 where type = ?))
+            
+-- 12) Изменение рейтинга книги
+update books
+    set rating=?
+    where id=?
+
+                
                 
