@@ -10,5 +10,5 @@ public interface TagDAO {
 
     List<String> getBookTags(int bookId);
     
-    void addTagToBook(int bookId, String tag);
+    int addTagToBook(int bookId, String tag);
 }

@@ -3,7 +3,7 @@
 
     async function pageLoad() {
         let notificationsModel = new NotificationsModel();
-        let booksModel = new BooksModel(new AvailableTags());
+        let booksModel = new BooksModel();
 
         let controller = new Controller(booksModel, notificationsModel);
 

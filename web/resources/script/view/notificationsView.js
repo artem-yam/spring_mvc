@@ -38,7 +38,7 @@ function NotificationsView(controller, model) {
                 break;
             case 'SEARCH':
                 message += "You searched <b>" +
-                    notification.searchText + "</b>";
+                    notification.content + "</b>";
                 if (notification.category) {
                     message += " in <b>" + notification.category + "</b>";
                 }
@@ -47,7 +47,7 @@ function NotificationsView(controller, model) {
                 message += "You rated <b>" +
                     relatedBook.title + "</b> by <b>" +
                     relatedBook.author + "</b>" +
-                    " with " + relatedBook.rating + " stars";
+                    " with " + notification.content + " stars";
                 break;
         }
 
@@ -143,16 +143,16 @@ function NotificationsView(controller, model) {
         });
 
     model.onNotificationAdd.subscribe(function () {
-        /*notificationsModel.getAllNotifications()
-            .then(function () {*/
-        loadHistoryBar();
+        notificationsModel.getAllNotifications()
+            .then(function () {
+                loadHistoryBar();
 
-        if (window.document.querySelector(
-            ".history_content").innerHTML !==
-            "") {
-            loadHistoryPage();
-        }
-        // });
+                if (window.document.querySelector(
+                    ".history_content").innerHTML !==
+                    "") {
+                    loadHistoryPage();
+                }
+            });
     });
 
     return {

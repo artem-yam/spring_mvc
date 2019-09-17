@@ -34,7 +34,7 @@ public class OracleNotificationDAO implements NotificationDAO {
 
                     notification.setId(rs.getInt(1));
                     notification.setBookId(rs.getInt(2));
-                    notification.setSearchText(rs.getString(3));
+                    notification.setContent(rs.getString(3));
                     notification.setCategory(rs.getString(4));
 
                     notification
@@ -62,7 +62,7 @@ public class OracleNotificationDAO implements NotificationDAO {
     @Override
     public List<Notification> getAllNotifications() {
         return jdbcTemplate
-                .query("select NOTIFICATIONS.id, book, search_text, " +
+                .query("select NOTIFICATIONS.id, book, content, " +
                                 "category, NOTIFICATION_TYPES.type, \"DATE\"" +
                                 "from NOTIFICATIONS " +
                                 "inner join NOTIFICATION_TYPES on " +
@@ -75,7 +75,7 @@ public class OracleNotificationDAO implements NotificationDAO {
     public List<Notification> getLastNotifications(int count) {
         return jdbcTemplate
                 .query("select * from (" +
-                                "select NOTIFICATIONS.id, book, search_text, " +
+                                "select NOTIFICATIONS.id, book, content, " +
                                 "category, NOTIFICATION_TYPES.type, \"DATE\" " +
                                 "from NOTIFICATIONS inner join NOTIFICATION_TYPES " +
                                 "on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE " +
@@ -84,12 +84,12 @@ public class OracleNotificationDAO implements NotificationDAO {
     }
 
     @Override
-    public int addNotification(int bookId, String searchText,
+    public int addNotification(int bookId, String content,
                                String category,
                                NotificationTypes type) {
         Notification notify = new Notification();
         notify.setBookId(bookId);
-        notify.setSearchText(searchText);
+        notify.setContent(content);
         notify.setCategory(category);
         notify.setType(type);
 
@@ -97,10 +97,10 @@ public class OracleNotificationDAO implements NotificationDAO {
 
         return jdbcTemplate
                 .update("insert into NOTIFICATIONS " +
-                                "(BOOK, SEARCH_TEXT, CATEGORY, TYPE) values " +
+                                "(BOOK, CONTENT, CATEGORY, TYPE) values " +
                                 "(?, ?, ?, (select id from NOTIFICATION_TYPES " +
                                 "where type = ?))",
-                        bookId > 0 ? bookId : null, searchText, category,
+                        bookId > 0 ? bookId : null, content, category,
                         type.toString());
     }
 }

@@ -25,9 +25,9 @@ function NotificationsModel() {
         }
     }
 
-    function addNotification(bookId, searchText, category, type) {
+    function addNotification(bookId, content, category, type) {
         let newNotify = new NotificationTO(getNextId(),
-            bookId, searchText, category, type);
+            bookId, content, category, type);
 
         $.ajax({
             url: "notifications/add",
@@ -48,8 +48,8 @@ function NotificationsModel() {
             notificationType.SEARCH);
     }
 
-    function addNewRatingNotification(bookId) {
-        addNotification(bookId, null, null, notificationType.RATING);
+    function addNewRatingNotification(bookId, rating) {
+        addNotification(bookId, rating, null, notificationType.RATING);
     }
 
     function addNewBookNotification(bookId) {

@@ -244,8 +244,6 @@
             src="resources/script/utils/utils.js"></script>
     <!--Модели-->
     <script type="text/javascript"
-            src="resources/script/model/books/availableTags.js"></script>
-    <script type="text/javascript"
             src="resources/script/model/books/book.js"></script>
     <script type="text/javascript"
             src="resources/script/model/books/booksModel.js"></script>

@@ -1,5 +1,7 @@
 package com.epam.jtc.spring.datalayer.oracleDB.dao;
 
+import com.epam.jtc.spring.datalayer.DAOFactory;
+import com.epam.jtc.spring.datalayer.DataSourceType;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dto.Book;
 import org.apache.commons.codec.binary.Base64;
@@ -31,9 +33,6 @@ public class OracleBookDAO implements BookDAO {
     private static final Logger logger = LogManager
             .getLogger(new Object() {
             }.getClass().getEnclosingClass());
-
-    //private static final int BOOK_MAX_RATING = 5;
-
     private final RowMapper<Book> bookRowMapper =
             new BeanPropertyRowMapper<Book>() {
 
@@ -65,6 +64,9 @@ public class OracleBookDAO implements BookDAO {
 
                     book.setRating(rs.getInt(5));
                     book.setDeleted(rs.getBoolean(6));
+
+                    book.setTags(DAOFactory.getInstance(DataSourceType.ORACLE)
+                            .getTagDAO().getBookTags(book.getId()));
 
                     return book;
                 }

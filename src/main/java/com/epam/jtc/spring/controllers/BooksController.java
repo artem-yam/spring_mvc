@@ -33,7 +33,7 @@ public class BooksController {
 
     @RequestMapping(value = "/add")
     public int addBook(@RequestBody Book newBook) {
-        logger.info("Adding new book {}", newBook);
+        //logger.info("Adding new book {}", newBook);
 
         if (newBook.getImage() == null) {
             newBook.setImage(new Book().getImage());
@@ -49,7 +49,7 @@ public class BooksController {
                         newBook.getImage());
     }
 
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/changeRating")
     public int changeBookRating(@RequestBody Book book) {
         DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
                 .changeRating(book.getId(), book.getRating());

@@ -110,8 +110,8 @@
     <schema id="35" parent="1" name="SYSTEM">
       <ObjectId>9</ObjectId>
       <CreatedTimestamp>2019-02-04.07:46:01</CreatedTimestamp>
-      <ModifiedTimestamp>2019-09-17.00:56:24</ModifiedTimestamp>
-      <IntrospectionTimestamp>2019-09-17.00:56:54</IntrospectionTimestamp>
+      <ModifiedTimestamp>2019-09-17.15:48:23</ModifiedTimestamp>
+      <IntrospectionTimestamp>2019-09-17.15:49:15</IntrospectionTimestamp>
       <CommentsHash>17325397751</CommentsHash>
       <Current>1</Current>
       <Visible>1</Visible>
@@ -50050,7 +50050,7 @@
     <table id="7184" parent="35" name="NOTIFICATIONS">
       <ObjectId>90176</ObjectId>
       <CreatedTimestamp>2019-09-10.23:58:05</CreatedTimestamp>
-      <ModifiedTimestamp>2019-09-17.00:56:24</ModifiedTimestamp>
+      <ModifiedTimestamp>2019-09-17.15:48:23</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
     <table id="7185" parent="35" name="NOTIFICATION_TYPES">
@@ -58835,7 +58835,7 @@ QUERYID#</ColNames>
       <Position>2</Position>
       <DataType>NUMBER(*)|0s</DataType>
     </column>
-    <column id="8938" parent="7184" name="SEARCH_TEXT">
+    <column id="8938" parent="7184" name="CONTENT">
       <Position>3</Position>
       <DataType>VARCHAR2(50 byte)|0s</DataType>
     </column>

@@ -1,6 +1,8 @@
 com\epam\jtc\spring\controllers\BooksController.class
 com\epam\jtc\spring\datalayer\oracleDB\OracleDAOFactory.class
 com\epam\jtc\spring\controllers\BooksController$1.class
+com\epam\jtc\spring\controllers\TagsController$1.class
+com\epam\jtc\spring\controllers\TagsController.class
 com\epam\jtc\spring\datalayer\DAOFactory.class
 com\epam\jtc\spring\datalayer\dao\BookDAO.class
 com\epam\jtc\spring\datalayer\dto\Book$1.class

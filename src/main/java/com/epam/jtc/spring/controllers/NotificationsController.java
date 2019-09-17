@@ -31,7 +31,7 @@ public class NotificationsController {
 
         return DAOFactory.getInstance(DataSourceType.ORACLE)
                 .getNotificationDAO()
-                .addNotification(newNote.getBookId(), newNote.getSearchText(),
+                .addNotification(newNote.getBookId(), newNote.getContent(),
                         newNote.getCategory(), newNote.getType());
     }
 }

@@ -1,4 +1,4 @@
-function BooksModel(tags) {
+function BooksModel() {
     "use strict";
 
     const MAX_RATING = 5;
@@ -6,7 +6,7 @@ function BooksModel(tags) {
     const TEXT_NOT_FOUND = -1;
 
     let booksStorage = [];
-    let availableTags = tags;
+    let availableTags = [];
     let onBookAdd = new EventEmitter();
     let onTagsChange = new EventEmitter();
 
@@ -52,7 +52,7 @@ function BooksModel(tags) {
         bookToUpdate.rating = newRating;
 
         return $.ajax({
-            url: "books/add",
+            url: "books/changeRating",
             method: 'POST',
             contentType: "application/json",
             data:
@@ -95,11 +95,27 @@ function BooksModel(tags) {
 
     function addBookTag(bookId, newTag) {
         if (!Utils.isEmpty(newTag)) {
+
             let book = findBook(bookId);
+
             if (book && !hasTag(book, newTag)) {
+
                 book.tags.push(newTag);
 
-                onTagsChange.notify(book, addNewTagToTheList(newTag));
+                $.ajax({
+                    url: "tags/addToBook",
+                    method: 'POST',
+                    contentType: "application/json",
+                    data:
+                        JSON.stringify({
+                            bookId: bookId,
+                            tag: newTag
+                        }),
+                    dataType: "json"
+                }).then(function (bookId) {
+                    onTagsChange.notify(findBook(bookId),
+                        addNewTagToTheList(newTag));
+                });
             }
         }
     }
@@ -146,15 +162,32 @@ function BooksModel(tags) {
         });
     }
 
+    function getAllTags() {
+        return $.ajax({
+            url: "tags/getAll",
+            dataType: "json",
+        }).then(function (data) {
+            availableTags = data;
+        });
+    }
+
     async function initModel() {
         await getAllBooks()
             .then(function () {
                 setInterval(getAllBooks, 1000);
             });
+        await getAllTags()
+            .then(function () {
+                setInterval(getAllTags, 1000);
+            });
     }
 
     function getBooksStorage() {
         return booksStorage;
+    }
+
+    function getTags() {
+        return availableTags;
     }
 
     return {
@@ -166,7 +199,9 @@ function BooksModel(tags) {
         getMostPopular,
 
         getBooksStorage,
-        tags: availableTags,
+        getTags,
+        getAllBooks,
+
         onBookAdd,
         onTagsChange,
         initModel

@@ -46,7 +46,7 @@ function BooksView(controller, model) {
 
             rating.querySelector("input")
                 .addEventListener('change', function () {
-                    updateRating(book.id, i);
+                    mainController.updateRating(book.id, i);
                 });
 
             bookBlock.querySelector(".rating").appendChild(rating);
@@ -116,7 +116,7 @@ function BooksView(controller, model) {
             "#modal" + book.id + " .modal-body");
         Utils.resetInnerHTML(modalBody.querySelector("optgroup"));
 
-        for (let tag of booksModel.tags) {
+        for (let tag of booksModel.getTags()) {
             let tagOption = modalBody.querySelector("option").cloneNode(true);
 
             tagOption.removeAttribute("selected");
@@ -134,10 +134,6 @@ function BooksView(controller, model) {
             ".main_sort .sort .active").innerText;
 
         return booksModel.search(searchText, activeCategory);
-    }
-
-    function updateRating(bookId, newRating) {
-        mainController.updateRating(bookId, newRating);
     }
 
     function addBook() {
@@ -181,7 +177,7 @@ function BooksView(controller, model) {
 
         if (tagSelect === "Not selected") {
             if (!Utils.isEmpty(tagInput)) {
-                if (!booksModel.tags.includes(tagInput)) {
+                if (!booksModel.getTags().includes(tagInput)) {
                     Utils.resetValue(window.document.querySelector(
                         "#modal" + bookId + " .modal-body input"));
                     newTag = tagInput;
@@ -295,28 +291,35 @@ function BooksView(controller, model) {
         });
 
     model.onBookAdd.subscribe(function (title, author) {
-        alert("book \"" + author + " - " + title + "\" has been added!");
+        booksModel.getAllBooks()
+            .then(function () {
+                alert(
+                    "book \"" + author + " - " + title + "\" has been added!");
 
-        window.document.querySelector("#add_image_label").classList
-            .remove("loadedImage");
+                window.document.querySelector("#add_image_label").classList
+                    .remove("loadedImage");
 
-        window.document.querySelector("#loaded_image").classList
-            .add("hidden");
+                window.document.querySelector("#loaded_image").classList
+                    .add("hidden");
 
-        setDefaultNewBookImage();
+                setDefaultNewBookImage();
 
-        Utils.resetValue(window.document.querySelector("#add_book_title"));
-        Utils.resetValue(window.document.querySelector("#add_book_author"));
+                Utils.resetValue(
+                    window.document.querySelector("#add_book_title"));
+                Utils.resetValue(
+                    window.document.querySelector("#add_book_author"));
 
-        if (Utils.isEmpty(
-            window.document.querySelector(".history_content").innerHTML)) {
-            let activeCategory = window.document.querySelector(
-                ".main_sort .sort .active");
-            if (window.document.getElementById("all_books") ===
-                activeCategory) {
-                showAllBooks();
-            }
-        }
+                if (Utils.isEmpty(
+                    window.document.querySelector(
+                        ".history_content").innerHTML)) {
+                    let activeCategory = window.document.querySelector(
+                        ".main_sort .sort .active");
+                    if (window.document.getElementById("all_books") ===
+                        activeCategory) {
+                        showAllBooks();
+                    }
+                }
+            });
     });
 
     model.onTagsChange.subscribe(function (updatedBook, userTagPushed) {
@@ -324,14 +327,15 @@ function BooksView(controller, model) {
 
         if (userTagPushed === true) {
             for (let book of booksModel.getBooksStorage()) {
-                changeSelectTagList(book);
+                if (!book.deleted) {
+                    changeSelectTagList(book);
+                }
             }
         }
     });
 
     return {
         browsePage,
-        addBookTag,
-        updateRating,
+        addBookTag
     };
 }
