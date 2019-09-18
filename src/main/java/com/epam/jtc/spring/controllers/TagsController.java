@@ -29,8 +29,10 @@ public class TagsController {
     public int addTagToBook(@RequestBody Map<String, String> bookIdAndTag) {
         logger.info("bookIdAndTag: {}", bookIdAndTag);
 
-        return DAOFactory.getInstance(DataSourceType.ORACLE).getTagDAO()
+        DAOFactory.getInstance(DataSourceType.ORACLE).getTagDAO()
                 .addTagToBook(Integer.parseInt(bookIdAndTag.get("bookId")),
                         bookIdAndTag.get("tag"));
+
+        return Integer.parseInt(bookIdAndTag.get("bookId"));
     }
 }

@@ -5,6 +5,12 @@ function BooksModel() {
     const MOST_POPULAR_FILTER = "Most Popular";
     const TEXT_NOT_FOUND = -1;
 
+    const AJAX_ADD_BOOK_URL = "books/add";
+    const AJAX_GET_ALL_BOOKS_URL = "books/getAll";
+    const AJAX_CHANGE_BOOK_RATING_URL = "books/changeRating";
+    const AJAX_GET_ALL_TAGS_URL = "tags/getAll";
+    const AJAX_ADD_TAG_TO_BOOK_URL = "tags/addToBook";
+
     let booksStorage = [];
     let availableTags = [];
     let onBookAdd = new EventEmitter();
@@ -51,46 +57,19 @@ function BooksModel() {
         let bookToUpdate = findBook(bookId);
         bookToUpdate.rating = newRating;
 
-        return $.ajax({
-            url: "books/changeRating",
-            method: 'POST',
-            contentType: "application/json",
-            data:
-            /*JSON.stringify({
-                title: title,
-                author: author,
-                image: bookImage
-            }),*/
-                JSON.stringify(bookToUpdate),
-            dataType: "json"
-        });
+        return Utils.sendRequest(AJAX_CHANGE_BOOK_RATING_URL,
+            bookToUpdate, requestType.POST);
     }
 
     function addBook(title, author, bookImage) {
-        let newBook = new Book(getNextId(), title, author, bookImage);
+        let newBook = new Book(null, title, author, bookImage);
 
-        return $.ajax({
-            url: "books/add",
-            method: 'POST',
-            contentType: "application/json",
-            data:
-            /*JSON.stringify({
-                title: title,
-                author: author,
-                image: bookImage
-            }),*/
-                JSON.stringify(newBook),
-            dataType: "json"
-        }).then(function (addedBookId) {
-            onBookAdd.notify(title, author);
+        return Utils.sendRequest(AJAX_ADD_BOOK_URL, newBook, requestType.POST)
+            .then(function (addedBookId) {
+                onBookAdd.notify(title, author);
 
-            return addedBookId;
-        });
-
-    }
-
-    function getNextId() {
-        return booksStorage.length + 1;
+                return addedBookId;
+            });
     }
 
     function addBookTag(bookId, newTag) {
@@ -102,20 +81,12 @@ function BooksModel() {
 
                 book.tags.push(newTag);
 
-                $.ajax({
-                    url: "tags/addToBook",
-                    method: 'POST',
-                    contentType: "application/json",
-                    data:
-                        JSON.stringify({
-                            bookId: bookId,
-                            tag: newTag
-                        }),
-                    dataType: "json"
-                }).then(function (bookId) {
-                    onTagsChange.notify(findBook(bookId),
-                        addNewTagToTheList(newTag));
-                });
+                Utils.sendRequest(AJAX_ADD_TAG_TO_BOOK_URL,
+                    {bookId: bookId, tag: newTag}, requestType.POST)
+                    .then(function (bookId) {
+                        onTagsChange.notify(findBook(bookId),
+                            addNewTagToTheList(newTag));
+                    });
             }
         }
     }
@@ -154,31 +125,29 @@ function BooksModel() {
     }
 
     function getAllBooks() {
-        return $.ajax({
-            url: "books/getAll",
-            dataType: "json",
-        }).then(function (data) {
-            booksStorage = data;
-        });
+        return Utils.sendRequest(AJAX_GET_ALL_BOOKS_URL, null,
+            requestType.GET)
+            .then(function (data) {
+                booksStorage = data;
+            });
     }
 
     function getAllTags() {
-        return $.ajax({
-            url: "tags/getAll",
-            dataType: "json",
-        }).then(function (data) {
-            availableTags = data;
-        });
+        return Utils.sendRequest(AJAX_GET_ALL_TAGS_URL, null,
+            requestType.GET)
+            .then(function (data) {
+                availableTags = data;
+            });
     }
 
     async function initModel() {
         await getAllBooks()
             .then(function () {
-                setInterval(getAllBooks, 1000);
+                setInterval(getAllBooks, Utils.DATA_REFRESH_INTERVAL);
             });
         await getAllTags()
             .then(function () {
-                setInterval(getAllTags, 1000);
+                setInterval(getAllTags, Utils.DATA_REFRESH_INTERVAL);
             });
     }
 

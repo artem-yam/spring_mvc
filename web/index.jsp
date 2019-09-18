@@ -241,6 +241,8 @@
     <script type="text/javascript"
             src="resources/script/utils/eventEmitter.js"></script>
     <script type="text/javascript"
+            src="resources/script/utils/requestTypes.js"></script>
+    <script type="text/javascript"
             src="resources/script/utils/utils.js"></script>
     <!--Модели-->
     <script type="text/javascript"

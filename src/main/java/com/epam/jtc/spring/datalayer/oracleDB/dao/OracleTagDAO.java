@@ -39,7 +39,7 @@ public class OracleTagDAO implements TagDAO {
     }
 
     @Override
-    public int addTagToBook(int bookId, String tag) {
+    public void addTagToBook(int bookId, String tag) {
 
         addTag(tag);
 
@@ -49,7 +49,5 @@ public class OracleTagDAO implements TagDAO {
                                     "(?,(select id from AVAILABLE_TAGS where tag = ?))",
                             bookId, tag);
         }
-
-        return bookId;
     }
 }

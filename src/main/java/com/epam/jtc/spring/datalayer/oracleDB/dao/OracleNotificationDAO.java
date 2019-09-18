@@ -72,18 +72,6 @@ public class OracleNotificationDAO implements NotificationDAO {
     }
 
     @Override
-    public List<Notification> getLastNotifications(int count) {
-        return jdbcTemplate
-                .query("select * from (" +
-                                "select NOTIFICATIONS.id, book, content, " +
-                                "category, NOTIFICATION_TYPES.type, \"DATE\" " +
-                                "from NOTIFICATIONS inner join NOTIFICATION_TYPES " +
-                                "on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE " +
-                                "order by \"DATE\" desc) where rownum <= ?",
-                        notificationRowMapper, count);
-    }
-
-    @Override
     public int addNotification(int bookId, String content,
                                String category,
                                NotificationTypes type) {

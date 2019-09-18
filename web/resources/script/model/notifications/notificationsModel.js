@@ -3,6 +3,9 @@ function NotificationsModel() {
 
     const NEW_BOOK_CATEGORY = "Library";
 
+    const AJAX_ADD_NOTIFICATION_URL = "notifications/add";
+    const AJAX_GET_ALL_NOTIFICATIONS_URL = "notifications/getAll";
+
     let notificationStorage = [];
     let onNotificationAdd = new EventEmitter();
 
@@ -26,20 +29,14 @@ function NotificationsModel() {
     }
 
     function addNotification(bookId, content, category, type) {
-        let newNotify = new NotificationTO(getNextId(),
+        let newNotify = new NotificationTO(null,
             bookId, content, category, type);
 
-        $.ajax({
-            url: "notifications/add",
-            method: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify(newNotify),
-            dataType: "json"
-        }).then(function () {
-            //alert("Notification added");
-
-            onNotificationAdd.notify();
-        });
+        Utils.sendRequest(AJAX_ADD_NOTIFICATION_URL, newNotify,
+            requestType.POST)
+            .then(function () {
+                onNotificationAdd.notify();
+            });
 
     }
 
@@ -57,30 +54,25 @@ function NotificationsModel() {
             notificationType.ADD_BOOK);
     }
 
-    function getNextId() {
-        return notificationStorage.length + 1;
-    }
-
     function getNotificationsStorage() {
         return notificationStorage;
     }
 
     function getAllNotifications() {
-        return $.ajax({
-            url: "notifications/getAll",
-            dataType: "json"
-        }).then(function (data) {
-            for (let note of data) {
-                note.date = new Date(note.date);
-            }
-            notificationStorage = data;
-        });
+        return Utils.sendRequest(AJAX_GET_ALL_NOTIFICATIONS_URL, null,
+            requestType.GET)
+            .then(function (data) {
+                for (let note of data) {
+                    note.date = new Date(note.date);
+                }
+                notificationStorage = data;
+            });
     }
 
     async function initModel() {
         await getAllNotifications()
             .then(function () {
-                setInterval(getAllNotifications, 1000);
+                setInterval(getAllNotifications, Utils.DATA_REFRESH_INTERVAL);
             });
     }
 

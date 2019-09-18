@@ -82,28 +82,12 @@ public class OracleBookDAO implements BookDAO {
                         bookRowMapper);
     }
 
-    /*@Override
-    public List<Book> searchBooks(String searchText) {
-        return jdbcTemplate
-                .query("select * from books where " +
-                                "instr(lower(title)||' '||lower(author), ?)>0",
-                        bookRowMapper, searchText);
-    }*/
-
-    /*@Override
-    public List<Book> getMostPopular() {
-        return jdbcTemplate
-                .query("select * from books where rating = ?",
-                        bookRowMapper, BOOK_MAX_RATING);
-    }*/
-
     @Override
     public int addBook(String title, String author,
                        String coverImage) {
-/*        logger.info("Adding book = {},{}",
-            title, author);*/
 
-        byte[] blobImage = null; //Base64.getDecoder().decode(coverImage);
+
+        byte[] blobImage = null;
 
         if (coverImage != null) {
             try {

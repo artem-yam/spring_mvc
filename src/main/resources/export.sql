@@ -53,11 +53,10 @@
 --------------------------------------------------------
 --  DDL for Table NOTIFICATIONS
 --------------------------------------------------------
-
   CREATE TABLE "SYSTEM"."NOTIFICATIONS" 
    (	"ID" NUMBER(*,0) GENERATED ALWAYS AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 ORDER  NOCYCLE  NOKEEP  NOSCALE , 
 	"BOOK" NUMBER(*,0), 
-	"SEARCH_TEXT" VARCHAR2(50 BYTE), 
+	"CONTENT" VARCHAR2(50 BYTE), 
 	"CATEGORY" VARCHAR2(50 BYTE), 
 	"TYPE" VARCHAR2(50 BYTE), 
 	"DATE" DATE DEFAULT sysdate
@@ -104,8 +103,8 @@ Insert into SYSTEM.NOTIFICATION_TYPES (TYPE) values ('SEARCH');
 Insert into SYSTEM.NOTIFICATION_TYPES (TYPE) values ('RATING');
 REM INSERTING into SYSTEM.NOTIFICATIONS
 SET DEFINE OFF;
-Insert into SYSTEM.NOTIFICATIONS (BOOK,SEARCH_TEXT,CATEGORY,TYPE,"date") values ('1',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
-Insert into SYSTEM.NOTIFICATIONS (BOOK,SEARCH_TEXT,CATEGORY,TYPE,"date") values ('2',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
+Insert into SYSTEM.NOTIFICATIONS (BOOK,CONTENT,CATEGORY,TYPE,"DATE") values ('1',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
+Insert into SYSTEM.NOTIFICATIONS (BOOK,CONTENT,CATEGORY,TYPE,"DATE") values ('2',null,'Must Read Titles','1',to_date('01.01.19','DD.MM.RR'));
 REM INSERTING into SYSTEM.AVAILABLE_TAGS
 SET DEFINE OFF;
 Insert into SYSTEM.AVAILABLE_TAGS (TAG) values ('Must Read Titles');

@@ -20,9 +20,6 @@ public class BooksController {
             }.getClass().getEnclosingClass());
 
     @RequestMapping(value = "/getAll")
-            /*  headers = {"Content-Type=application/json",
-                  "Accept=application/json"})*/
-    //, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Book> getAllBooks() {
         List<Book> books =
                 DAOFactory.getInstance(DataSourceType.ORACLE).getBookDAO()
@@ -33,7 +30,6 @@ public class BooksController {
 
     @RequestMapping(value = "/add")
     public int addBook(@RequestBody Book newBook) {
-        //logger.info("Adding new book {}", newBook);
 
         if (newBook.getImage() == null) {
             newBook.setImage(new Book().getImage());
