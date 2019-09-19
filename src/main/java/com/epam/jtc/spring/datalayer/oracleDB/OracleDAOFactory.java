@@ -25,6 +25,9 @@ public class OracleDAOFactory implements DAOFactory, AutoCloseable {
                                              .getLogger(new Object() {
                                              }.getClass().getEnclosingClass());
     
+    private static final String DAO_BEANS_PACKAGE =
+        "com.epam.jtc.spring.datalayer";
+    
     /**
      * Singleton class instance
      */
@@ -53,7 +56,7 @@ public class OracleDAOFactory implements DAOFactory, AutoCloseable {
             synchronized (OracleDAOFactory.class) {
                 AnnotationConfigApplicationContext ctx =
                     new AnnotationConfigApplicationContext();
-                ctx.scan("com.epam.jtc.spring.datalayer");
+                ctx.scan(DAO_BEANS_PACKAGE);
                 ctx.refresh();
                 
                 instance = factory = ctx.getBean(OracleDAOFactory.class);
@@ -65,7 +68,7 @@ public class OracleDAOFactory implements DAOFactory, AutoCloseable {
     }
     
     /**
-     * Oracle DB employee DAO getter
+     * Oracle DB books DAO getter
      *
      * @return {@link OracleBookDAO}
      */
@@ -74,11 +77,21 @@ public class OracleDAOFactory implements DAOFactory, AutoCloseable {
         return context.getBean(OracleBookDAO.class);
     }
     
+    /**
+     * Oracle DB tags DAO getter
+     *
+     * @return {@link OracleTagDAO}
+     */
     @Override
     public TagDAO getTagDAO() {
         return context.getBean(OracleTagDAO.class);
     }
     
+    /**
+     * Oracle DB notifications DAO getter
+     *
+     * @return {@link OracleNotificationDAO}
+     */
     @Override
     public NotificationDAO getNotificationDAO() {
         return context.getBean(OracleNotificationDAO.class);

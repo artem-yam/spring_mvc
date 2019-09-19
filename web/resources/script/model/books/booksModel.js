@@ -5,11 +5,9 @@ function BooksModel() {
     const MOST_POPULAR_FILTER = "Most Popular";
     const TEXT_NOT_FOUND = -1;
 
-    const AJAX_ADD_BOOK_URL = "books/add";
-    const AJAX_GET_ALL_BOOKS_URL = "books/getAll";
-    const AJAX_CHANGE_BOOK_RATING_URL = "books/changeRating";
-    const AJAX_GET_ALL_TAGS_URL = "tags/getAll";
-    const AJAX_ADD_TAG_TO_BOOK_URL = "tags/addToBook";
+    const AJAX_BOOKS_URL = "books";
+    const AJAX_BOOK_RATING_URL = "/rating";
+    const AJAX_TAGS_URL = "tags";
 
     let booksStorage = [];
     let availableTags = [];
@@ -57,18 +55,21 @@ function BooksModel() {
         let bookToUpdate = findBook(bookId);
         bookToUpdate.rating = newRating;
 
-        return Utils.sendRequest(AJAX_CHANGE_BOOK_RATING_URL,
-            bookToUpdate, requestType.POST);
+        return Utils.sendRequest(AJAX_BOOKS_URL + "/" + bookId + AJAX_BOOK_RATING_URL,
+            newRating, requestType.POST);
     }
 
     function addBook(title, author, bookImage) {
         let newBook = new Book(null, title, author, bookImage);
 
-        return Utils.sendRequest(AJAX_ADD_BOOK_URL, newBook, requestType.POST)
+        return Utils.sendRequest(AJAX_BOOKS_URL, newBook, requestType.POST)
             .then(function (addedBookId) {
                 onBookAdd.notify(title, author);
 
                 return addedBookId;
+            }, function (error) {
+                alert("Adding error : " + error);
+                throw  new Error();
             });
     }
 
@@ -81,8 +82,8 @@ function BooksModel() {
 
                 book.tags.push(newTag);
 
-                Utils.sendRequest(AJAX_ADD_TAG_TO_BOOK_URL,
-                    {bookId: bookId, tag: newTag}, requestType.POST)
+                Utils.sendRequest(AJAX_TAGS_URL + "/" + newTag,
+                    bookId, requestType.POST)
                     .then(function (bookId) {
                         onTagsChange.notify(findBook(bookId),
                             addNewTagToTheList(newTag));
@@ -125,7 +126,7 @@ function BooksModel() {
     }
 
     function getAllBooks() {
-        return Utils.sendRequest(AJAX_GET_ALL_BOOKS_URL, null,
+        return Utils.sendRequest(AJAX_BOOKS_URL, null,
             requestType.GET)
             .then(function (data) {
                 booksStorage = data;
@@ -133,7 +134,7 @@ function BooksModel() {
     }
 
     function getAllTags() {
-        return Utils.sendRequest(AJAX_GET_ALL_TAGS_URL, null,
+        return Utils.sendRequest(AJAX_TAGS_URL, null,
             requestType.GET)
             .then(function (data) {
                 availableTags = data;

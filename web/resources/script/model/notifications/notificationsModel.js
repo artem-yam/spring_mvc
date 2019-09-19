@@ -3,8 +3,7 @@ function NotificationsModel() {
 
     const NEW_BOOK_CATEGORY = "Library";
 
-    const AJAX_ADD_NOTIFICATION_URL = "notifications/add";
-    const AJAX_GET_ALL_NOTIFICATIONS_URL = "notifications/getAll";
+    const AJAX_NOTIFICATION_URL = "notifications";
 
     let notificationStorage = [];
     let onNotificationAdd = new EventEmitter();
@@ -32,7 +31,7 @@ function NotificationsModel() {
         let newNotify = new NotificationTO(null,
             bookId, content, category, type);
 
-        Utils.sendRequest(AJAX_ADD_NOTIFICATION_URL, newNotify,
+        Utils.sendRequest(AJAX_NOTIFICATION_URL, newNotify,
             requestType.POST)
             .then(function () {
                 onNotificationAdd.notify();
@@ -59,7 +58,7 @@ function NotificationsModel() {
     }
 
     function getAllNotifications() {
-        return Utils.sendRequest(AJAX_GET_ALL_NOTIFICATIONS_URL, null,
+        return Utils.sendRequest(AJAX_NOTIFICATION_URL, null,
             requestType.GET)
             .then(function (data) {
                 for (let note of data) {

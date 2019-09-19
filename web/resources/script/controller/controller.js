@@ -16,7 +16,7 @@ function Controller(booksModel, notificationsModel) {
         controlledBooksModel.addBook(title, author, bookImage)
             .then(function (newBookId) {
                 controlledNotificationsModel.addNewBookNotification(newBookId);
-            })
+            });
     }
 
     function addBookTag(bookId, newTag) {

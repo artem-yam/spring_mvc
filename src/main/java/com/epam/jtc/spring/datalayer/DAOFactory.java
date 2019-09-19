@@ -19,9 +19,24 @@ public interface DAOFactory {
         return type.getDAOFactory();
     }
     
+    /**
+     * Books DAO getter
+     *
+     * @return {@link BookDAO}
+     */
     BookDAO getBookDAO();
     
+    /**
+     * Tags DAO getter
+     *
+     * @return {@link TagDAO}
+     */
     TagDAO getTagDAO();
     
+    /**
+     * Notifications DAO getter
+     *
+     * @return {@link NotificationDAO}
+     */
     NotificationDAO getNotificationDAO();
 }

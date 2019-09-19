@@ -1,10 +1,12 @@
 package com.epam.jtc.spring.datalayer;
 
 import com.epam.jtc.spring.datalayer.oracleDB.OracleDAOFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Enum of supported DAO types
  */
+@Component
 public enum DataSourceType {
     /**
      * Oracle DB
