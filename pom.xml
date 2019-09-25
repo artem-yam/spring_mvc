@@ -74,12 +74,6 @@
         </dependency>
 
         <dependency>
-            <groupId>oracle</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>18.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
@@ -108,20 +102,6 @@
                     </webResources>
 
                     <webXml>web/WEB-INF/web.xml</webXml>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <contextFile>
-                        web/META-INF/context.xml
-                    </contextFile>
-                    <url>http://localhost:8080/manager/text</url>
-                    <port>8080</port>
-                    <path>/SpringMVC</path>
                 </configuration>
             </plugin>
 

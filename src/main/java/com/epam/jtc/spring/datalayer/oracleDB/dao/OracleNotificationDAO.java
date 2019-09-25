@@ -54,8 +54,8 @@ public class OracleNotificationDAO implements NotificationDAO {
                 
                 try {
                     notification.setDate(dateFormatter.parse(sqlDate));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                } catch (ParseException dateParseException) {
+                    DAOLogger.warn("Date parsing error", dateParseException);
                 }
                 
                 return notification;

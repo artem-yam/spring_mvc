@@ -69,8 +69,8 @@ public class OracleBookDAO implements BookDAO {
                         }
                         book.setImage(BASE64_CODE_IMAGE_PREFIX +
                                           new String(imageBlobBytes));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (IOException bookImageIOException) {
+                        DAOLogger.warn("Can't get image", bookImageIOException);
                     }
                 }
                 
@@ -130,8 +130,8 @@ public class OracleBookDAO implements BookDAO {
         if (coverImage != null) {
             try {
                 blobImage = toByteArray(IOUtils.toInputStream(coverImage));
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException bookImageIOException) {
+                DAOLogger.warn("Can't get image", bookImageIOException);
             }
             
             if (Base64.isBase64(blobImage)) {

@@ -18,20 +18,4 @@
     <util:constant id="DATA_SOURCE_TYPE_ORACLE"
                    static-field="com.epam.jtc.spring.datalayer.DataSourceType.ORACLE"/>
 
-
-    <!--<bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName"
-                  value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url"
-                  value="jdbc:oracle:thin:@localhost:1521:xe"/>
-        <property name="username" value="SYSTEM"/>
-        <property name="password" value="SYSTEM"/>
-    </bean>
-
-    <bean id="jdbcTemplate"
-          class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg ref="dataSource"/>
-    </bean>-->
-
 </beans>
