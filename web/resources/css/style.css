@@ -143,6 +143,7 @@ a {
 }
 
 .menu #add_book {
+    cursor: pointer;
     text-align: center;
     margin: 20px;
     background-color: #ef7d58;

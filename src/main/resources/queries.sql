@@ -1,9 +1,9 @@
--- 1) все книги
+-- 1) пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 select * 
 from books
     order by id
     
--- 2) поиск по книгам
+-- 2) пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 select * 
 from books
     where instr(lower(title)||' '||lower(author), ?)>0
@@ -13,26 +13,26 @@ select *
 from books
     where rating=?
     
--- 4) добавление книги
-insert into books(title, author,image)
+-- 4) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+insert into books(title, author,imageBytes)
     values (?, ?, ?)
 
--- 5) все доступные теги
+-- 5) пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 select * 
 from AVAILABLE_TAGS
 
--- 6) добавление нового тега
+-- 6) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 insert into AVAILABLE_TAGS(tag)
     values (?)
     
--- 7) добавление тега для книги
+-- 7) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 insert into BOOK_TAGS(book, tag)
     values (?, 
         (select id
         from AVAILABLE_TAGS
             where tag = ?))
 
--- 8) все теги для книги
+-- 8) пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 select * 
 from AVAILABLE_TAGS
     where id in (
@@ -40,13 +40,13 @@ from AVAILABLE_TAGS
         from BOOK_TAGS
             where book=?)
 
--- 9) все нотификации 
+-- 9) пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "DATE"
 from NOTIFICATIONS
     inner join NOTIFICATION_TYPES on NOTIFICATION_TYPES.ID = NOTIFICATIONS.TYPE
     Order by "DATE"
 
--- 10) последние n нотификаций
+-- 10) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ n пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 select *
 from (select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.type, "DATE"
     from NOTIFICATIONS
@@ -55,7 +55,7 @@ from (select NOTIFICATIONS.id, book, search_text, category, NOTIFICATION_TYPES.t
 where rownum <= ?
    
         
--- 11) добавление нотификации
+-- 11) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 insert into NOTIFICATIONS (BOOK, SEARCH_TEXT, CATEGORY, TYPE) 
     values (?, 
             ?, 
@@ -64,7 +64,7 @@ insert into NOTIFICATIONS (BOOK, SEARCH_TEXT, CATEGORY, TYPE)
              from NOTIFICATION_TYPES
                 where type = ?))
             
--- 12) Изменение рейтинга книги
+-- 12) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 update books
     set rating=?
     where id=?

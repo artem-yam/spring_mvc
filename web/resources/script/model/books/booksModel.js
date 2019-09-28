@@ -55,18 +55,17 @@ function BooksModel() {
         let bookToUpdate = findBook(bookId);
         bookToUpdate.rating = newRating;
 
-        return Utils.sendRequest(AJAX_BOOKS_URL + "/" + bookId + AJAX_BOOK_RATING_URL,
+        return Utils.sendRequest(
+            AJAX_BOOKS_URL + "/" + bookId + AJAX_BOOK_RATING_URL,
             newRating, requestType.POST);
     }
 
-    function addBook(title, author, bookImage) {
-        let newBook = new Book(null, title, author, bookImage);
+    function addBook(bookFormData) {
+        return Utils.sendRequest(AJAX_BOOKS_URL, bookFormData, requestType.POST)
+            .then(function (addedBook) {
+                onBookAdd.notify(addedBook.title, addedBook.author);
 
-        return Utils.sendRequest(AJAX_BOOKS_URL, newBook, requestType.POST)
-            .then(function (addedBookId) {
-                onBookAdd.notify(title, author);
-
-                return addedBookId;
+                return addedBook.id;
             }, function (error) {
                 alert("Adding error : " + error);
                 throw  new Error();

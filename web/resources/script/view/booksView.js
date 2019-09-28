@@ -4,25 +4,15 @@ function BooksView(controller, model) {
     let mainController = controller;
     let booksModel = model;
 
-    function setDefaultNewBookImage() {
-        let defaultImage = window.document.querySelector("#default_book_image")
-            .getAttribute("src")
-
-        window.document.querySelector("#loaded_image img")
-            .setAttribute("src", defaultImage);
-    }
-
-    (function init() {
-        setDefaultNewBookImage();
-    })();
-
     function createBlock(book) {
         let template = window.document.querySelector("#book_template");
         let booksPage = window.document.querySelector(".main_content");
 
         let bookBlock = template.content.cloneNode(true);
 
-        bookBlock.querySelector("img").setAttribute("src", book.image);
+        bookBlock.querySelector("img").setAttribute("src",
+            "books/" + book.id + "/image");
+
         bookBlock.querySelector("img").setAttribute("alt", book.title);
         bookBlock.querySelector(".book_description a")
             .setAttribute("href", "#modal" + book.id);
@@ -136,14 +126,10 @@ function BooksView(controller, model) {
         return booksModel.search(searchText, activeCategory);
     }
 
-    function addBook() {
-        let title = window.document.querySelector("#add_book_title").value;
-        let author = window.document.querySelector("#add_book_author").value;
-        let bookImage = window.document.querySelector("#loaded_image img")
-            .getAttribute("src");
-
-        if (!Utils.isEmpty(title) || !Utils.isEmpty(author)) {
-            mainController.addBook(title, author, bookImage);
+    function addBook(bookFormData) {
+        if (!Utils.isEmpty(bookFormData.get("title")) ||
+            !Utils.isEmpty(bookFormData.get("author"))) {
+            mainController.addBook(bookFormData);
         } else {
             alert("Fill \"Title\" and \"Author\" fields to add a new book");
         }
@@ -155,17 +141,11 @@ function BooksView(controller, model) {
 
         let input = window.document.querySelector("#add_book_image");
 
-        let reader = new FileReader();
-
-        reader.onload = function (e) {
-            let bookImage = e.target.result;
-            window.document.querySelector("#loaded_image img")
-                .setAttribute("src", bookImage);
-            window.document.querySelector("#loaded_image").classList
-                .remove("hidden");
-        };
-
-        reader.readAsDataURL(input.files[0]);
+        window.document.querySelector("#loaded_image img")
+            .setAttribute("src",
+                window.URL.createObjectURL(input.files[0]));
+        window.document.querySelector("#loaded_image").classList
+            .remove("hidden");
     }
 
     function addBookTag(bookId) {
@@ -266,8 +246,17 @@ function BooksView(controller, model) {
 
     window.document.querySelector("#add_book")
         .addEventListener("click", function () {
-            addBook();
+            let bookForm = document.forms.namedItem("addBookForm");
+            let bookFormData = new FormData(bookForm);
+
+            addBook(bookFormData);
         });
+
+    window.document.querySelector(".aside .menu form")
+        .addEventListener("submit",
+            function (event) {
+                alert("ку" + event);
+            });
 
     window.document.querySelector("#all_books")
         .addEventListener("click", function () {
@@ -302,8 +291,8 @@ function BooksView(controller, model) {
                 window.document.querySelector("#loaded_image").classList
                     .add("hidden");
 
-                setDefaultNewBookImage();
-
+                Utils.resetValue(
+                    window.document.querySelector("#add_book_image"));
                 Utils.resetValue(
                     window.document.querySelector("#add_book_title"));
                 Utils.resetValue(

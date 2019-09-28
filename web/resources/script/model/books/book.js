@@ -5,7 +5,7 @@ function Book(id, title, author, image, rating, tags, deleted) {
     this.title = title;
     this.author = author;
 
-    this.image = image;
+    this.image = image || [];
 
     this.rating = rating || DEFAULT_RATING;
     this.tags = tags || [];

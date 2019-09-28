@@ -1,6 +1,5 @@
 let Utils = function () {
     const AJAX_DATA_TYPE = "application/json";
-    const AJAX_RETURN_TYPE = "json";
 
     const DATA_REFRESH_INTERVAL = 1000;
 
@@ -23,23 +22,26 @@ let Utils = function () {
     function sendRequest(url, data, requestType) {
         let ajaxRequest;
 
-        switch (requestType) {
-            case 'POST':
-                ajaxRequest = $.post({
-                    url: url,
-                    contentType: AJAX_DATA_TYPE,
-                    data: JSON.stringify(data),
-                    dataType: AJAX_RETURN_TYPE
-                });
-                break;
-            default:
-                ajaxRequest = $.get({
-                    url: url,
-                    contentType: AJAX_DATA_TYPE,
-                    data: JSON.stringify(data),
-                    dataType: AJAX_RETURN_TYPE
-                });
-                break;
+        if (!requestType) {
+            requestType = requestType.GET;
+        }
+
+        if (data instanceof FormData) {
+            ajaxRequest = $.ajax({
+                url: url,
+                type: requestType,
+                contentType: false,
+                processData: false,
+                data: data
+            });
+        } else {
+
+            ajaxRequest = $.ajax({
+                url: url,
+                type: requestType,
+                contentType: AJAX_DATA_TYPE,
+                data: JSON.stringify(data)
+            });
         }
 
         return ajaxRequest;

@@ -12,8 +12,8 @@ function Controller(booksModel, notificationsModel) {
             })
     }
 
-    function addBook(title, author, bookImage) {
-        controlledBooksModel.addBook(title, author, bookImage)
+    function addBook(bookFormData) {
+        controlledBooksModel.addBook(bookFormData)
             .then(function (newBookId) {
                 controlledNotificationsModel.addNewBookNotification(newBookId);
             });
