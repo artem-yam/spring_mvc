@@ -17,12 +17,11 @@ public class Tester {
                 DAOFactory.getInstance(DataSourceType.ORACLE)
                         .getNotificationDAO();
 
-        List<Book> result = new ArrayList<>();
-
         //int newBookId = dao.addBook("title", "author", null);
-        dao.addNotification(0, "qqq","", NotificationTypes.SEARCH);
 
-        System.out.println(result);
+        //dao.addNotification(0, "qqq","", NotificationTypes.SEARCH);
+
+        //System.out.println(result);
     }
 
 }

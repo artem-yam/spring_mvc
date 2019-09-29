@@ -6,6 +6,7 @@ import com.epam.jtc.spring.datalayer.dto.Book;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -62,6 +63,9 @@ public class OracleBookDAO implements BookDAO {
     @Autowired
     private RowMapper<Book> bookRowMapper;
 
+    /**
+     * Row mapper to get byte of image
+     */
     @Autowired
     private RowMapper<byte[]> imageRowMapper;
     /**
@@ -87,10 +91,6 @@ public class OracleBookDAO implements BookDAO {
     @Override
     public Book addBook(String title, String author,
                         byte[] coverImage) {
-
-        if (coverImage == null) {
-            coverImage = getDefaultImage();
-        }
 
         jdbcTemplate.update(ADD_BOOK_QUERY, title, author, coverImage);
 

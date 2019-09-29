@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<GlobalNamingResources>-->
+<Context path="/myApp" docBase="myApp"
+         crossContext="true" reloadable="true" debug="1">
+    <Resource name="jdbc/oracle"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="oracle.jdbc.driver.OracleDriver"
+              url="jdbc:oracle:thin:@localhost:1521:xe"
+              username="SYSTEM" password="SYSTEM"
+              maxTotal="20"
+              maxIdle="10"
+              minIdle="5"
+              maxWaitMillis="10000"
+              validationQuery="select 1 from dual"/>
+
+    <!--<ResourceLink name="jdbc/oracle"
+                  global="jdbc/oracle"
+                  auth="Container"
+                  type="javax.sql.DataSource"/>-->
+
+</Context>
