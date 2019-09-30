@@ -1,5 +1,6 @@
 package com.epam.jtc.spring.datalayer.oracleDB;
 
+import com.epam.jtc.spring.SpringConfiguration;
 import com.epam.jtc.spring.datalayer.DAOFactory;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
@@ -12,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /**
  * Factory for oracleDB DB DAO
@@ -57,6 +57,7 @@ public class OracleDAOFactory implements DAOFactory, AutoCloseable {
             synchronized (OracleDAOFactory.class) {
                 AnnotationConfigApplicationContext ctx =
                         new AnnotationConfigApplicationContext();
+                //ctx.register(SpringConfiguration.class);
                 ctx.scan(DAO_BEANS_PACKAGE);
                 ctx.refresh();
 

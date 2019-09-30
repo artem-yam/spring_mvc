@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="dispatcher-servlet.xml"/>
 
     <!--<jee:jndi-lookup lookup-on-startup="false" resource-ref="false"
                      id="oracleDataSource"
@@ -20,9 +20,6 @@
         <property name="jndiName" value="java:comp/env/jdbc/oracle"/>
     </bean>-->
 
-
-    <!--<bean id="oracleDS" class="org.springframework.jdbc.datasource.DriverManagerDataSource"/>-->
-
-    <util:constant id="DATA_SOURCE_TYPE_ORACLE"
-                   static-field="com.epam.jtc.spring.datalayer.DataSourceType.ORACLE"/>
+    <!--<bean id="oracleJDBC" factory-bean="springConfiguration"
+          factory-method="OracleJdbcTemplate"/>-->
 </beans>

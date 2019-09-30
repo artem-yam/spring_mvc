@@ -13,7 +13,7 @@ import javax.sql.DataSource;
  * JDBC template
  */
 
-@Component
+@Component("oracleJdbcTemplate")
 public class OracleJdbcTemplate extends JdbcTemplate {
 
     private static final String DATA_SOURCE_JNDI_NAME =
