@@ -2,10 +2,16 @@ package com.epam.jtc.spring;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jndi.JndiTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebMvc
@@ -27,8 +33,8 @@ public class SpringConfiguration implements WebMvcConfigurer {
         try {
             ds = (DataSource) new JndiTemplate()
                     .lookup("java:comp/env/jdbc/oracle");
-        } catch (NamingException e) {
-            e.printStackTrace();
+        } catch (NamingException namingException) {
+            logger.warn("Can't get DataSource from JNDI", namingException);
         }
 
         return ds;
