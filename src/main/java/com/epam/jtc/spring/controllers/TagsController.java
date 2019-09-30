@@ -14,6 +14,7 @@ import java.util.List;
  * Controller for tags
  */
 @RestController
+//@RequestMapping
 @RequestMapping("/tags")
 public class TagsController {
     
@@ -51,11 +52,9 @@ public class TagsController {
      */
     //@PostMapping("/books/{bookId}/tags")
     @PostMapping("/{tag}")
-    public int addTagToBook(@RequestBody int bookId,
-                            @PathVariable String tag) {
+    public List<String> addTagToBook(@RequestBody int bookId,
+                                     @PathVariable String tag) {
         
-        dao.addTagToBook(bookId, tag);
-        
-        return bookId;
+        return dao.addTagToBook(bookId, tag);
     }
 }

@@ -33,7 +33,8 @@ function NotificationsModel() {
 
         Utils.sendRequest(AJAX_NOTIFICATION_URL, newNotify,
             requestType.POST)
-            .then(function () {
+            .then(function (newNote) {
+                alert(newNote);
                 onNotificationAdd.notify();
             });
 

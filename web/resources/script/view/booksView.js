@@ -13,6 +13,12 @@ function BooksView(controller, model) {
         bookBlock.querySelector("img").setAttribute("src",
             "books/" + book.id + "/image");
 
+        bookBlock.querySelector(".delete-book")
+            .addEventListener('click', function () {
+                let toDelete = confirm("Delete this book?");
+                //mainController.updateRating(book.id, i);
+            });
+
         bookBlock.querySelector("img").setAttribute("alt", book.title);
         bookBlock.querySelector(".book_description a")
             .setAttribute("href", "#modal" + book.id);

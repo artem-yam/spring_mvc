@@ -134,7 +134,7 @@
                 <div class="keywords">
                     <input id="search" type="search"
                            placeholder="Enter Keywords"/>
-                    <input type="imageBytes" alt="Search"
+                    <input type="image" alt="Search"
                            src="resources/images/icons/search.png">
                 </div>
             </div>
@@ -155,7 +155,32 @@
 
     </footer>
 
-    <div class="modal_container"></div>
+    <div class="modal_container">
+
+        <div class="modal fade" id="user-authentication">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">User authentication</h5>
+                    </div>
+
+                    <div class="modal-body">
+                        input login
+                        input password
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     <template id="history_bar_template">
         <div class="history_log">
@@ -174,11 +199,10 @@
 
     <template id="book_template">
         <div class="book">
+            <div class="delete-book">&#10008;</div>
             <img src="" alt=""/>
             <div class="book_description">
-                <a data-toggle="modal" href="#">
-                    <span></span>
-                </a>
+                <a data-toggle="modal" href="#"><span></span><br></a>
             </div>
             <div class="rating"></div>
         </div>
@@ -224,7 +248,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary"
-                                data-dismiss="modal">Закрыть
+                                data-dismiss="modal">Close
                         </button>
                     </div>
 
@@ -268,6 +292,9 @@
             src="resources/script/view/notificationsView.js"></script>
     <script type="text/javascript"
             src="resources/script/view/booksView.js"></script>
+
+    <script type="text/javascript"
+            src="resources/script/view/loginView.js"></script>
 
     <!--Мэйн-->
     <script type="text/javascript" src="resources/script/main.js"></script>

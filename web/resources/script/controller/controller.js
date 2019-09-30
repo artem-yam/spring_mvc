@@ -6,9 +6,9 @@ function Controller(booksModel, notificationsModel) {
 
     function updateRating(bookId, newRating) {
         controlledBooksModel.updateRating(bookId, newRating)
-            .then(function (bookId) {
-                controlledNotificationsModel.addNewRatingNotification(bookId,
-                    newRating);
+            .then(function (book) {
+                controlledNotificationsModel.addNewRatingNotification(book.id,
+                    book.rating);
             })
     }
 

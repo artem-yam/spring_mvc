@@ -50,7 +50,7 @@ public class NotificationsController {
      * @return some representation of successful adding
      */
     @PostMapping
-    public int addNotification(@RequestBody Notification newNote) {
+    public Notification addNotification(@RequestBody Notification newNote) {
         return dao.addNotification(newNote.getBookId(), newNote.getContent(),
             newNote.getCategory(), newNote.getType());
     }

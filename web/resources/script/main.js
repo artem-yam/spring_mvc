@@ -11,6 +11,8 @@
             notificationsModel);
         let booksView = new BooksView(controller, booksModel);
 
+        new LoginView();
+
         await booksModel.initModel();
         await notificationsModel.initModel();
 

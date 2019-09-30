@@ -33,4 +33,14 @@
 
     <context:component-scan base-package="com.epam.jtc.spring"/>
 
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*"/>
+            <mvc:exclude-mapping path="/error"/>
+            <bean class="com.epam.jtc.spring.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
 </beans>

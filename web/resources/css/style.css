@@ -385,6 +385,25 @@ a {
     font-family: Arial, sans-serif;
 }
 
+.main_content .book .delete-book {
+    cursor: pointer;
+    color: darkred;
+    background: white;
+    position: relative;
+
+    width: 40px;
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+    top: 30px;
+    left: calc(100% - 40px);
+
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
 .main_content .book img {
     width: 100%;
     height: 250px;
@@ -392,7 +411,7 @@ a {
 }
 
 .main_content .book span {
-    display: block;
+    display: inline;
     margin-bottom: 5px;
     font-size: 1.2em;
 }

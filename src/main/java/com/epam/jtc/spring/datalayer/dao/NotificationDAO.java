@@ -26,7 +26,7 @@ public interface NotificationDAO {
      * @param type     type of the notification
      * @return some representation of successful insert
      */
-    int addNotification(int bookId, String content, String category,
-                        NotificationTypes type);
+    Notification addNotification(int bookId, String content, String category,
+                                 NotificationTypes type);
 
 }

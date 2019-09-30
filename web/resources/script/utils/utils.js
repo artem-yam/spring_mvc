@@ -3,6 +3,8 @@ let Utils = function () {
 
     const DATA_REFRESH_INTERVAL = 1000;
 
+    let onLoginError = new EventEmitter();
+
     function setElementProperty(element, property, value) {
         element[property] = value;
     }
@@ -44,6 +46,20 @@ let Utils = function () {
             });
         }
 
+        ajaxRequest.then(function (data) {
+            //alert("Все норм");
+            return data;
+        }, function (error) {
+            if (error.status) {
+                console.log("Error 401. User not logged in " + error);
+
+                onLoginError.notify();
+            } else {
+                console.log("Unknown error " + error);
+            }
+            throw error;
+        });
+
         return ajaxRequest;
     }
 
@@ -52,7 +68,8 @@ let Utils = function () {
         resetValue,
         isEmpty,
         sendRequest,
-        DATA_REFRESH_INTERVAL
+        DATA_REFRESH_INTERVAL,
+        onLoginError
     }
 
 }();

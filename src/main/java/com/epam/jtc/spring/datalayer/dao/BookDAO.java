@@ -28,11 +28,10 @@ public interface BookDAO {
 
     /**
      * Changes rating of the book
-     *
-     * @param bookId    id of the book
+     *  @param bookId    id of the book
      * @param newRating new book rating
      */
-    void changeRating(int bookId, int newRating);
+    Book changeRating(int bookId, int newRating);
 
     /**
      * Gets book image

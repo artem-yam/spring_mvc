@@ -20,22 +20,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BooksController {
-
+    
     /**
      * logger for class
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     private BookDAO dao;
-
+    
     @Autowired
     public BooksController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
-                .getBookDAO();
+                  .getBookDAO();
     }
-
+    
     /**
      * Gets all books from dao
      *
@@ -47,7 +47,7 @@ public class BooksController {
         //logger.info("All books: {}", books);
         return books;
     }
-
+    
     /**
      * Adds the book to dao
      *
@@ -59,9 +59,9 @@ public class BooksController {
                         @RequestParam("image") MultipartFile image
     ) throws IOException {
         return dao.addBook(title, author,
-                image.getBytes());
+            image.getBytes());
     }
-
+    
     /**
      * Changes the book rating
      *
@@ -70,22 +70,18 @@ public class BooksController {
      * @return id of the book
      */
     @PostMapping("/{bookId}/rating")
-    public int changeBookRating(@PathVariable int bookId,
-                                @RequestBody int newRating) {
+    public Book changeBookRating(@PathVariable int bookId,
+                                 @RequestBody int newRating) {
         //logger.info("New rating for book {} = {}", bookId, newRating);
-
-        dao.changeRating(bookId, newRating);
-
-        return bookId;
+        
+        return dao.changeRating(bookId, newRating);
     }
-
-
+    
     @GetMapping(value = "/{bookId}/image")
     public byte[] getBookImage(@PathVariable int bookId) {
         //logger.info("getting image for book {}", bookId);
-
+        
         return dao.getBookImage(bookId);
     }
-
-
+    
 }

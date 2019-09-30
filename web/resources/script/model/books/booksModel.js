@@ -83,9 +83,9 @@ function BooksModel() {
 
                 Utils.sendRequest(AJAX_TAGS_URL + "/" + newTag,
                     bookId, requestType.POST)
-                    .then(function (bookId) {
+                    .then(function (bookTags) {
                         onTagsChange.notify(findBook(bookId),
-                            addNewTagToTheList(newTag));
+                            addNewTagToTheList(bookTags[bookTags.length - 1]));
                     });
             }
         }
