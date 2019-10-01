@@ -27,9 +27,6 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <session-config>
-        <session-timeout>5</session-timeout>
-    </session-config>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -42,6 +39,15 @@
         <url-pattern>/
         </url-pattern>
     </servlet-mapping>
+
+
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+
+    <listener>
+        <listener-class>com.epam.jtc.spring.SessionListener</listener-class>
+    </listener>
 
     <welcome-file-list>
         <welcome-file>

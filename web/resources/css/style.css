@@ -25,7 +25,7 @@ a {
     margin-right: 10px;
 }
 
-.header_links a {
+.header a {
     color: #b5b9c4;
     padding: 0 10px;
 }
@@ -68,6 +68,10 @@ a {
     margin-left: 10px;
     background-image: url(../images/icons/user_menu.png);
     background-size: contain;
+}
+
+.header_logout {
+    padding: 15px 0;
 }
 
 .aside {
@@ -397,7 +401,7 @@ a {
     margin: 0;
     padding: 0;
 
-    top: 30px;
+    top: 40px;
     left: calc(100% - 40px);
 
     border-radius: 5px;

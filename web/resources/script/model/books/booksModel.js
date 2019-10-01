@@ -16,6 +16,7 @@ function BooksModel() {
     let onTagsChange = new EventEmitter();
 
     function search(text, filter) {
+
         let result = [];
 
         for (let i = 0; i < booksStorage.length; i++) {
@@ -142,7 +143,7 @@ function BooksModel() {
             });
     }
 
-    async function initModel() {
+    /*async function initModel() {
         await getAllBooks()
             .then(function () {
                 setInterval(getAllBooks, Utils.DATA_REFRESH_INTERVAL);
@@ -151,6 +152,12 @@ function BooksModel() {
             .then(function () {
                 setInterval(getAllTags, Utils.DATA_REFRESH_INTERVAL);
             });
+    }*/
+
+    async function refreshModel() {
+        await getAllBooks();
+        await getAllTags();
+
     }
 
     function getBooksStorage() {
@@ -176,6 +183,6 @@ function BooksModel() {
 
         onBookAdd,
         onTagsChange,
-        initModel
+        refreshModel
     }
 }

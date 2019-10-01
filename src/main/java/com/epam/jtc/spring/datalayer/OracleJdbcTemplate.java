@@ -30,7 +30,7 @@ public class OracleJdbcTemplate extends JdbcTemplate {
         super(dataSource);
     }
 
-    @Bean
+    /*@Bean
     public static DataSource receiveDataSource() {
         DataSource ds = null;
         try {
@@ -40,7 +40,7 @@ public class OracleJdbcTemplate extends JdbcTemplate {
         }
 
         return ds;
-    }
+    }*/
 
     /*public OracleJdbcTemplate() {
         super();

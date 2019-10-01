@@ -3,17 +3,6 @@
 
     async function init() {
 
-        let onUserLogIn = new EventEmitter();
-
-        onUserLogIn.subscribe(function () {
-            showStartInfo();
-        });
-
-        function showStartInfo() {
-            booksView.browsePage();
-            notificationsView.loadHistoryBar();
-        }
-
         let notificationsModel = new NotificationsModel();
         let booksModel = new BooksModel();
 
@@ -23,13 +12,13 @@
             notificationsModel);
         let booksView = new BooksView(controller, booksModel);
 
-        new LoginView(controller, onUserLogIn);
+        new LoginView(controller);
 
-        await booksModel.initModel();
-        await notificationsModel.initModel();
+        await booksModel.refreshModel();
+        await notificationsModel.refreshModel();
 
-        showStartInfo();
-
+        booksView.browsePage();
+        notificationsView.loadHistoryBar();
     }
 
     window.addEventListener("load", init);

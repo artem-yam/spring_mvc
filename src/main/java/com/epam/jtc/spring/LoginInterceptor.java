@@ -12,6 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {
@@ -33,12 +34,19 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                              HttpServletResponse response, Object handler)
         throws Exception {
         
-        Object loggedUser = request.getSession().getAttribute("logged_user");
+        HttpSession session = request.getSession(false);
         
-        if (loggedUser == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                "Not logged in user");
+        if (session == null) {
+            response.sendRedirect(request.getContextPath());
             return false;
+        } else {
+            Object loggedUser = session.getAttribute("logged_user");
+            
+            if (loggedUser == null) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                    "Not logged in user");
+                return false;
+            }
         }
         
         return true;

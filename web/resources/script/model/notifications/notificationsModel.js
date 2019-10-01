@@ -68,17 +68,21 @@ function NotificationsModel() {
             });
     }
 
-    async function initModel() {
+    /*async function initModel() {
         await getAllNotifications()
             .then(function () {
                 setInterval(getAllNotifications, Utils.DATA_REFRESH_INTERVAL);
             });
+    }*/
+
+    async function refreshModel() {
+        await getAllNotifications();
     }
 
     return {
         getFlowedTime,
         onNotificationAdd,
-        initModel,
+        refreshModel,
         getNotificationsStorage,
         addSearchNotification,
         addNewRatingNotification,

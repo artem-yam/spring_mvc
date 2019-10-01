@@ -47,7 +47,6 @@ let Utils = function () {
         }
 
         ajaxRequest.then(function (data) {
-            //alert("Все норм");
             return data;
         }, function (error) {
             if (error.status) {

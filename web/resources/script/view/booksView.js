@@ -182,15 +182,12 @@ function BooksView(controller, model) {
         mainController.addBookTag(bookId, newTag);
     }
 
-    function chooseCategory(category) {
+    async function chooseCategory(category) {
         Utils.resetInnerHTML(window.document.querySelector(".main_content"));
 
         let modalContainer = window.document.querySelector(".modal_container");
-        let userAuthenticationModal = window.document.querySelector(
-            "#user-authentication").cloneNode(true);
 
         Utils.resetInnerHTML(modalContainer);
-        modalContainer.appendChild(userAuthenticationModal);
 
         let categories = window.document.querySelectorAll(
             ".main_sort .sort div a");
@@ -202,20 +199,26 @@ function BooksView(controller, model) {
 
         let elem = window.document.getElementById(category);
         elem.classList.add("active");
+
+        await booksModel.refreshModel();
     }
 
     function showAllBooks() {
-        chooseCategory("all_books");
-        Utils.resetInnerHTML(window.document.querySelector(".main_content"));
+        chooseCategory("all_books")
+            .then(function () {
+                Utils.resetInnerHTML(window.document.querySelector(".main_content"));
 
-        for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
-            if (!booksModel.getBooksStorage()[i].deleted) {
-                createBlock(booksModel.getBooksStorage()[i]);
-            }
-        }
+                for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
+                    if (!booksModel.getBooksStorage()[i].deleted) {
+                        createBlock(booksModel.getBooksStorage()[i]);
+                    }
+                }
+            });
     }
 
-    function filter(filterMethod) {
+    async function filter(filterMethod) {
+        await booksModel.refreshModel();
+
         let result = filterMethod() || booksModel.getBooksStorage();
 
         if (result.length !== 0) {
@@ -272,9 +275,11 @@ function BooksView(controller, model) {
 
     window.document.querySelector("#most_popular")
         .addEventListener("click", function () {
-            chooseCategory("most_popular");
-            filter(booksModel.getMostPopular);
-        });
+            chooseCategory("most_popular").then(function () {
+                filter(booksModel.getMostPopular);
+            });
+        })
+    ;
 
     window.document.querySelector("#search")
         .addEventListener("input", function () {
@@ -287,7 +292,7 @@ function BooksView(controller, model) {
         });
 
     model.onBookAdd.subscribe(function (title, author) {
-        booksModel.getAllBooks()
+        booksModel.refreshModel()
             .then(function () {
                 alert(
                     "book \"" + author + " - " + title + "\" has been added!");
@@ -319,15 +324,17 @@ function BooksView(controller, model) {
     });
 
     model.onTagsChange.subscribe(function (updatedBook, userTagPushed) {
-        changeModalBody(updatedBook);
+        booksModel.refreshModel().then(function () {
+            changeModalBody(updatedBook);
 
-        if (userTagPushed === true) {
-            for (let book of booksModel.getBooksStorage()) {
-                if (!book.deleted) {
-                    changeSelectTagList(book);
+            if (userTagPushed === true) {
+                for (let book of booksModel.getBooksStorage()) {
+                    if (!book.deleted) {
+                        changeSelectTagList(book);
+                    }
                 }
             }
-        }
+        });
     });
 
     return {

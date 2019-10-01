@@ -10,7 +10,9 @@ function Controller(booksModel, notificationsModel) {
 
     function updateRating(bookId, newRating) {
         controlledBooksModel.updateRating(bookId, newRating)
-            .then(function (book) {
+            .then(async function (book) {
+                await controlledBooksModel.refreshModel();
+
                 controlledNotificationsModel.addNewRatingNotification(book.id,
                     book.rating);
             })
@@ -37,20 +39,23 @@ function Controller(booksModel, notificationsModel) {
     }
 
     function loginUser(loginFormData) {
-        return (Utils.sendRequest(
+        return Utils.sendRequest(
             AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGIN_URL,
             loginFormData, requestType.POST)
-            .then(async function () {
-                alert("Successful login");
-                await controlledBooksModel.getAllBooks();
-                await controlledBooksModel.getAllTags();
-                await controlledNotificationsModel.getAllNotifications();
-
-                //loginListener.notify();
-            }, function (error) {
+            .catch(function (error) {
                 alert("Can't login : " + error);
                 throw error;
-            }));
+            });
+    }
+
+    function logoutUser() {
+        return Utils.sendRequest(
+            AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGOUT_URL,
+            null, requestType.POST)
+            .catch(function (error) {
+                alert("Can't logout : " + error);
+                throw error;
+            });
     }
 
     return {
@@ -59,6 +64,7 @@ function Controller(booksModel, notificationsModel) {
         addBookTag,
         addSearchNotification,
         getBookById,
-        loginUser
+        loginUser,
+        logoutUser
     };
 }

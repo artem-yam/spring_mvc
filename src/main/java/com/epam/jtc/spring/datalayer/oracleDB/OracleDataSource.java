@@ -4,7 +4,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
 
-/*@Component
+@Component
 public class OracleDataSource extends DriverManagerDataSource {
 
     public OracleDataSource() {
@@ -13,4 +13,4 @@ public class OracleDataSource extends DriverManagerDataSource {
         setUsername("SYSTEM");
         setPassword("SYSTEM");
     }
-}*/
+}
