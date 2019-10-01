@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Tag DAO for oracle DB
+ */
 @Component
 public class OracleTagDAO implements TagDAO {
     

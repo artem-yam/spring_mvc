@@ -6,8 +6,9 @@ function BooksModel() {
     const TEXT_NOT_FOUND = -1;
 
     const AJAX_BOOKS_URL = "books";
-    const AJAX_BOOK_RATING_URL = "/rating";
+    const AJAX_BOOK_RATING_URL = "rating";
     const AJAX_TAGS_URL = "tags";
+    const URL_SEPARATOR = "/";
 
     let booksStorage = [];
     let availableTags = [];
@@ -56,7 +57,8 @@ function BooksModel() {
         bookToUpdate.rating = newRating;
 
         return Utils.sendRequest(
-            AJAX_BOOKS_URL + "/" + bookId + AJAX_BOOK_RATING_URL,
+            AJAX_BOOKS_URL + URL_SEPARATOR + bookId + URL_SEPARATOR +
+            AJAX_BOOK_RATING_URL,
             newRating, requestType.POST);
     }
 
@@ -68,7 +70,7 @@ function BooksModel() {
                 return addedBook.id;
             }, function (error) {
                 alert("Adding error : " + error);
-                throw  new Error();
+                throw error;
             });
     }
 
@@ -81,7 +83,7 @@ function BooksModel() {
 
                 book.tags.push(newTag);
 
-                Utils.sendRequest(AJAX_TAGS_URL + "/" + newTag,
+                Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR + newTag,
                     bookId, requestType.POST)
                     .then(function (bookTags) {
                         onTagsChange.notify(findBook(bookId),
@@ -170,6 +172,7 @@ function BooksModel() {
         getBooksStorage,
         getTags,
         getAllBooks,
+        getAllTags,
 
         onBookAdd,
         onTagsChange,

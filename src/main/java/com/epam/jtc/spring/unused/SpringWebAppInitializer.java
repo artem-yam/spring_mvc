@@ -1,4 +1,4 @@
-package com.epam.jtc.spring;
+package com.epam.jtc.spring.unused;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;

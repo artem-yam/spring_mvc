@@ -1,13 +1,14 @@
 package com.epam.jtc.spring.datalayer.oracleDB;
 
-import com.epam.jtc.spring.SpringConfiguration;
 import com.epam.jtc.spring.datalayer.DAOFactory;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
 import com.epam.jtc.spring.datalayer.dao.TagDAO;
+import com.epam.jtc.spring.datalayer.dao.UserDAO;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleNotificationDAO;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleTagDAO;
+import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleUserDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -97,6 +98,16 @@ public class OracleDAOFactory implements DAOFactory, AutoCloseable {
     @Override
     public NotificationDAO getNotificationDAO() {
         return context.getBean(OracleNotificationDAO.class);
+    }
+
+    /**
+     * Oracle DB users DAO getter
+     *
+     * @return {@link OracleUserDAO}
+     */
+    @Override
+    public UserDAO getUserDAO() {
+        return context.getBean(OracleUserDAO.class);
     }
 
     @Override

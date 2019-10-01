@@ -13,62 +13,62 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Employee DAO for oracleDB DB
+ * Book DAO for oracle DB
  */
 @Component
 public class OracleBookDAO implements BookDAO {
-    
+
     /**
      * Logger for class
      */
     private static final Logger DAOLogger = LogManager
-                                                .getLogger(new Object() {
-                                                }.getClass()
-                                                               .getEnclosingClass());
+            .getLogger(new Object() {
+            }.getClass()
+                    .getEnclosingClass());
     /**
      * Query to get all books
      */
     private static final String ALL_BOOKS_QUERY =
-        "select * from books order by id";
+            "select * from books order by id";
     /**
      * Query to add new book
      */
     private static final String ADD_BOOK_QUERY =
-        "insert into books(title, author,image) values (?, ?, ?)";
+            "insert into books(title, author,image) values (?, ?, ?)";
     /**
      * Query to get book with certain title and author
      */
     private static final String SEARCH_BOOK_QUERY =
-        "select * from books where title=? and author=?";
+            "select * from books where title=? and author=?";
     /**
      * Query to update book rating
      */
     private static final String RATING_CHANGE_QUERY =
-        "update books set rating=? where id=?";
+            "update books set rating=? where id=?";
     /**
      * Query to get image by book id
      */
     private static final String IMAGE_BY_BOOK_ID_QUERY =
-        "select image from books where id=?";
-    
+            "select image from books where id=?";
+
     /**
      * Query to get book by id
      */
     private static final String BOOK_BY_ID_QUERY =
-        "select * from books where id=?";
-    
+            "select * from books where id=?";
+
     /**
      * Query to get default book image
      */
     private static final String DEFAULT_IMAGE_QUERY =
-        "select image from books where id=0";
-    
+            "select image from books where id=0";
+
     /**
      * Row mapper for result sets from DB 'books' table
      */
     @Autowired
     private RowMapper<Book> bookRowMapper;
-    
+
     /**
      * Row mapper to get byte of image
      */
@@ -79,64 +79,64 @@ public class OracleBookDAO implements BookDAO {
      */
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     @Autowired
     private TagDAO tagDAO;
-    
+
     @Override
     public List<Book> getAllBooks() {
         List<Book> books = jdbcTemplate.query(ALL_BOOKS_QUERY, bookRowMapper);
-        
+
         for (Book book : books) {
             book.setTags(tagDAO.getBookTags(book.getId()));
         }
-        
+
         return books;
     }
-    
+
     @Override
     public Book addBook(String title, String author,
                         byte[] coverImage) {
-        
+
         jdbcTemplate.update(ADD_BOOK_QUERY, title, author, coverImage);
-        
+
         Book book = jdbcTemplate
-                        .queryForObject(SEARCH_BOOK_QUERY, bookRowMapper, title,
-                            author);
-        
+                .queryForObject(SEARCH_BOOK_QUERY, bookRowMapper, title,
+                        author);
+
         //DAOLogger.info("Added book: {}", book);
-        
+
         return book;
     }
-    
+
     private Book getBook(int bookId) {
         return jdbcTemplate
-                   .queryForObject(BOOK_BY_ID_QUERY, bookRowMapper, bookId);
+                .queryForObject(BOOK_BY_ID_QUERY, bookRowMapper, bookId);
     }
-    
+
     @Override
     public Book changeRating(int bookId, int newRating) {
         jdbcTemplate.update(RATING_CHANGE_QUERY, newRating, bookId);
-        
+
         return getBook(bookId);
     }
-    
+
     @Override
     public byte[] getBookImage(int bookId) {
         byte[] image = jdbcTemplate
-                           .queryForObject(IMAGE_BY_BOOK_ID_QUERY,
-                               imageRowMapper, bookId);
-        
+                .queryForObject(IMAGE_BY_BOOK_ID_QUERY,
+                        imageRowMapper, bookId);
+
         if (image == null) {
             image = getDefaultImage();
         }
-        
+
         return image;
     }
-    
+
     private byte[] getDefaultImage() {
         return jdbcTemplate
-                   .queryForObject(DEFAULT_IMAGE_QUERY, imageRowMapper);
+                .queryForObject(DEFAULT_IMAGE_QUERY, imageRowMapper);
     }
-    
+
 }

@@ -133,7 +133,7 @@ function BooksView(controller, model) {
     }
 
     function addBook(bookFormData) {
-        if (!Utils.isEmpty(bookFormData.get("title")) ||
+        if (!Utils.isEmpty(bookFormData.get("title")) &&
             !Utils.isEmpty(bookFormData.get("author"))) {
             mainController.addBook(bookFormData);
         } else {
@@ -184,7 +184,14 @@ function BooksView(controller, model) {
 
     function chooseCategory(category) {
         Utils.resetInnerHTML(window.document.querySelector(".main_content"));
-        Utils.resetInnerHTML(window.document.querySelector(".modal_container"));
+
+        let modalContainer = window.document.querySelector(".modal_container");
+        let userAuthenticationModal = window.document.querySelector(
+            "#user-authentication").cloneNode(true);
+
+        Utils.resetInnerHTML(modalContainer);
+        modalContainer.appendChild(userAuthenticationModal);
+
         let categories = window.document.querySelectorAll(
             ".main_sort .sort div a");
         for (let i = 0; i < categories.length; i++) {
@@ -257,12 +264,6 @@ function BooksView(controller, model) {
 
             addBook(bookFormData);
         });
-
-    window.document.querySelector(".aside .menu form")
-        .addEventListener("submit",
-            function (event) {
-                alert("ку" + event);
-            });
 
     window.document.querySelector("#all_books")
         .addEventListener("click", function () {

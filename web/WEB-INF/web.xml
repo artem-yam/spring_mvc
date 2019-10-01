@@ -27,6 +27,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <session-config>
+        <session-timeout>5</session-timeout>
+    </session-config>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>WEB-INF/applicationContext.xml

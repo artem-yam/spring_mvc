@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Notification DAO for oracle DB
+ */
 @Component
 public class OracleNotificationDAO implements NotificationDAO {
     

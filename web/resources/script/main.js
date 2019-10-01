@@ -1,7 +1,19 @@
 (function () {
     "use strict";
 
-    async function pageLoad() {
+    async function init() {
+
+        let onUserLogIn = new EventEmitter();
+
+        onUserLogIn.subscribe(function () {
+            showStartInfo();
+        });
+
+        function showStartInfo() {
+            booksView.browsePage();
+            notificationsView.loadHistoryBar();
+        }
+
         let notificationsModel = new NotificationsModel();
         let booksModel = new BooksModel();
 
@@ -11,15 +23,15 @@
             notificationsModel);
         let booksView = new BooksView(controller, booksModel);
 
-        new LoginView();
+        new LoginView(controller, onUserLogIn);
 
         await booksModel.initModel();
         await notificationsModel.initModel();
 
-        booksView.browsePage();
-        notificationsView.loadHistoryBar();
+        showStartInfo();
+
     }
 
-    window.addEventListener("load", pageLoad);
+    window.addEventListener("load", init);
 
 }());

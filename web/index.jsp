@@ -166,13 +166,21 @@
                     </div>
 
                     <div class="modal-body">
-                        input login
-                        input password
+                        <form enctype="multipart/form-data" method="post"
+                              name="loginForm">
+
+                            <input placeholder="Login" type="text"
+                                   id="user_login" name="login"/>
+                            <input placeholder="Password" type="text"
+                                   id="user_password" name="password"/>
+
+                        </form>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary"
-                                data-dismiss="modal">Close
+                                id="login_user">
+                            Login
                         </button>
                     </div>
 

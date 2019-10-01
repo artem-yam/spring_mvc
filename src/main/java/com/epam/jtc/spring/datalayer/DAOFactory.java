@@ -3,6 +3,7 @@ package com.epam.jtc.spring.datalayer;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
 import com.epam.jtc.spring.datalayer.dao.TagDAO;
+import com.epam.jtc.spring.datalayer.dao.UserDAO;
 
 /**
  * Factory of DAO
@@ -39,4 +40,11 @@ public interface DAOFactory {
      * @return {@link NotificationDAO}
      */
     NotificationDAO getNotificationDAO();
+
+    /**
+     * Users DAO getter
+     *
+     * @return {@link UserDAO}
+     */
+    UserDAO getUserDAO();
 }
