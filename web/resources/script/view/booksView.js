@@ -272,7 +272,6 @@ function BooksView(controller, model) {
             let bookForm = document.forms.namedItem("addBookForm");
             let bookFormData = new FormData(bookForm);
 
-            //bookForm.submit();
             addBook(bookFormData);
         });
 

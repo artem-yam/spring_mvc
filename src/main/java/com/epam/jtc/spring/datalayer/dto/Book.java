@@ -1,6 +1,7 @@
 package com.epam.jtc.spring.datalayer.dto;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class Book {
      */
     private byte[] imageBytes = new byte[0];
 
-    private String image = "";
+    private CommonsMultipartFile image;
     /**
      * Book rating
      */
@@ -56,11 +57,11 @@ public class Book {
     public Book() {
     }
 
-    public String getImage() {
+    public CommonsMultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(CommonsMultipartFile image) {
         this.image = image;
     }
 
@@ -197,7 +198,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", imageBytes=" + Arrays.toString(imageBytes) +
-                ", image='" + image.substring(0, 10) + '\'' +
+                ", image='" + image + '\'' +
                 ", rating=" + rating +
                 ", tags=" + tags +
                 ", isDeleted=" + isDeleted +

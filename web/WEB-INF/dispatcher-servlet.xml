@@ -13,6 +13,14 @@
         <property name="maxUploadSize" value="-1"/>
     </bean>
 
+
+    <!--<bean id="validatorFactory"
+          class="javax.validation.Validation" factory-method="buildDefaultValidatorFactory"/>
+
+    <bean id="validatorContext" factory-bean="validatorFactory" factory-method="usingContext"/>
+
+    <bean id="validator" factory-bean="validatorContext" factory-method="getValidator"/>-->
+
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter">

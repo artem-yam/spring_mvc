@@ -1,5 +1,8 @@
 package com.epam.jtc.spring.datalayer.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * User entity
  */
@@ -8,11 +11,15 @@ public class User {
     /**
      * User login
      */
+    @NotNull
+    @Size(min = 5, max = 20)
     private String login;
 
     /**
      * User password
      */
+    @NotNull
+    @Size(min = 5, max = 20)
     private String password;
 
     /**

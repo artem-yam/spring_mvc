@@ -33,8 +33,6 @@ let Utils = function () {
                 url: url,
                 type: requestType,
                 contentType: false,
-                //"application/x-www-form-urlencoded",
-                // "multipart/form-data",
                 processData: false,
                 data: data
             });
@@ -52,8 +50,8 @@ let Utils = function () {
             return data;
         }, function (error) {
             if (error.status) {
-                //alert("Error 401. User not logged in");
-                //onLoginError.notify();
+                alert("Error 401. User not logged in");
+                onLoginError.notify();
             }
             throw error;
         });
