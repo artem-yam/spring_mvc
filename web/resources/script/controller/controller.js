@@ -29,6 +29,10 @@ function Controller(booksModel, notificationsModel) {
         controlledBooksModel.addBookTag(bookId, newTag);
     }
 
+    function deleteBook(bookId) {
+        return controlledBooksModel.deleteBook(bookId);
+    }
+
     function addSearchNotification(searchText, category) {
         controlledNotificationsModel.addSearchNotification(searchText,
             category);
@@ -65,6 +69,7 @@ function Controller(booksModel, notificationsModel) {
         addSearchNotification,
         getBookById,
         loginUser,
-        logoutUser
+        logoutUser,
+        deleteBook
     };
 }

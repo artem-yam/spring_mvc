@@ -36,7 +36,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         
         HttpSession session = request.getSession(false);
         
-        if (session == null) {
+        /*if (session == null) {
             response.sendRedirect(request.getContextPath());
             return false;
         } else {
@@ -47,7 +47,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                     "Not logged in user");
                 return false;
             }
-        }
+        }*/
         
         return true;
     }

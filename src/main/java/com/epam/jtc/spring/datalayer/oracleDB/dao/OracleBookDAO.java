@@ -138,5 +138,10 @@ public class OracleBookDAO implements BookDAO {
         return jdbcTemplate
                 .queryForObject(DEFAULT_IMAGE_QUERY, imageRowMapper);
     }
+    
+    @Override
+    public void deleteBook(int bookId) {
+        jdbcTemplate.update("update books set is_deleted=1 where id=?", bookId);
+    }
 
 }

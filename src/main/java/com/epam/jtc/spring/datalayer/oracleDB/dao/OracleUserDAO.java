@@ -75,7 +75,7 @@ public class OracleUserDAO implements UserDAO {
         
         //DAOLogger.info("Received user to login: {}", user);
         
-        /*if (user.isOnline()) {
+        if (user.isOnline()) {
             // уже онлайн
             DAOLogger.info("User already online");
             throw new SQLException(USER_ALREADY_ONLINE_MESSAGE);
@@ -88,9 +88,7 @@ public class OracleUserDAO implements UserDAO {
             DAOLogger.info("Updating user status");
             jdbcTemplate.update(SET_ONLINE_QUERY, login);
             DAOLogger.info("User logged in");
-        }*/
-        
-        jdbcTemplate.update(SET_ONLINE_QUERY, login);
+        }
     }
     
     @Override

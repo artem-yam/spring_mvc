@@ -39,4 +39,6 @@ public interface BookDAO {
      * @return images bytes string
      */
     byte[] getBookImage(int bookId);
+    
+    void deleteBook(int bookId);
 }

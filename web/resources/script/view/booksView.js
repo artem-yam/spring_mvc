@@ -15,8 +15,11 @@ function BooksView(controller, model) {
 
         bookBlock.querySelector(".delete-book")
             .addEventListener('click', function () {
-                let toDelete = confirm("Delete this book?");
-                //mainController.updateRating(book.id, i);
+                if (confirm("Delete this book?")) {
+                    mainController.deleteBook(book.id).then(function () {
+                        window.document.location.reload(true);
+                    });
+                }
             });
 
         bookBlock.querySelector("img").setAttribute("alt", book.title);
@@ -133,12 +136,16 @@ function BooksView(controller, model) {
     }
 
     function addBook(bookFormData) {
-        if (!Utils.isEmpty(bookFormData.get("title")) &&
+        /*if (!Utils.isEmpty(bookFormData.get("title")) &&
             !Utils.isEmpty(bookFormData.get("author"))) {
+        */
             mainController.addBook(bookFormData);
-        } else {
+        /*} else {
             alert("Fill \"Title\" and \"Author\" fields to add a new book");
-        }
+        }*/
+
+        /*let bookForm = document.forms.namedItem("addBookForm");
+        bookForm.submit();*/
     }
 
     function showLoadedImage() {
@@ -265,6 +272,7 @@ function BooksView(controller, model) {
             let bookForm = document.forms.namedItem("addBookForm");
             let bookFormData = new FormData(bookForm);
 
+            //bookForm.submit();
             addBook(bookFormData);
         });
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -34,8 +35,8 @@
 
     <aside class="aside">
         <div class="menu">
-            <form enctype="multipart/form-data" method="post"
-                  name="addBookForm">
+            <form method="post" enctype="multipart/form-data"
+                  name="addBookForm" action="books">
 
                 <a id="add_book">
                     <span>&#10010;</span>

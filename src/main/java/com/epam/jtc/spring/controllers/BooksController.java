@@ -8,8 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,10 +30,17 @@ public class BooksController {
     
     private BookDAO dao;
     
+    //private Validator validator;
+    
     @Autowired
     public BooksController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
                   .getBookDAO();
+    }
+    
+    @InitBinder
+    public void customizeBinding(WebDataBinder binder) {
+        //binder.setValidator(validator);
     }
     
     /**
@@ -53,13 +60,31 @@ public class BooksController {
      *
      * @return added book id
      */
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    /*@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Book addBook(@RequestParam("title") String title,
                         @RequestParam("author") String author,
                         @RequestParam("image") MultipartFile image
     ) throws IOException {
         return dao.addBook(title, author,
             image.getBytes());
+    }*/
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Book addBook(//@RequestParam("title") String title,
+                        //@RequestParam("author") String author,
+                        //@RequestParam("image") MultipartFile image
+                        //,@RequestPart("addBookForm") Object form
+                        Book form
+    ) throws IOException {
+        
+        logger.info("Book adding form: {}", form);
+        
+        //Iterator iter = form.getFileNames();
+        //iter.forEachRemaining(logger::info);
+        
+        logger.info("Adding book");
+        
+        return null;
+        //dao.addBook(title, author, image.getBytes();
     }
     
     /**
@@ -79,9 +104,13 @@ public class BooksController {
     
     @GetMapping(value = "/{bookId}/image")
     public byte[] getBookImage(@PathVariable int bookId) {
-        //logger.info("getting image for book {}", bookId);
-        
         return dao.getBookImage(bookId);
+    }
+    
+    @PostMapping("/{bookId}")
+    public void deleteBook(@PathVariable int bookId) {
+        logger.info("Deleting book {}", bookId);
+        dao.deleteBook(bookId);
     }
     
 }

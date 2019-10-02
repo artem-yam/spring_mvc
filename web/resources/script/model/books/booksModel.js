@@ -168,6 +168,17 @@ function BooksModel() {
         return availableTags;
     }
 
+    function deleteBook(bookId) {
+        return Utils.sendRequest(AJAX_BOOKS_URL + URL_SEPARATOR + bookId,
+            null, requestType.POST)
+            .then(async function () {
+                await refreshModel();
+
+                alert("Book " + bookId + " was deleted");
+
+            });
+    }
+
     return {
         search,
         updateRating,
@@ -183,6 +194,7 @@ function BooksModel() {
 
         onBookAdd,
         onTagsChange,
-        refreshModel
+        refreshModel,
+        deleteBook
     }
 }
