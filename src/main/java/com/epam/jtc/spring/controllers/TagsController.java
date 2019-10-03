@@ -21,11 +21,18 @@ public class TagsController {
     /**
      * logger for class
      */
-    private static final Logger logger = LogManager
-                                             .getLogger(new Object() {
-                                             }.getClass().getEnclosingClass());
+    private static final Logger logger = LogManager.getLogger(TagsController.class);
+    
+    /**
+     * DAO for operations with tags
+     */
     private TagDAO dao;
     
+    /**
+     * Constructor
+     *
+     * @param dataSourceType type of data source
+     */
     @Autowired
     public TagsController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
@@ -48,7 +55,7 @@ public class TagsController {
      *
      * @param bookId book id
      * @param tag    tag to add
-     * @return book id
+     * @return list of the book tags
      */
     //@PostMapping("/books/{bookId}/tags")
     @PostMapping("/{tag}")

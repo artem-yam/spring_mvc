@@ -2,6 +2,7 @@ package com.epam.jtc.spring.datalayer.dao;
 
 import com.epam.jtc.spring.datalayer.dto.Book;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public interface BookDAO {
      *  @param bookId    id of the book
      * @param newRating new book rating
      */
-    Book changeRating(int bookId, int newRating);
+    Book changeRating(int bookId, int newRating) throws SQLException;
 
     /**
      * Gets book image

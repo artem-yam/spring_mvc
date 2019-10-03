@@ -10,27 +10,29 @@ import java.sql.SQLException;
 
 import static org.apache.commons.io.IOUtils.toByteArray;
 
-
+/**
+ * Converts DB blob image value to byte representation
+ */
 @Component
 public class BookImageRowMapper extends BeanPropertyRowMapper<byte[]> {
-
+    
     @Override
     public byte[] mapRow(ResultSet rs, int rowNum)
-            throws SQLException {
-
+        throws SQLException {
+        
         byte[] image = null;
-
+        
         if (rs.getBlob(1) != null) {
             InputStream imageBlobStream =
-                    rs.getBlob(1).getBinaryStream();
+                rs.getBlob(1).getBinaryStream();
             try {
                 image = toByteArray(imageBlobStream);
             } catch (IOException bookImageIOException) {
                 logger.warn("Can't get image",
-                        bookImageIOException);
+                    bookImageIOException);
             }
         }
-
+        
         return image;
     }
 }

@@ -9,13 +9,15 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * Session listener removes logged in user when session destroys
+ */
 @WebListener
 @Component
 public class SessionListener implements HttpSessionListener {
     
-    private static final Logger logger = LogManager
-                                             .getLogger(new Object() {
-                                             }.getClass().getEnclosingClass());
+    private static final Logger logger =
+        LogManager.getLogger(SessionListener.class);
     
     @Override
     public void sessionCreated(HttpSessionEvent ev) {

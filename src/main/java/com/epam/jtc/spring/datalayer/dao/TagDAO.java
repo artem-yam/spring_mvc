@@ -27,6 +27,7 @@ public interface TagDAO {
      *
      * @param bookId id of the book
      * @param tag    tag to add
+     * @return list of the book tags
      */
     List<String> addTagToBook(int bookId, String tag);
 }

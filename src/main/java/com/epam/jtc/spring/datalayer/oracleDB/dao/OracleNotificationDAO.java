@@ -21,10 +21,8 @@ public class OracleNotificationDAO implements NotificationDAO {
     /**
      * Logger for class
      */
-    private static final Logger DAOLogger = LogManager
-                                                .getLogger(new Object() {
-                                                }.getClass()
-                                                               .getEnclosingClass());
+    private static final Logger DAOLogger =
+        LogManager.getLogger(OracleNotificationDAO.class);
     /**
      * Query to get all notifications
      */
@@ -51,11 +49,13 @@ public class OracleNotificationDAO implements NotificationDAO {
             "where (book is null or book=?) and (content is null or content=?) " +
             "and (category is null or category=?) order by NOTIFICATIONS.id " +
             "desc) where rownum=1";
+    
     /**
      * Row mapper for result sets from DB 'notifications' table
      */
     @Autowired
     private RowMapper<Notification> notificationRowMapper;
+    
     /**
      * JDBC template to connect DB
      */

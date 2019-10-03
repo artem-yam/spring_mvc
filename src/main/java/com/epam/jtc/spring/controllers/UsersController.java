@@ -23,74 +23,100 @@ import java.sql.SQLException;
  */
 @RestController
 @RequestMapping("/users")
-public class UsersController /*implements Serializable */ {
-
+public class UsersController {
+    
     /**
      * logger for class
      */
-    private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+    private static final Logger logger =
+        LogManager.getLogger(UsersController.class);
+    
+    /**
+     * DAO for operations with users
+     */
     private UserDAO dao;
-
-
+    
+    /**
+     * Controller
+     *
+     * @param dataSourceType type of data source
+     */
     @Autowired
     public UsersController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
-                .getUserDAO();
-
+                  .getUserDAO();
+        
     }
-
+    
+    /**
+     * Method to login the user
+     *
+     * @param request       {@link HttpServletRequest} request
+     * @param user          user to login
+     * @param bindingResult {@link BindingResult} binding result with user's validity check
+     * @throws Exception some exception while user login
+     */
     @PostMapping(value = "/login",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void loginUser(HttpServletRequest request,
                           @Valid User user, BindingResult bindingResult)
-            throws Exception {
+        throws Exception {
         logger.info("Start login for user: {}", user);
-
+        
         if (bindingResult.hasErrors()) {
             for (ObjectError er : bindingResult.getAllErrors()) {
                 logger.warn(er);
             }
             throw new Exception("User is not valid");
         }
-
+        
         request.getSession().setAttribute("user_controller", this);
-
+        
         dao.loginUser(user.getLogin(), user.getPassword());
-
+        
         //logger.info("User logged in");
-
+        
         request.getSession().setAttribute("logged_user", user.getLogin());
     }
-
+    
+    /**
+     * Method to logout the user
+     *
+     * @param request {@link HttpServletRequest} request
+     * @throws Exception some exception while user logout
+     */
     @PostMapping(value = "/logout")
     public void logoutUser(HttpServletRequest request) throws Exception {
-
+        
         String userToLogOut = null;
-
+        
         if (request.getSession(false) != null) {
             userToLogOut =
-                    (String) request.getSession(false)
-                            .getAttribute("logged_user");
+                (String) request.getSession(false)
+                             .getAttribute("logged_user");
         }
-
+        
         if (userToLogOut != null) {
-
+            
             logger.info("Start logout for user: {} ", userToLogOut);
-
+            
             performDAOLogout(userToLogOut);
-
+            
             if (request.getSession(false) != null) {
                 request.getSession(false).removeAttribute("logged_user");
             }
         }
-
+        
     }
-
+    
+    /**
+     * Simple user logout
+     *
+     * @param login login of user to logout
+     * @throws SQLException some exception while user logout
+     */
     public void performDAOLogout(String login) throws SQLException {
         dao.logoutUser(login);
     }
-
+    
 }

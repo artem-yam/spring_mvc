@@ -24,33 +24,49 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BooksController {
-
+    
     /**
      * logger for class
      */
-    private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+    private static final Logger logger =
+        LogManager.getLogger(BooksController.class);
+    
+    /**
+     * DAO for operations with books
+     */
     private BookDAO dao;
-
+    
+    /**
+     * Validator for books
+     */
     private Validator bookValidator;
-
+    
+    /**
+     * Constructor
+     *
+     * @param dataSourceType type of data source
+     * @param bookValidator  validator for books
+     */
     @Autowired
     public BooksController(DataSourceType dataSourceType,
                            @Autowired @Qualifier("bookValidator")
-                                   Validator bookValidator) {
+                               Validator bookValidator) {
         dao = DAOFactory.getInstance(dataSourceType)
-                .getBookDAO();
-
+                  .getBookDAO();
+        
         this.bookValidator = bookValidator;
     }
-
+    
+    /**
+     * Binder initializer
+     *
+     * @param binder {@link WebDataBinder}
+     */
     @InitBinder
     public void bindValidator(WebDataBinder binder) {
         binder.setValidator(bookValidator);
     }
-
+    
     /**
      * Gets all books from dao
      *
@@ -58,56 +74,66 @@ public class BooksController {
      */
     @GetMapping
     public List<Book> getAllBooks() {
-        List<Book> books = dao.getAllBooks();
-        //logger.info("All books: {}", books);
-        return books;
+        return dao.getAllBooks();
     }
-
+    
     /**
      * Adds the book to dao
      *
-     * @return added book id
+     * @return added book
      */
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Book addBook(@Valid Book newBook, BindingResult bindingResult
     ) throws Exception {
         logger.info("Adding book : {}", newBook);
-
+        
         if (bindingResult.hasErrors()) {
             for (ObjectError er : bindingResult.getAllErrors()) {
                 logger.warn(er);
             }
             throw new Exception("Book is not valid");
         }
-
+        
         return dao.addBook(newBook.getTitle(), newBook.getAuthor(),
-                newBook.getImage().getBytes());
+            newBook.getImage().getBytes());
     }
-
+    
     /**
      * Changes the book rating
      *
      * @param bookId    id of the book
      * @param newRating book's new rating
-     * @return id of the book
+     * @return book
      */
     @PostMapping("/{bookId}/rating")
     public Book changeBookRating(@PathVariable int bookId,
-                                 @RequestBody int newRating) {
-        //logger.info("New rating for book {} = {}", bookId, newRating);
-
+                                 @RequestBody int newRating)
+        throws Exception {
+        logger.info("New rating for book {} = {}", bookId, newRating);
+        
         return dao.changeRating(bookId, newRating);
     }
-
-    @GetMapping(value = "/{bookId}/image")
+    
+    /**
+     * Gets image for the book
+     *
+     * @param bookId id of the book
+     * @return bytes representation of the image
+     */
+    @GetMapping("/{bookId}/image")
     public byte[] getBookImage(@PathVariable int bookId) {
         return dao.getBookImage(bookId);
     }
-
+    
+    /**
+     * Deletes the book
+     *
+     * @param bookId id of the book to delete
+     */
     @PostMapping("/{bookId}")
     public void deleteBook(@PathVariable int bookId) {
         logger.info("Deleting book {}", bookId);
         dao.deleteBook(bookId);
     }
-
+    
 }

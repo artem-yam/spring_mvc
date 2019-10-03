@@ -21,12 +21,19 @@ public class NotificationsController {
     /**
      * logger for class
      */
-    private static final Logger logger = LogManager
-                                             .getLogger(new Object() {
-                                             }.getClass().getEnclosingClass());
+    private static final Logger logger =
+        LogManager.getLogger(NotificationsController.class);
     
+    /**
+     * DAO for operations with notifications
+     */
     private NotificationDAO dao;
     
+    /**
+     * Constructor
+     *
+     * @param dataSourceType type of data source
+     */
     @Autowired
     public NotificationsController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
@@ -47,7 +54,7 @@ public class NotificationsController {
      * Adds the notification to dao
      *
      * @param newNote notification to add
-     * @return some representation of successful adding
+     * @return added notification
      */
     @PostMapping
     public Notification addNotification(@RequestBody Notification newNote) {

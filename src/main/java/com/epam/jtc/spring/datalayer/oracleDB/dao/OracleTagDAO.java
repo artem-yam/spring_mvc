@@ -18,11 +18,8 @@ public class OracleTagDAO implements TagDAO {
     /**
      * Logger for class
      */
-    private static final Logger DAOLogger = LogManager
-                                                .getLogger(new Object() {
-                                                }.getClass()
-                                                               .getEnclosingClass());
-    
+    private static final Logger DAOLogger =
+        LogManager.getLogger(OracleTagDAO.class);
     /**
      * Query to get all available tags
      */
@@ -59,6 +56,11 @@ public class OracleTagDAO implements TagDAO {
                    .queryForList(GET_ALL_TAGS_QUERY, String.class);
     }
     
+    /**
+     * Adds tag to the collection of all available tags
+     *
+     * @param text tag text
+     */
     private void addTag(String text) {
         if (!getAllTags().contains(text)) {
             jdbcTemplate.update(INSERT_NEW_TAG_QUERY, text);

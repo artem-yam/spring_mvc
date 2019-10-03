@@ -9,14 +9,14 @@ import java.util.List;
  * DAO for notifications
  */
 public interface NotificationDAO {
-
+    
     /**
      * Gets all notifications
      *
      * @return list of notifications
      */
     List<Notification> getAllNotifications();
-
+    
     /**
      * Adds new notification
      *
@@ -24,9 +24,9 @@ public interface NotificationDAO {
      * @param content  content of the notification
      * @param category category of the notification
      * @param type     type of the notification
-     * @return some representation of successful insert
+     * @return added notification
      */
     Notification addNotification(int bookId, String content, String category,
                                  NotificationTypes type);
-
+    
 }

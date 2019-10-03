@@ -1,6 +1,7 @@
 package com.epam.jtc.spring.datalayer.dto;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Notification entity
@@ -151,7 +152,8 @@ public class Notification {
         this.date = date;
     }
     
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Notification{" +
                    "id=" + id +
                    ", bookId=" + bookId +
@@ -160,5 +162,28 @@ public class Notification {
                    ", type=" + type +
                    ", date=" + date +
                    '}';
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Notification)) {
+            return false;
+        }
+        Notification that = (Notification) o;
+        return getId() == that.getId() &&
+                   getBookId() == that.getBookId() &&
+                   Objects.equals(getContent(), that.getContent()) &&
+                   Objects.equals(getCategory(), that.getCategory()) &&
+                   getType() == that.getType() &&
+                   Objects.equals(getDate(), that.getDate());
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getBookId(), getContent(), getCategory(),
+            getType(), getDate());
     }
 }

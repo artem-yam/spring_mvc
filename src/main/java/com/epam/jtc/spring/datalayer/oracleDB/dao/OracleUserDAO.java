@@ -20,10 +20,8 @@ public class OracleUserDAO implements UserDAO {
     /**
      * Logger for class
      */
-    private static final Logger DAOLogger = LogManager
-                                                .getLogger(new Object() {
-                                                }.getClass()
-                                                               .getEnclosingClass());
+    private static final Logger DAOLogger =
+        LogManager.getLogger(OracleUserDAO.class);
     
     private static final String NULL_USER_MESSAGE =
         "User with this login doesn't exist!";
@@ -56,6 +54,13 @@ public class OracleUserDAO implements UserDAO {
     @Autowired
     private RowMapper<User> userRowMapper;
     
+    /**
+     * Gets user by it's login
+     *
+     * @param login login
+     * @return found user
+     * @throws SQLException if user not found
+     */
     private User getUser(String login) throws SQLException {
         User user = jdbcTemplate
                         .queryForObject(FIND_USER_QUERY, userRowMapper, login);

@@ -59,8 +59,7 @@ function BooksModel() {
 
         return Utils.sendRequest(
             AJAX_BOOKS_URL + URL_SEPARATOR + bookId + URL_SEPARATOR +
-            AJAX_BOOK_RATING_URL,
-            newRating, requestType.POST);
+            AJAX_BOOK_RATING_URL, newRating, requestType.POST);
     }
 
     function addBook(bookFormData) {

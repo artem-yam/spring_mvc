@@ -14,23 +14,21 @@ import javax.sql.DataSource;
 /**
  * JDBC template
  */
-
 @Component("oracleJdbcTemplate")
 public class OracleJdbcTemplate extends JdbcTemplate {
-
+    
     private static final String DATA_SOURCE_JNDI_NAME =
-            "java:comp/env/jdbc/oracle";
-
-    private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+        "java:comp/env/jdbc/oracle";
+    
+    private static final Logger logger =
+        LogManager.getLogger(OracleJdbcTemplate.class);
+    
     @Autowired
     public OracleJdbcTemplate(DataSource dataSource) {
         super(dataSource);
     }
-
-    /*@Bean
+    
+    @Bean
     public static DataSource receiveDataSource() {
         DataSource ds = null;
         try {
@@ -38,9 +36,9 @@ public class OracleJdbcTemplate extends JdbcTemplate {
         } catch (NamingException namingException) {
             logger.warn("Can't get DataSource from JNDI", namingException);
         }
-
+        
         return ds;
-    }*/
+    }
 
     /*public OracleJdbcTemplate() {
         super();
