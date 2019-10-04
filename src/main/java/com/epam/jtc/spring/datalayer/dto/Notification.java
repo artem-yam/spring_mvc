@@ -169,7 +169,10 @@ public class Notification {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Notification)) {
+        if (o == null) {
+            return false;
+        }
+        if (this.getClass() != o.getClass()) {
             return false;
         }
         Notification that = (Notification) o;

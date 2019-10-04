@@ -62,10 +62,10 @@ public class BooksController {
      *
      * @param binder {@link WebDataBinder}
      */
-    @InitBinder
+    /*@InitBinder
     public void bindValidator(WebDataBinder binder) {
         binder.setValidator(bookValidator);
-    }
+    }*/
     
     /**
      * Gets all books from dao
@@ -86,6 +86,8 @@ public class BooksController {
     public Book addBook(@Valid Book newBook, BindingResult bindingResult
     ) throws Exception {
         logger.info("Adding book : {}", newBook);
+        
+        bookValidator.validate(newBook, bindingResult);
         
         if (bindingResult.hasErrors()) {
             for (ObjectError er : bindingResult.getAllErrors()) {
@@ -109,7 +111,7 @@ public class BooksController {
     public Book changeBookRating(@PathVariable int bookId,
                                  @RequestBody int newRating)
         throws Exception {
-        logger.info("New rating for book {} = {}", bookId, newRating);
+        //logger.info("New rating for book {} = {}", bookId, newRating);
         
         return dao.changeRating(bookId, newRating);
     }
@@ -120,7 +122,9 @@ public class BooksController {
      * @param bookId id of the book
      * @return bytes representation of the image
      */
-    @GetMapping("/{bookId}/image")
+    @GetMapping(value = "/{bookId}/image"
+        , produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
+    )
     public byte[] getBookImage(@PathVariable int bookId) {
         return dao.getBookImage(bookId);
     }

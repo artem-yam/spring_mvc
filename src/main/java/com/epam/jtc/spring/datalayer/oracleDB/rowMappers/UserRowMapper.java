@@ -19,7 +19,6 @@ public class UserRowMapper extends BeanPropertyRowMapper<User> {
         User user = new User();
         user.setLogin(rs.getString(1));
         user.setPassword(rs.getString(2));
-        user.setOnline(rs.getBoolean(3));
         
         return user;
     }

@@ -27,7 +27,7 @@ public class OracleUserDAO implements UserDAO {
         "User with this login doesn't exist!";
     private static final String USER_ALREADY_ONLINE_MESSAGE =
         "The user is already online!";
-    private static final String DIFFERENT_PASSWORDS_MESSAGE =
+    private static final String DIFFERENT_PASS_MESSAGE =
         "The password doesn't correspond!";
     
     /**
@@ -61,54 +61,9 @@ public class OracleUserDAO implements UserDAO {
      * @return found user
      * @throws SQLException if user not found
      */
-    private User getUser(String login) throws SQLException {
-        User user = jdbcTemplate
-                        .queryForObject(FIND_USER_QUERY, userRowMapper, login);
-        
-        if (user == null) {
-            // юзер не существует
-            throw new SQLException(NULL_USER_MESSAGE);
-        }
-        return user;
-    }
-    
     @Override
-    public void loginUser(String login, String password) throws SQLException {
-        //DAOLogger.info("Start login for user: {} {}", login, password);
-        
-        User user = getUser(login);
-        
-        //DAOLogger.info("Received user to login: {}", user);
-        
-        if (user.isOnline()) {
-            // уже онлайн
-            DAOLogger.info("User already online");
-            throw new SQLException(USER_ALREADY_ONLINE_MESSAGE);
-        } else if (!user.getPassword().equals(password)) {
-            // неправильный пароль
-            DAOLogger.info("Wrong user password");
-            throw new SQLException(DIFFERENT_PASSWORDS_MESSAGE);
-        } else {
-            //ставим онлайн
-            DAOLogger.info("Updating user status");
-            jdbcTemplate.update(SET_ONLINE_QUERY, login);
-            DAOLogger.info("User logged in");
-        }
-    }
-    
-    @Override
-    public void logoutUser(String login) throws SQLException {
-        DAOLogger.info("Start logout for user: {} ", login);
-        
-        User user = getUser(login);
-        
-        DAOLogger.info("Received user to logout: {}", user);
-        
-        if (user.isOnline()) {
-            // ставим офлайн
-            jdbcTemplate.update(SET_OFFLINE_QUERY, login);
-        }
-        
-        DAOLogger.info("User logged OUT");
+    public User getUser(String login) {
+        return jdbcTemplate
+                   .queryForObject(FIND_USER_QUERY, userRowMapper, login);
     }
 }

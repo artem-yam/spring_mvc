@@ -1,5 +1,11 @@
 package com.epam.jtc.spring.datalayer.dto;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -7,6 +13,10 @@ import java.util.Objects;
 /**
  * User entity
  */
+@Component("user")
+@Scope(value = WebApplicationContext.SCOPE_SESSION,
+    proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Lazy(false)
 public class User {
     
     /**
@@ -14,19 +24,14 @@ public class User {
      */
     @NotNull
     @Size(min = 5, max = 20)
-    private String login;
+    private String login = "";
     
     /**
      * User password
      */
     @NotNull
     @Size(min = 5, max = 20)
-    private String password;
-    
-    /**
-     * Is user online
-     */
-    private boolean isOnline;
+    private String password = "";
     
     /**
      * Default constructor
@@ -70,30 +75,20 @@ public class User {
         this.password = password;
     }
     
-    /**
-     * Getter for boolean 'is online' field
-     *
-     * @return is online
-     */
-    public boolean isOnline() {
-        return isOnline;
+    public boolean isActive() {
+        return (login.length() != 0 && password.length() != 0);
     }
     
-    /**
-     * Setter for boolean 'is online' field
-     *
-     * @param online is online
-     */
-    public void setOnline(boolean online) {
-        isOnline = online;
+    public void reset() {
+        this.login = "";
+        this.password = "";
     }
     
     @Override
     public String toString() {
         return "User{" +
                    "login='" + login + '\'' +
-                   ", password='" + password + '\'' +
-                   ", isOnline=" + isOnline +
+                   ", password='" + password +
                    '}';
     }
     
@@ -102,17 +97,19 @@ public class User {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof User)) {
+        if (o == null) {
+            return false;
+        }
+        if (this.getClass() != o.getClass()) {
             return false;
         }
         User user = (User) o;
-        return isOnline() == user.isOnline() &&
-                   Objects.equals(getLogin(), user.getLogin()) &&
+        return Objects.equals(getLogin(), user.getLogin()) &&
                    Objects.equals(getPassword(), user.getPassword());
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(getLogin(), getPassword(), isOnline());
+        return Objects.hash(getLogin(), getPassword());
     }
 }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -25,7 +25,15 @@
         </div>
         <div class="header_user-profile">
             <a href="#">
-                ${(empty logged_user) ? "John Doe": logged_user}
+                <c:choose>
+                    <c:when test="${sessionScope.containsKey('scopedTarget.user')
+                        and (not empty sessionScope.get('scopedTarget.user').login)}">
+                        ${sessionScope.get('scopedTarget.user').login}
+                    </c:when>
+                    <c:otherwise>
+                        John Doe
+                    </c:otherwise>
+                </c:choose>
             </a>
         </div>
         <div class="header_logout ${(empty logged_user) ? "hidden": ""} ">
@@ -50,7 +58,7 @@
                        name="author"/>
                 <label id="add_image_label" class="upload_button">Load Image
                     <input type="file" id="add_book_image"
-                           name="image" accept="image/*"/>
+                           name="image" accept=".jpg,.jpeg,.png"/>
                 </label><br>
                 <div id="loaded_image" class="hidden">
                     <img/>
@@ -316,6 +324,7 @@
 
     <!--Мэйн-->
     <script type="text/javascript" src="resources/script/main.js"></script>
+
 
 </body>
 </html>

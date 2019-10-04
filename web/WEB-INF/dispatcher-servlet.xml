@@ -13,26 +13,17 @@
         <property name="maxUploadSize" value="-1"/>
     </bean>
 
+    <!-- <bean id="imageByteArrayConverter"
+           class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+         <property name="supportedMediaTypes">
+             <list>
+                 <value>image/jpeg</value>
+                 <value>image/png</value>
+             </list>
+         </property>
+     </bean>-->
 
-    <!--<bean id="validatorFactory"
-          class="javax.validation.Validation" factory-method="buildDefaultValidatorFactory"/>
-
-    <bean id="validatorContext" factory-bean="validatorFactory" factory-method="usingContext"/>
-
-    <bean id="validator" factory-bean="validatorContext" factory-method="getValidator"/>-->
-
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>imageBytes/jpeg</value>
-                        <value>imageBytes/png</value>
-                    </list>
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+    <mvc:annotation-driven/>
 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
@@ -41,13 +32,18 @@
 
     <context:component-scan base-package="com.epam.jtc.spring"/>
 
-
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/*"/>
             <bean class="com.epam.jtc.spring.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/" />
+        <property name="suffix" value=".jsp" />
+        <property name="exposeContextBeansAsAttributes" value="true" />
+    </bean>
 
 
 </beans>

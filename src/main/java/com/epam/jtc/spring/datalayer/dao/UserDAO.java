@@ -1,6 +1,6 @@
 package com.epam.jtc.spring.datalayer.dao;
 
-import java.sql.SQLException;
+import com.epam.jtc.spring.datalayer.dto.User;
 
 /**
  * DAO for users
@@ -8,19 +8,10 @@ import java.sql.SQLException;
 public interface UserDAO {
     
     /**
-     * Perform user login
+     * Gets user by it's login
      *
-     * @param login    user's login
-     * @param password user's password
-     * @throws SQLException some exception while user login
+     * @param login login
+     * @return found user
      */
-    void loginUser(String login, String password) throws SQLException;
-    
-    /**
-     * Perform user logout
-     *
-     * @param login user's login
-     * @throws SQLException some exception while user logout
-     */
-    void logoutUser(String login) throws SQLException;
+    User getUser(String login);
 }

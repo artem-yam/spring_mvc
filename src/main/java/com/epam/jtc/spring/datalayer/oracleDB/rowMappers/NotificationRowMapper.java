@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class NotificationRowMapper extends BeanPropertyRowMapper<Notification> {
     
     private static final Logger DAOLogger =
-        LogManager.getLogger(OracleNotificationDAO.class);
+        LogManager.getLogger(NotificationRowMapper.class);
     
     @Override
     public Notification mapRow(ResultSet rs, int rowNum)
@@ -34,7 +34,7 @@ public class NotificationRowMapper extends BeanPropertyRowMapper<Notification> {
         
         notification.setDate(rs.getTimestamp(6));
         
-        DAOLogger.info("Notification: {}", notification);
+        //DAOLogger.info("Notification: {}", notification);
         
         return notification;
     }

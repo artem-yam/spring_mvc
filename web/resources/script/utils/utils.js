@@ -40,7 +40,7 @@ let Utils = function () {
 
             ajaxRequest = $.ajax({
                 url: url,
-                type: requestType.toString(),
+                type: requestType,
                 contentType: AJAX_DATA_TYPE,
                 data: JSON.stringify(data)
             });
@@ -53,7 +53,9 @@ let Utils = function () {
                 alert("Error 401. User not logged in");
                 onLoginError.notify();
             }
-            throw error;
+            throw(error);
+        }).catch(function (er) {
+            console.log(er);
         });
 
         return ajaxRequest;

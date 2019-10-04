@@ -126,11 +126,15 @@ public class OracleBookDAO implements BookDAO {
     public Book changeRating(int bookId, int newRating) throws SQLException {
         Book book = getBook(bookId);
         
+        //DAOLogger.info("Changing rating for book: {}; set = {}", book, newRating);
+        
         if (book == null) {
             throw new SQLException("The book doesn't exist");
         }
         
         jdbcTemplate.update(RATING_CHANGE_QUERY, newRating, bookId);
+        
+        book = getBook(bookId);
         
         return book;
     }

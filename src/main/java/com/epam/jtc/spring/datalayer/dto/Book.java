@@ -195,7 +195,10 @@ public class Book {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Book)) {
+        if (o == null) {
+            return false;
+        }
+        if (this.getClass() != o.getClass()) {
             return false;
         }
         Book book = (Book) o;

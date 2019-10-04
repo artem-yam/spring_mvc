@@ -1,8 +1,9 @@
 package com.epam.jtc.spring;
 
-import com.epam.jtc.spring.controllers.UsersController;
+import com.epam.jtc.spring.datalayer.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.annotation.WebListener;
@@ -19,30 +20,23 @@ public class SessionListener implements HttpSessionListener {
     private static final Logger logger =
         LogManager.getLogger(SessionListener.class);
     
+    private User activeUser;
+    
+    @Autowired
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
+    }
+    
     @Override
     public void sessionCreated(HttpSessionEvent ev) {
-        logger.info("New session created {}", ev.getSession().getId());
+        logger.info("New session created {} for {}", ev.getSession().getId(),
+            activeUser);
     }
     
     @Override
     public void sessionDestroyed(HttpSessionEvent ev) {
-        logger.info("Session destroyed {}", ev.getSession().getId());
-        
-        UsersController controller =
-            (UsersController) ev.getSession().getAttribute("user_controller");
-        
-        logger.info("User controller {}", controller);
-        
-        if (controller != null) {
-            try {
-                controller.performDAOLogout(
-                    (String) ev.getSession().getAttribute("logged_user"));
-            } catch (Exception logoutException) {
-                logger.warn("Cant logout user after session destroyed: ",
-                    logoutException);
-            }
-        }
-        
+        logger.info("Session destroyed {} for {}", ev.getSession().getId(),
+            activeUser);
     }
     
 }
