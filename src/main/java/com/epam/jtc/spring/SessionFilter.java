@@ -11,16 +11,18 @@ import java.io.IOException;
  */
 public class SessionFilter implements Filter {
     private static final String SESSION_ID_PARAMETER_NAME = "sessionId";
-    
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain)
-        throws IOException, ServletException {
-        
+            throws IOException, ServletException {
+
         try (final CloseableThreadContext.Instance ctc =
-                 CloseableThreadContext.put(SESSION_ID_PARAMETER_NAME,
-                     ((HttpServletRequest) request).getSession().getId())) {
-            
+                     CloseableThreadContext.put(SESSION_ID_PARAMETER_NAME,
+                             ((HttpServletRequest) request).getSession()
+                                     .getId())) {
+            request.setCharacterEncoding("UTF-8");
+
             chain.doFilter(request, response);
         }
     }

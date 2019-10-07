@@ -33,9 +33,17 @@ function LoginView(controller) {
             Utils.resetValue(window.document.querySelector("#user_login"));
             Utils.resetValue(window.document.querySelector("#user_password"));
 
+            let errorsDiv = window.document.querySelector(
+                "#userForm .errors");
+            Utils.resetInnerHTML(errorsDiv);
+
             mainController.loginUser(loginFormData).then(function () {
                 alert("Successful login");
                 window.document.location.reload(true);
+            }).catch(function (errors) {
+                for (let error of errors) {
+                    errorsDiv.innerHTML += error + "<br>";
+                }
             });
         } else {
             alert("Fill \"Login\" and \"Password\" fields to login");

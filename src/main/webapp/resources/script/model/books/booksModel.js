@@ -32,17 +32,6 @@ function BooksModel() {
         return result;
     }
 
-    function findBookByTitleAndAuthor(title, author) {
-        let foundBook;
-        for (let book of booksStorage) {
-            if (book.title === title && book.author === author) {
-                foundBook = book;
-                break;
-            }
-        }
-        return foundBook;
-    }
-
     function substringSearch(string, substring) {
         return string.toString().toLowerCase()
             .indexOf(substring.toLowerCase()) !== TEXT_NOT_FOUND;
@@ -75,13 +64,12 @@ function BooksModel() {
 
     function addBook(bookFormData) {
         return Utils.sendRequest(AJAX_BOOKS_URL, bookFormData, requestType.POST)
-            .then(function (addedBook) {
-                onBookAdd.notify(addedBook.title, addedBook.author);
+            .then(function (response) {
+                if (response instanceof Array) {
+                    throw response;
+                }
 
-                return addedBook.id;
-            }, function (error) {
-                alert("Adding error : " + error);
-                throw error;
+                onBookAdd.notify(response.id, response.title, response.author);
             });
     }
 
@@ -193,7 +181,6 @@ function BooksModel() {
         onBookAdd,
         onTagsChange,
         refreshModel,
-        deleteBook,
-        findBookByTitleAndAuthor
+        deleteBook
     }
 }

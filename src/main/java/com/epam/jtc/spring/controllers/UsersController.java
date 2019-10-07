@@ -7,7 +7,9 @@ import com.epam.jtc.spring.datalayer.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller for books
@@ -23,20 +27,23 @@ import java.io.Serializable;
 @RestController
 @RequestMapping("/users")
 public class UsersController implements Serializable {
-    
+
     /**
      * logger for class
      */
     private static final Logger logger =
-        LogManager.getLogger(UsersController.class);
-    
+            LogManager.getLogger(UsersController.class);
+
+    private static final String WRONG_USER_DATA_ERROR_MESSAGE =
+            "Wrong user data";
+
     /**
      * DAO for operations with users
      */
     private UserDAO dao;
-    
+
     private User activeUser;
-    
+
     /**
      * Controller
      *
@@ -45,15 +52,15 @@ public class UsersController implements Serializable {
     @Autowired
     public UsersController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
-                  .getUserDAO();
-        
+                .getUserDAO();
+
     }
-    
+
     @Autowired
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
     }
-    
+
     /**
      * Method to login the user
      * t
@@ -63,31 +70,48 @@ public class UsersController implements Serializable {
      * @throws Exception some exception while user login
      */
     @PostMapping(value = "/login",
-        consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void loginUser(@Valid User user, BindingResult bindingResult)
-        throws Exception {
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity loginUser(@Valid User user,
+                                    BindingResult bindingResult) {
         logger.info("Start login for user: {}", user);
-        
+
+        List<String> errors = new ArrayList<>();
+        Object toReturn = errors;
+
         if (bindingResult.hasErrors()) {
             for (ObjectError er : bindingResult.getAllErrors()) {
                 logger.warn(er);
+                errors.add(er.getDefaultMessage());
             }
-            throw new Exception("User is not valid");
+            //throw new Exception("User is not valid");
+        } else {
+
+            User userFromDAO = dao.getUser(user.getLogin());
+
+            logger.info("User from DAO: {}", userFromDAO);
+
+            if (userFromDAO == null ||
+                    !userFromDAO.getPassword().equals(user.getPassword())) {
+                logger.warn(WRONG_USER_DATA_ERROR_MESSAGE);
+                errors.add(WRONG_USER_DATA_ERROR_MESSAGE);
+                //throw new Exception("Wrong user data");
+            } else {
+                activeUser.setLogin(userFromDAO.getLogin());
+                activeUser.setPassword(userFromDAO.getPassword());
+
+                toReturn = userFromDAO;
+            }
         }
-        
-        User userFromDAO = dao.getUser(user.getLogin());
-        
-        logger.info("User from DAO: {}", userFromDAO);
-        
-        if (userFromDAO == null ||
-                !userFromDAO.getPassword().equals(user.getPassword())) {
-            throw new Exception("Wrong user data");
-        }
-        
-        activeUser.setLogin(userFromDAO.getLogin());
-        activeUser.setPassword(userFromDAO.getPassword());
+        logger.info("Logged user: {}", toReturn);
+
+        ResponseEntity responseEntity =
+                new ResponseEntity<>(toReturn, HttpStatus.ACCEPTED);
+
+        //logger.info("After add try: {}", responseEntity);
+
+        return responseEntity;
     }
-    
+
     /**
      * Method to logout the user
      *
@@ -95,14 +119,14 @@ public class UsersController implements Serializable {
      */
     @PostMapping(value = "/logout")
     public void logoutUser() {
-        
+
         User userToLogOut = dao.getUser(activeUser.getLogin());
-        
+
         if (userToLogOut != null) {
             //.info("Start logout for user: {} ", userToLogOut);
-            
+
             activeUser.reset();
         }
-        
+
     }
 }

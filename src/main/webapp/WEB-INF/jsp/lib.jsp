@@ -21,7 +21,6 @@
     <link rel="stylesheet" type="text/css"
           href="static/css/style.css"/>
 
-
 </head>
 <body>
     <header class="header">
@@ -62,11 +61,10 @@
                 </label>
                 <%--</a>--%>
 
-
-                <form:input placeholder="Title" type="text"
-                            name="title" path="title"/>
-                <form:input placeholder="Author" type="text"
-                            name="author" path="author"/>
+                <form:input id="add_book_title" placeholder="Title"
+                            type="text" name="title" path="title"/>
+                <form:input id="add_book_author" placeholder="Author"
+                            type="text" name="author" path="author"/>
 
                 <label id="add_image_label" class="upload_button">Load Image
                     <input type="file" id="add_book_image" name="image"
@@ -77,7 +75,9 @@
                 </div>
                 <form:errors path="*" cssClass="red" element="div"
                              id="addingErrors"/>
-                ${addedBook.title}
+
+                <div class="errors red">
+                </div>
 
             </form:form>
 
@@ -201,13 +201,15 @@
 
                     <div class="modal-body">
                         <form enctype="multipart/form-data" method="post"
-                              name="loginForm">
+                              name="loginForm" id="userForm">
 
                             <input placeholder="Login" type="text"
                                    id="user_login" name="login"/>
                             <input placeholder="Password" type="text"
                                    id="user_password" name="password"/>
 
+                            <div class="errors red">
+                            </div>
                         </form>
                     </div>
 
@@ -298,15 +300,6 @@
             </div>
         </div>
     </template>
-
-
-    <script type="text/javascript">
-        <c:set var="qq" value="${addedBook}"/>
-        var addedBook = null;
-        <c:if test="${not empty qq}">
-        addedBook = ${addedBook};
-        </c:if>
-    </script>
 
     <script type="text/javascript"
             src="static/script/utils/jquery-3.4.1.slim.min.js"></script>

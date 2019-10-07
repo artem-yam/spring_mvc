@@ -3,6 +3,7 @@ package com.epam.jtc.spring.datalayer.dto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,8 +12,8 @@ import java.util.Objects;
  * Book entity
  */
 @Component("book")
-public class Book {
-    
+public class Book implements Serializable {
+
     /**
      * Default book rating
      */
@@ -21,17 +22,17 @@ public class Book {
      * Book id
      */
     private int id;
-    
+
     /**
      * Book title
      */
     private String title;
-    
+
     /**
      * Book author
      */
     private String author;
-    
+
     private CommonsMultipartFile image;
     /**
      * Book rating
@@ -45,13 +46,13 @@ public class Book {
      * is book deleted
      */
     private boolean isDeleted = false;
-    
+
     /**
      * Default constructor
      */
     public Book() {
     }
-    
+
     /**
      * Image getter
      *
@@ -60,7 +61,7 @@ public class Book {
     public CommonsMultipartFile getImage() {
         return image;
     }
-    
+
     /**
      * Image setter
      *
@@ -69,7 +70,7 @@ public class Book {
     public void setImage(CommonsMultipartFile image) {
         this.image = image;
     }
-    
+
     /**
      * Getter for boolean isDeleted
      *
@@ -78,7 +79,7 @@ public class Book {
     public boolean isDeleted() {
         return isDeleted;
     }
-    
+
     /**
      * Setter for isDeleted
      *
@@ -87,7 +88,7 @@ public class Book {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
-    
+
     /**
      * Getter for id
      *
@@ -96,7 +97,7 @@ public class Book {
     public int getId() {
         return id;
     }
-    
+
     /**
      * Setter for id
      *
@@ -105,7 +106,7 @@ public class Book {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     /**
      * Getter for title
      *
@@ -114,7 +115,7 @@ public class Book {
     public String getTitle() {
         return title;
     }
-    
+
     /**
      * Setter for title
      *
@@ -123,7 +124,7 @@ public class Book {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     /**
      * Getter for author
      *
@@ -132,7 +133,7 @@ public class Book {
     public String getAuthor() {
         return author;
     }
-    
+
     /**
      * Setter for author
      *
@@ -141,7 +142,7 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-    
+
     /**
      * Getter for rating
      *
@@ -150,7 +151,7 @@ public class Book {
     public int getRating() {
         return rating;
     }
-    
+
     /**
      * Setter for rating
      *
@@ -159,7 +160,7 @@ public class Book {
     public void setRating(int rating) {
         this.rating = rating;
     }
-    
+
     /**
      * Getter for tags
      *
@@ -168,7 +169,7 @@ public class Book {
     public List<String> getTags() {
         return tags;
     }
-    
+
     /**
      * Setter for tags
      *
@@ -177,17 +178,18 @@ public class Book {
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
-    
-    @Override public String toString() {
+
+    @Override
+    public String toString() {
         return "{id:" + id +
-                   ", title:'" + title + '\'' +
-                   ", author:'" + author + '\'' +
-                   ", image:" + image +
-                   ", rating:" + rating +
-                   ", tags:" + tags +
-                   ", isDeleted:" + isDeleted + '}';
+                ", title:'" + title + '\'' +
+                ", author:'" + author + '\'' +
+                ", image:" + image +
+                ", rating:" + rating +
+                ", tags:" + tags +
+                ", isDeleted:" + isDeleted + '}';
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -201,19 +203,19 @@ public class Book {
         }
         Book book = (Book) o;
         return getId() == book.getId() &&
-                   getRating() == book.getRating() &&
-                   isDeleted() == book.isDeleted() &&
-                   Objects.equals(getTitle(), book.getTitle()) &&
-                   Objects.equals(getAuthor(), book.getAuthor()) &&
-                   Objects.equals(getImage(), book.getImage()) &&
-                   Objects.equals(getTags(), book.getTags());
+                getRating() == book.getRating() &&
+                isDeleted() == book.isDeleted() &&
+                Objects.equals(getTitle(), book.getTitle()) &&
+                Objects.equals(getAuthor(), book.getAuthor()) &&
+                Objects.equals(getImage(), book.getImage()) &&
+                Objects.equals(getTags(), book.getTags());
     }
-    
+
     @Override
     public int hashCode() {
         return Objects
-                   .hash(getId(), getTitle(), getAuthor(), getImage(),
-                       getRating(),
-                       getTags(), isDeleted());
+                .hash(getId(), getTitle(), getAuthor(), getImage(),
+                        getRating(),
+                        getTags(), isDeleted());
     }
 }

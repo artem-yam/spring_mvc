@@ -8,6 +8,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -15,30 +16,30 @@ import java.util.Objects;
  */
 @Component("user")
 @Scope(value = WebApplicationContext.SCOPE_SESSION,
-    proxyMode = ScopedProxyMode.TARGET_CLASS)
+        proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Lazy(false)
-public class User {
-    
+public class User implements Serializable {
+
     /**
      * User login
      */
     @NotNull
     @Size(min = 5, max = 20)
     private String login = "";
-    
+
     /**
      * User password
      */
     @NotNull
     @Size(min = 5, max = 20)
     private String password = "";
-    
+
     /**
      * Default constructor
      */
     public User() {
     }
-    
+
     /**
      * Login getter
      *
@@ -47,7 +48,7 @@ public class User {
     public String getLogin() {
         return login;
     }
-    
+
     /**
      * Login setter
      *
@@ -56,7 +57,7 @@ public class User {
     public void setLogin(String login) {
         this.login = login;
     }
-    
+
     /**
      * Password getter
      *
@@ -65,7 +66,7 @@ public class User {
     public String getPassword() {
         return password;
     }
-    
+
     /**
      * Password setter
      *
@@ -74,24 +75,24 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public boolean isActive() {
         return (login.length() != 0 && password.length() != 0);
     }
-    
+
     public void reset() {
         this.login = "";
         this.password = "";
     }
-    
+
     @Override
     public String toString() {
         return "User{" +
-                   "login='" + login + '\'' +
-                   ", password='" + password +
-                   '}';
+                "login='" + login + '\'' +
+                ", password='" + password +
+                '}';
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -105,9 +106,9 @@ public class User {
         }
         User user = (User) o;
         return Objects.equals(getLogin(), user.getLogin()) &&
-                   Objects.equals(getPassword(), user.getPassword());
+                Objects.equals(getPassword(), user.getPassword());
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(getLogin(), getPassword());

@@ -49,6 +49,7 @@ let Utils = function () {
         ajaxRequest.then(function (data) {
             return data;
         }, function (error) {
+            console.log("Error status = " + error.status);
             if (error.status == 401) {
                 onLoginError.notify();
             }

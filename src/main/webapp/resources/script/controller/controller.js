@@ -19,10 +19,7 @@ function Controller(booksModel, notificationsModel) {
     }
 
     function addBook(bookFormData) {
-        controlledBooksModel.addBook(bookFormData)
-            .then(function (newBookId) {
-                addNewBookNotification(newBookId);
-            });
+        return controlledBooksModel.addBook(bookFormData);
     }
 
     function addNewBookNotification(newBookId) {
@@ -48,11 +45,12 @@ function Controller(booksModel, notificationsModel) {
 
     function loginUser(loginFormData) {
         return Utils.sendRequest(
-            AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGIN_URL,
-            loginFormData, requestType.POST)
-            .catch(function (error) {
-                alert("Can't login : " + error);
-                throw error;
+            AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGIN_URL, loginFormData,
+            requestType.POST)
+            .then(function (response) {
+                if (response instanceof Array) {
+                    throw response;
+                }
             });
     }
 

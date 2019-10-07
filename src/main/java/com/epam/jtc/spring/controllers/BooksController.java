@@ -8,96 +8,104 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Controller for books
  */
-@Controller
+@RestController
 @RequestMapping("/books")
 public class BooksController {
-    
+
     /**
      * logger for class
      */
     private static final Logger logger =
-        LogManager.getLogger(BooksController.class);
-    
+            LogManager.getLogger(BooksController.class);
+
     private static final String DUPLICATE_KEY_ERROR_MESSAGE =
-        "This book already exists";
-    
+            "This book already exists";
+
     /**
      * DAO for operations with books
      */
     private BookDAO dao;
-    
+
     /**
      * Constructor
      *
      * @param dataSourceType type of data source
      */
-    
+
     @Autowired
     public BooksController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
-                  .getBookDAO();
+                .getBookDAO();
     }
-    
+
     /**
      * Gets all books from dao
      *
      * @return list of books
      */
     @GetMapping
-    @ResponseBody
     public List<Book> getAllBooks() {
         return dao.getAllBooks();
     }
-    
+
     /**
      * Adds the book to dao
      *
      * @return added book
      */
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String addBook(@ModelAttribute("book") @Valid Book newBook,
-                          BindingResult bindingResult, Model model) {
+    public ResponseEntity addBook(@ModelAttribute("book") @Valid Book newBook,
+                                  BindingResult bindingResult) {
+
         logger.info("Adding book : {}", newBook);
-        model.addAttribute("addedBook", null);
-        
+        List<String> errors = new ArrayList<>();
+        Object toReturn = errors;
+
         if (bindingResult.hasErrors()) {
             for (ObjectError er : bindingResult.getAllErrors()) {
                 logger.warn(er);
+                errors.add(er.getDefaultMessage());
             }
         } else {
             try {
-                Book book = dao.addBook(newBook.getTitle(), newBook.getAuthor(),
-                    newBook.getImage().getBytes());
-                
-                model.addAttribute("addedBook", book);
-                
+                newBook = dao.addBook(newBook.getTitle(), newBook.getAuthor(),
+                        newBook.getImage().getBytes());
+
+                toReturn = newBook;
             } catch (Exception ex) {
                 String errorMessage = ex.getClass().getSimpleName();
                 if (ex instanceof DuplicateKeyException) {
                     errorMessage = DUPLICATE_KEY_ERROR_MESSAGE;
                 }
-                bindingResult.addError(
-                    new ObjectError(newBook.getClass().getSimpleName(),
-                        errorMessage));
+
                 logger.warn(ex);
+
+                errors.add(errorMessage);
             }
         }
-        return "lib";
+
+        ResponseEntity responseEntity =
+                new ResponseEntity<>(toReturn, HttpStatus.ACCEPTED);
+
+        //logger.info("After add try: {}", responseEntity);
+
+        return responseEntity;
     }
-    
+
     /**
      * Changes the book rating
      *
@@ -106,15 +114,14 @@ public class BooksController {
      * @return book
      */
     @PostMapping("/{bookId}/rating")
-    @ResponseBody
     public Book changeBookRating(@PathVariable int bookId,
                                  @RequestBody int newRating)
-        throws Exception {
+            throws Exception {
         //logger.info("New rating for book {} = {}", bookId, newRating);
-        
+
         return dao.changeRating(bookId, newRating);
     }
-    
+
     /**
      * Gets image for the book
      *
@@ -122,22 +129,20 @@ public class BooksController {
      * @return bytes representation of the image
      */
     @GetMapping(value = "/{bookId}/image",
-        produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
-    @ResponseBody
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public byte[] getBookImage(@PathVariable int bookId) {
         return dao.getBookImage(bookId);
     }
-    
+
     /**
      * Deletes the book
      *
      * @param bookId id of the book to delete
      */
     @PostMapping("/{bookId}")
-    @ResponseBody
     public void deleteBook(@PathVariable int bookId) {
         logger.info("Deleting book {}", bookId);
         dao.deleteBook(bookId);
     }
-    
+
 }

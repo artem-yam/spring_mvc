@@ -255,84 +255,29 @@ function BooksView(controller, model) {
             showLoadedImage();
         });
 
-    /*function addBook(bookFormData) {
-        mainController.addBook(bookFormData);
-    }*/
+    function addBook(bookFormData) {
+        let errorsDiv = window.document.querySelector(
+            "#addBookForm .errors");
+        Utils.resetInnerHTML(errorsDiv);
 
-    /* window.document.querySelector("#add_book")
-         .addEventListener("click", function (event) {
-             event.preventDefault();
-
-             let bookForm = document.forms.namedItem("addBookForm");
-             let bookFormData = new FormData(bookForm);
-
-             //$("#addBookForm").trigger("submit");
-
-             bookForm.submit();
-
-             booksModel.refreshModel()
-                 .then(function () {
-
-                     let book = booksModel
-                         .findBookByTitleAndAuthor(bookFormData.get("title"),
-                             bookFormData.get("author"));
-
-                     if (book) {
-                         booksModel.onBookAdd.notify(book.title, book.author);
-                         controller.addNewBookNotification(book.id);
-                         //bookForm.reset();
-                     }
-                 });
-
-         });*/
-
-    $("#addBookForm").submit(async function (event) {
-
-        event.preventDefault();
-
-        if (addedBook) {
-            console.log(addedBook);
-        }
-
-        this.submit();
-
-        //let booksBeforeAdd = booksModel.getBooksStorage();
-
-        let bookForm = document.forms.namedItem("addBookForm");
-        let bookFormData = new FormData(bookForm);
-
-        await booksModel.refreshModel().then(function () {
-
-            /*let booksAfterAdd = booksModel.getBooksStorage();
-            let lastId = 0;
-
-            if (booksAfterAdd.size !== 0) {
-                lastId = booksAfterAdd[booksAfterAdd.size - 1].id;
+        mainController.addBook(bookFormData).catch(function (errors) {
+            for (let error of errors) {
+                errorsDiv.innerHTML += error + "<br>";
             }
+        });
+    }
 
-            let nextBook = booksModel.findBook(lastId + 1);
+    window.document.querySelector("#add_book")
+        .addEventListener("click", function (event) {
+            event.preventDefault();
 
-            if (nextBook === booksModel
-                .findBookByTitleAndAuthor(bookFormData.get("title"),
-                    bookFormData.get("author"))) {
+            let bookForm = document.forms.namedItem("addBookForm");
+            let bookFormData = new FormData(bookForm);
 
-            }*/
-
-            let newBook = booksModel
-                .findBookByTitleAndAuthor(bookFormData.get("title"),
-                    bookFormData.get("author"));
-            if (newBook) {
-                booksModel.onBookAdd.notify(newBook.title, newBook.author);
-                controller.addNewBookNotification(newBook.id);
-                //bookForm.reset();
-            }
-
+            addBook(bookFormData);
         });
 
-        return false;
-    });
-
-    model.onBookAdd.subscribe(function (title, author) {
+    model.onBookAdd.subscribe(function (id, title, author) {
         booksModel.refreshModel()
             .then(function () {
                 alert(
@@ -361,6 +306,8 @@ function BooksView(controller, model) {
                         showAllBooks();
                     }
                 }
+
+                mainController.addNewBookNotification(id);
             });
     });
 
