@@ -12,7 +12,7 @@
 
     <mvc:default-servlet-handler/>
 
-    <mvc:resources mapping="/static/**" location="/webjars/, /resources/" >
+    <mvc:resources mapping="/static/**" location="/resources/" >
         <mvc:cache-control cache-public="true" max-age="2592000"/>
         <mvc:resource-chain resource-cache="true">
            <!-- <mvc:resolvers>

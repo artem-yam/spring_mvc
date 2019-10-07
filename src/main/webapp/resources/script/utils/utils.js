@@ -50,7 +50,6 @@ let Utils = function () {
             return data;
         }, function (error) {
             if (error.status == 401) {
-                alert("Error 401. User not logged in");
                 onLoginError.notify();
             }
             throw(error);

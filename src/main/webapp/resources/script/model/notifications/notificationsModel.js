@@ -68,13 +68,6 @@ function NotificationsModel() {
             });
     }
 
-    /*async function initModel() {
-        await getAllNotifications()
-            .then(function () {
-                setInterval(getAllNotifications, Utils.DATA_REFRESH_INTERVAL);
-            });
-    }*/
-
     async function refreshModel() {
         await getAllNotifications();
     }

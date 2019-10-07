@@ -9,14 +9,14 @@ import java.util.List;
  * DAO for books
  */
 public interface BookDAO {
-
+    
     /**
      * Gets all books
      *
      * @return list of books
      */
     List<Book> getAllBooks();
-
+    
     /**
      * Adds new book
      *
@@ -26,16 +26,18 @@ public interface BookDAO {
      * @return new book id
      */
     Book addBook(String title, String author, byte[] coverImage);
-
+    
     /**
      * Changes rating of the book
-     *  @param bookId    id of the book
+     *
+     * @param bookId    id of the book
      * @param newRating new book rating
      */
     Book changeRating(int bookId, int newRating) throws SQLException;
-
+    
     /**
      * Gets book image
+     *
      * @param bookId id of the book
      * @return images bytes string
      */

@@ -1,10 +1,6 @@
 body {
     font-family: Segoe UI, sans-serif;
     overflow-y: hidden;
-
-    background: url("../img/memorynotfound-logo.png") no-repeat center center;
-    background-size: 250px 250px;
-
 }
 
 a {
@@ -233,7 +229,7 @@ a {
     color: #b5b9c4;
 }
 
-.topics_menu .red {
+.red {
     color: red;
 }
 

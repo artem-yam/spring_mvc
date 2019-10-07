@@ -21,8 +21,12 @@ function Controller(booksModel, notificationsModel) {
     function addBook(bookFormData) {
         controlledBooksModel.addBook(bookFormData)
             .then(function (newBookId) {
-                controlledNotificationsModel.addNewBookNotification(newBookId);
+                addNewBookNotification(newBookId);
             });
+    }
+
+    function addNewBookNotification(newBookId) {
+        controlledNotificationsModel.addNewBookNotification(newBookId);
     }
 
     function addBookTag(bookId, newTag) {
@@ -70,6 +74,7 @@ function Controller(booksModel, notificationsModel) {
         getBookById,
         loginUser,
         logoutUser,
-        deleteBook
+        deleteBook,
+        addNewBookNotification
     };
 }

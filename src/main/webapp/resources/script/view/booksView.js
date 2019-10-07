@@ -135,19 +135,6 @@ function BooksView(controller, model) {
         return booksModel.search(searchText, activeCategory);
     }
 
-    function addBook(bookFormData) {
-        /*if (!Utils.isEmpty(bookFormData.get("title")) &&
-            !Utils.isEmpty(bookFormData.get("author"))) {
-        */
-        mainController.addBook(bookFormData);
-        /*} else {
-            alert("Fill \"Title\" and \"Author\" fields to add a new book");
-        }*/
-
-        /*let bookForm = document.forms.namedItem("addBookForm");
-        bookForm.submit();*/
-    }
-
     function showLoadedImage() {
         window.document.querySelector(".upload_button").classList
             .add("loadedImage");
@@ -268,37 +255,82 @@ function BooksView(controller, model) {
             showLoadedImage();
         });
 
-    window.document.querySelector("#add_book")
-        .addEventListener("click", function () {
-            let bookForm = document.forms.namedItem("addBookForm");
-            let bookFormData = new FormData(bookForm);
+    /*function addBook(bookFormData) {
+        mainController.addBook(bookFormData);
+    }*/
 
-            //addBook(bookFormData);
-            bookForm.submit();
+    /* window.document.querySelector("#add_book")
+         .addEventListener("click", function (event) {
+             event.preventDefault();
+
+             let bookForm = document.forms.namedItem("addBookForm");
+             let bookFormData = new FormData(bookForm);
+
+             //$("#addBookForm").trigger("submit");
+
+             bookForm.submit();
+
+             booksModel.refreshModel()
+                 .then(function () {
+
+                     let book = booksModel
+                         .findBookByTitleAndAuthor(bookFormData.get("title"),
+                             bookFormData.get("author"));
+
+                     if (book) {
+                         booksModel.onBookAdd.notify(book.title, book.author);
+                         controller.addNewBookNotification(book.id);
+                         //bookForm.reset();
+                     }
+                 });
+
+         });*/
+
+    $("#addBookForm").submit(async function (event) {
+
+        event.preventDefault();
+
+        if (addedBook) {
+            console.log(addedBook);
+        }
+
+        this.submit();
+
+        //let booksBeforeAdd = booksModel.getBooksStorage();
+
+        let bookForm = document.forms.namedItem("addBookForm");
+        let bookFormData = new FormData(bookForm);
+
+        await booksModel.refreshModel().then(function () {
+
+            /*let booksAfterAdd = booksModel.getBooksStorage();
+            let lastId = 0;
+
+            if (booksAfterAdd.size !== 0) {
+                lastId = booksAfterAdd[booksAfterAdd.size - 1].id;
+            }
+
+            let nextBook = booksModel.findBook(lastId + 1);
+
+            if (nextBook === booksModel
+                .findBookByTitleAndAuthor(bookFormData.get("title"),
+                    bookFormData.get("author"))) {
+
+            }*/
+
+            let newBook = booksModel
+                .findBookByTitleAndAuthor(bookFormData.get("title"),
+                    bookFormData.get("author"));
+            if (newBook) {
+                booksModel.onBookAdd.notify(newBook.title, newBook.author);
+                controller.addNewBookNotification(newBook.id);
+                //bookForm.reset();
+            }
+
         });
 
-    window.document.querySelector("#all_books")
-        .addEventListener("click", function () {
-            showAllBooks();
-        });
-
-    window.document.querySelector("#most_popular")
-        .addEventListener("click", function () {
-            chooseCategory("most_popular").then(function () {
-                filter(booksModel.getMostPopular);
-            });
-        })
-    ;
-
-    window.document.querySelector("#search")
-        .addEventListener("input", function () {
-            filter(search);
-        });
-
-    window.document.querySelector("#search")
-        .addEventListener("change", function () {
-            filter(search);
-        });
+        return false;
+    });
 
     model.onBookAdd.subscribe(function (title, author) {
         booksModel.refreshModel()
@@ -331,6 +363,29 @@ function BooksView(controller, model) {
                 }
             });
     });
+
+    window.document.querySelector("#all_books")
+        .addEventListener("click", function () {
+            showAllBooks();
+        });
+
+    window.document.querySelector("#most_popular")
+        .addEventListener("click", function () {
+            chooseCategory("most_popular").then(function () {
+                filter(booksModel.getMostPopular);
+            });
+        })
+    ;
+
+    window.document.querySelector("#search")
+        .addEventListener("input", function () {
+            filter(search);
+        });
+
+    window.document.querySelector("#search")
+        .addEventListener("change", function () {
+            filter(search);
+        });
 
     model.onTagsChange.subscribe(function (updatedBook, userTagPushed) {
         booksModel.refreshModel().then(function () {

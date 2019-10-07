@@ -179,15 +179,13 @@ public class Book {
     }
     
     @Override public String toString() {
-        return "Book{" +
-                   "id=" + id +
-                   ", title='" + title + '\'' +
-                   ", author='" + author + '\'' +
-                   ", image=" + image +
-                   ", rating=" + rating +
-                   ", tags=" + tags +
-                   ", isDeleted=" + isDeleted +
-                   '}';
+        return "{id:" + id +
+                   ", title:'" + title + '\'' +
+                   ", author:'" + author + '\'' +
+                   ", image:" + image +
+                   ", rating:" + rating +
+                   ", tags:" + tags +
+                   ", isDeleted:" + isDeleted + '}';
     }
     
     @Override

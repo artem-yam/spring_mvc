@@ -15,9 +15,9 @@
         new LoginView(controller);
 
         await booksModel.refreshModel();
-        await notificationsModel.refreshModel();
-
         booksView.browsePage();
+
+        await notificationsModel.refreshModel();
         notificationsView.loadHistoryBar();
     }
 

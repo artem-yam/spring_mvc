@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css"
           href="static/css/style.css"/>
 
+
 </head>
 <body>
     <header class="header">
@@ -51,12 +52,16 @@
 
             <form:form method="post" enctype="multipart/form-data"
                        action="books" name="addBookForm"
-                       modelAttribute="book">
+                       modelAttribute="book" id="addBookForm">
 
-                <a id="add_book">
+                <%--<a id="add_book">--%>
+                <label for="submit_form" id="add_book">
+                    <input type="submit" id="submit_form" class="hidden"/>
                     <span>&#10010;</span>
                     ADD A BOOK
-                </a>
+                </label>
+                <%--</a>--%>
+
 
                 <form:input placeholder="Title" type="text"
                             name="title" path="title"/>
@@ -70,8 +75,10 @@
                 <div id="loaded_image" class="hidden">
                     <img/>
                 </div>
-                <form:errors path="*" cssStyle="color: #ff0000;" element="div"/>
-                ${book}
+                <form:errors path="*" cssClass="red" element="div"
+                             id="addingErrors"/>
+                ${addedBook.title}
+
             </form:form>
 
         </div>
@@ -291,6 +298,15 @@
             </div>
         </div>
     </template>
+
+
+    <script type="text/javascript">
+        <c:set var="qq" value="${addedBook}"/>
+        var addedBook = null;
+        <c:if test="${not empty qq}">
+        addedBook = ${addedBook};
+        </c:if>
+    </script>
 
     <script type="text/javascript"
             src="static/script/utils/jquery-3.4.1.slim.min.js"></script>
