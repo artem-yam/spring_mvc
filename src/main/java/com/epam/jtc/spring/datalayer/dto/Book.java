@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Book entity
  */
-@Component
+@Component("book")
 public class Book {
     
     /**

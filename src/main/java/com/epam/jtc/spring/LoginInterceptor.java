@@ -1,10 +1,8 @@
 package com.epam.jtc.spring;
 
 import com.epam.jtc.spring.datalayer.dto.User;
-import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,27 +17,26 @@ import javax.servlet.http.HttpSession;
  */
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    
+
     private static final Logger logger =
-        LogManager.getLogger(LoginInterceptor.class);
-    
+            LogManager.getLogger(LoginInterceptor.class);
+
     private User activeUser;
-    
+
     @Autowired
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
     }
-    
+
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler)
-        throws Exception {
-
-        
+            throws Exception {
         HttpSession session = request.getSession(false);
-        logger.info("User = {}", activeUser);
+
+        //logger.info("User = {}", activeUser);
         
-        if (session == null) {
+        /*if (session == null) {
             response.sendRedirect(request.getContextPath());
             return false;
         } else {
@@ -50,23 +47,23 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                     "Not logged in user");
                 return false;
             }
-        }
-        
+        }*/
+
         return true;
     }
-    
+
     @Override
     public void postHandle(HttpServletRequest request,
                            HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
         super.postHandle(request, response, handler, modelAndView);
     }
-    
+
     @Override
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response, Object handler,
                                 Exception ex)
-        throws Exception {
+            throws Exception {
         super.afterCompletion(request, response, handler, ex);
     }
 }

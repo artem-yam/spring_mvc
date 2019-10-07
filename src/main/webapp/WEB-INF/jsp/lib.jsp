@@ -1,33 +1,38 @@
-<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+         pageEncoding="UTF-8" session="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>LIBRARY</title>
 
+    <%--rel="stylesheet" type="text/css"    --%>
+
     <link rel="stylesheet" type="text/css"
-          href="resources/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+          href="static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="static/css/normalize.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="static/css/style.css"/>
 
 </head>
 <body>
     <header class="header">
         <div class="header_links">
             <a href="#">Help Center</a>
-            <span> &bull; </span>
+            <span> &#8226; </span>
             <a href="#">Our Support</a>
         </div>
         <div class="header_user-profile">
             <a href="#">
                 <c:choose>
-                    <c:when test="${sessionScope.containsKey('scopedTarget.user')
-                        and (not empty sessionScope.get('scopedTarget.user').login)}">
+                    <c:when test="${not empty sessionScope.get('scopedTarget.user').login}">
                         ${sessionScope.get('scopedTarget.user').login}
                     </c:when>
                     <c:otherwise>
@@ -36,34 +41,39 @@
                 </c:choose>
             </a>
         </div>
-        <div class="header_logout ${(empty logged_user) ? "hidden": ""} ">
+        <div class="header_logout ${empty sessionScope.get('scopedTarget.user').login ? 'hidden':''} ">
             <a id="logout_user" href="#">LogOut</a>
         </div>
     </header>
 
     <aside class="aside">
         <div class="menu">
-            <form method="post" enctype="multipart/form-data"
-                  name="addBookForm" action="books">
+
+            <form:form method="post" enctype="multipart/form-data"
+                       action="books" name="addBookForm"
+                       modelAttribute="book">
 
                 <a id="add_book">
                     <span>&#10010;</span>
                     ADD A BOOK
                 </a>
 
-                <input placeholder="Title" type="text" id="add_book_title"
-                       name="title"/>
-                <input placeholder="Author" type="text"
-                       id="add_book_author"
-                       name="author"/>
+                <form:input placeholder="Title" type="text"
+                            name="title" path="title"/>
+                <form:input placeholder="Author" type="text"
+                            name="author" path="author"/>
+
                 <label id="add_image_label" class="upload_button">Load Image
-                    <input type="file" id="add_book_image"
-                           name="image" accept=".jpg,.jpeg,.png"/>
+                    <input type="file" id="add_book_image" name="image"
+                           accept=".jpg,.jpeg,.png"/>
                 </label><br>
                 <div id="loaded_image" class="hidden">
                     <img/>
                 </div>
-            </form>
+                <form:errors path="*" cssStyle="color: #ff0000;" element="div"/>
+                ${book}
+            </form:form>
+
         </div>
 
         <div class="menu nav_menu">
@@ -149,7 +159,7 @@
                     <input id="search" type="search"
                            placeholder="Enter Keywords"/>
                     <input type="image" alt="Search"
-                           src="resources/images/icons/search.png">
+                           src="<spring:url value="static/images/icons/search.png" />">
                 </div>
             </div>
 
@@ -206,7 +216,6 @@
         </div>
 
     </div>
-
 
     <template id="history_bar_template">
         <div class="history_log">
@@ -284,47 +293,43 @@
     </template>
 
     <script type="text/javascript"
-            src="resources/script/utils/jquery-3.4.1.slim.min.js"></script>
+            src="static/script/utils/jquery-3.4.1.slim.min.js"></script>
     <script type="text/javascript"
-            src="resources/script/utils/jquery-3.4.1.min.js"></script>
+            src="static/script/utils/jquery-3.4.1.min.js"></script>
     <script type="text/javascript"
-            src="resources/script/utils/bootstrap.min.js"></script>
+            src="static/script/utils/bootstrap.min.js"></script>
 
     <script type="text/javascript"
-            src="resources/script/utils/eventEmitter.js"></script>
+            src="static/script/utils/eventEmitter.js"></script>
     <script type="text/javascript"
-            src="resources/script/utils/requestTypes.js"></script>
+            src="static/script/utils/requestTypes.js"></script>
     <script type="text/javascript"
-            src="resources/script/utils/utils.js"></script>
+            src="static/script/utils/utils.js"></script>
     <!--Модели-->
     <script type="text/javascript"
-            src="resources/script/model/books/book.js"></script>
+            src="static/script/model/books/book.js"></script>
     <script type="text/javascript"
-            src="resources/script/model/books/booksModel.js"></script>
+            src="static/script/model/books/booksModel.js"></script>
     <script type="text/javascript"
-            src="resources/script/model/notifications/notificationTypes.js"></script>
+            src="static/script/model/notifications/notificationTypes.js"></script>
     <script type="text/javascript"
-            src="resources/script/model/notifications/notificationTO.js"></script>
-
+            src="static/script/model/notifications/notificationTO.js"></script>
     <script type="text/javascript"
-            src="resources/script/model/notifications/notificationsModel.js"></script>
-
+            src="static/script/model/notifications/notificationsModel.js"></script>
     <!--Контроллеры-->
     <script type="text/javascript"
-            src="resources/script/controller/controller.js"></script>
-
+            src="static/script/controller/controller.js"></script>
     <!--Вьюхи-->
     <script type="text/javascript"
-            src="resources/script/view/notificationsView.js"></script>
+            src="static/script/view/notificationsView.js"></script>
     <script type="text/javascript"
-            src="resources/script/view/booksView.js"></script>
+            src="static/script/view/booksView.js"></script>
 
     <script type="text/javascript"
-            src="resources/script/view/loginView.js"></script>
-
+            src="static/script/view/loginView.js"></script>
     <!--Мэйн-->
-    <script type="text/javascript" src="resources/script/main.js"></script>
-
+    <script type="text/javascript"
+            src="static/script/main.js"></script>
 
 </body>
 </html>

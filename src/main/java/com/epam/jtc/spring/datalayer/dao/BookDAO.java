@@ -25,7 +25,7 @@ public interface BookDAO {
      * @param coverImage image of the book
      * @return new book id
      */
-    Book addBook(String title, String author, byte[]  coverImage);
+    Book addBook(String title, String author, byte[] coverImage);
 
     /**
      * Changes rating of the book

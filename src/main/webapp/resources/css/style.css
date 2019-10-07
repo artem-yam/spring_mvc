@@ -1,6 +1,10 @@
 body {
     font-family: Segoe UI, sans-serif;
     overflow-y: hidden;
+
+    background: url("../img/memorynotfound-logo.png") no-repeat center center;
+    background-size: 250px 250px;
+
 }
 
 a {

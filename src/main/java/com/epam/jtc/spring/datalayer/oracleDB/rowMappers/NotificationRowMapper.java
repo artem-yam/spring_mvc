@@ -2,7 +2,6 @@ package com.epam.jtc.spring.datalayer.oracleDB.rowMappers;
 
 import com.epam.jtc.spring.datalayer.dto.Notification;
 import com.epam.jtc.spring.datalayer.dto.NotificationTypes;
-import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleNotificationDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

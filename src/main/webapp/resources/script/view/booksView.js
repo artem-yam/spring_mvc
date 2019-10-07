@@ -139,7 +139,7 @@ function BooksView(controller, model) {
         /*if (!Utils.isEmpty(bookFormData.get("title")) &&
             !Utils.isEmpty(bookFormData.get("author"))) {
         */
-            mainController.addBook(bookFormData);
+        mainController.addBook(bookFormData);
         /*} else {
             alert("Fill \"Title\" and \"Author\" fields to add a new book");
         }*/
@@ -213,7 +213,8 @@ function BooksView(controller, model) {
     function showAllBooks() {
         chooseCategory("all_books")
             .then(function () {
-                Utils.resetInnerHTML(window.document.querySelector(".main_content"));
+                Utils.resetInnerHTML(
+                    window.document.querySelector(".main_content"));
 
                 for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
                     if (!booksModel.getBooksStorage()[i].deleted) {
@@ -272,7 +273,8 @@ function BooksView(controller, model) {
             let bookForm = document.forms.namedItem("addBookForm");
             let bookFormData = new FormData(bookForm);
 
-            addBook(bookFormData);
+            //addBook(bookFormData);
+            bookForm.submit();
         });
 
     window.document.querySelector("#all_books")

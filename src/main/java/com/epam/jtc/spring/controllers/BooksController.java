@@ -7,12 +7,9 @@ import com.epam.jtc.spring.datalayer.dto.Book;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,49 +21,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BooksController {
-    
+
     /**
      * logger for class
      */
     private static final Logger logger =
-        LogManager.getLogger(BooksController.class);
-    
+            LogManager.getLogger(BooksController.class);
+
     /**
      * DAO for operations with books
      */
     private BookDAO dao;
-    
-    /**
-     * Validator for books
-     */
-    private Validator bookValidator;
-    
+
     /**
      * Constructor
      *
      * @param dataSourceType type of data source
-     * @param bookValidator  validator for books
      */
+
     @Autowired
-    public BooksController(DataSourceType dataSourceType,
-                           @Autowired @Qualifier("bookValidator")
-                               Validator bookValidator) {
+    public BooksController(DataSourceType dataSourceType) {
         dao = DAOFactory.getInstance(dataSourceType)
-                  .getBookDAO();
-        
-        this.bookValidator = bookValidator;
+                .getBookDAO();
     }
-    
-    /**
-     * Binder initializer
-     *
-     * @param binder {@link WebDataBinder}
-     */
-    /*@InitBinder
-    public void bindValidator(WebDataBinder binder) {
-        binder.setValidator(bookValidator);
-    }*/
-    
+
     /**
      * Gets all books from dao
      *
@@ -76,30 +54,34 @@ public class BooksController {
     public List<Book> getAllBooks() {
         return dao.getAllBooks();
     }
-    
+
     /**
      * Adds the book to dao
      *
      * @return added book
      */
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public Book addBook(@Valid Book newBook, BindingResult bindingResult
+    @RequestMapping(value = "/add",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Book addBook(@ModelAttribute("book") @Valid Book newBook,
+                        BindingResult bindingResult
     ) throws Exception {
         logger.info("Adding book : {}", newBook);
-        
-        bookValidator.validate(newBook, bindingResult);
-        
+        Book bookToReturn = null;
+
         if (bindingResult.hasErrors()) {
             for (ObjectError er : bindingResult.getAllErrors()) {
                 logger.warn(er);
             }
             throw new Exception("Book is not valid");
+            //return new Book();
+        } else {
+            bookToReturn = dao.addBook(newBook.getTitle(), newBook.getAuthor(),
+                    newBook.getImage().getBytes());
         }
-        
-        return dao.addBook(newBook.getTitle(), newBook.getAuthor(),
-            newBook.getImage().getBytes());
+
+        return bookToReturn;
     }
-    
+
     /**
      * Changes the book rating
      *
@@ -110,12 +92,12 @@ public class BooksController {
     @PostMapping("/{bookId}/rating")
     public Book changeBookRating(@PathVariable int bookId,
                                  @RequestBody int newRating)
-        throws Exception {
+            throws Exception {
         //logger.info("New rating for book {} = {}", bookId, newRating);
-        
+
         return dao.changeRating(bookId, newRating);
     }
-    
+
     /**
      * Gets image for the book
      *
@@ -123,12 +105,12 @@ public class BooksController {
      * @return bytes representation of the image
      */
     @GetMapping(value = "/{bookId}/image"
-        , produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
+            , produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
     )
     public byte[] getBookImage(@PathVariable int bookId) {
         return dao.getBookImage(bookId);
     }
-    
+
     /**
      * Deletes the book
      *
@@ -139,5 +121,5 @@ public class BooksController {
         logger.info("Deleting book {}", bookId);
         dao.deleteBook(bookId);
     }
-    
+
 }
