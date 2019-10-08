@@ -16,27 +16,27 @@ import javax.servlet.http.HttpSessionListener;
 @WebListener
 @Component
 public class SessionListener implements HttpSessionListener {
-
+    
     private static final Logger logger =
-            LogManager.getLogger(SessionListener.class);
-
+        LogManager.getLogger(SessionListener.class);
+    
     private User activeUser;
-
+    
     @Autowired
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
     }
-
+    
     @Override
     public void sessionCreated(HttpSessionEvent ev) {
         logger.info("New session created {} for {}", ev.getSession().getId(),
-                activeUser);
+            activeUser);
     }
-
+    
     @Override
     public void sessionDestroyed(HttpSessionEvent ev) {
         logger.info("Session destroyed {} for {}", ev.getSession().getId(),
-                activeUser);
+            activeUser);
     }
-
+    
 }

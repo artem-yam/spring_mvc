@@ -1,0 +1,270 @@
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "Spring MVC Library"
+host: "localhost:8080"
+basePath: "/SpringMVC"
+tags:
+- name: "books"
+  description: "Everything about books"
+- name: "notifications"
+  description: "Everything about notifications"
+- name: "tags"
+  description: "Everything about books tags"
+- name: "users"
+  description: "Performs login/logout operations"
+schemes:
+- "https"
+- "http"
+paths:
+
+  /books:
+    get:
+      tags:
+      - "books"
+      summary: "Gets all books from the library"
+      operationId: "getAllBooks"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+      security:
+      - user_login: []
+    post:
+      tags:
+      - "books"
+      summary: "Add a new book to the library"
+      operationId: "addBook"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "newBook"
+        description: "Book object that needs to be added to the library"
+        schema:
+          $ref: "#/definitions/Book"
+      - in: "header"
+        name: "bindingResult"
+        description: "Binding with validation errors"
+        type: "array"
+        items:
+          type: "string"
+      responses:
+        202:
+          description: "return data to front for proccessing"
+      security:
+      - user_login: []
+      
+  /books/{bookId}/rating:
+    post:
+      tags:
+      - "books"
+      summary: "Changes the book rating"
+      operationId: "changeBookRating"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "newRating"
+        description: "New rating value for the book"
+        schema:
+          type: "integer"
+      - in: "path"
+        name: "bookId"
+        description: "Id of the book"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - user_login: []
+      
+  /notifications:
+    get:
+      tags:
+      - "notifications"
+      summary: "Gets all notifications"
+      operationId: "getAllNotifications"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Notification"
+      security:
+      - user_login: []
+    post:
+      tags:
+      - "notifications"
+      summary: "Add a new notification to the library"
+      operationId: "addNotification"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "newNote"
+        description: "Notification object that needs to be added"
+        schema:
+          $ref: "#/definitions/Notification"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - user_login: []
+      
+  /tags:
+    get:
+      tags:
+      - "tags"
+      summary: "Gets all tags"
+      operationId: "getAllTags"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      security:
+      - user_login: []
+      
+  /tags/{tag}:
+    post:
+      tags:
+      - "tags"
+      summary: "Add some tag to the book"
+      operationId: "addTagToBook"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "bookId"
+        description: "Book id"
+        schema:
+          type: "integer"
+      - in: "path"
+        name: "tag"
+        description: "tag to add"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - user_login: []
+      
+
+  /users/login:    
+    post:
+      tags:
+      - "users"
+      summary: "Login user"
+      operationId: "userLogin"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "users"
+        description: "User info"
+        schema:
+          $ref: "#/definitions/User"
+      - in: "header"
+        name: "bindingResult"
+        description: "Binding with validation errors"
+        type: "array"
+        items:
+          type: "string"
+      responses:
+        202:
+          description: "return data to front for proccessing"
+      security:
+      - user_login: []
+      
+  /users/logout:    
+    post:
+      tags:
+      - "users"
+      summary: "Logout user"
+      operationId: "userLogout"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - user_login: []   
+
+
+          
+securityDefinitions:
+  user_login:
+    type: "basic"
+
+
+definitions:
+  Book:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      title:
+        type: "string"
+      author:
+        type: "string"
+      image:
+        type: "object"
+      rating:
+        type: "integer"
+      tags:
+        type: "array"
+        items:
+          type: "string"
+      isDeleted:
+        type: "boolean"
+
+  Notification:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      bookId:
+        type: "integer"
+      content:
+        type: "string"
+      category:
+        type: "string"
+      type:
+        type: "string"
+        enum: 
+        -  "ADD_BOOK"
+        -  "SEARCH"
+        -  "RATING"
+      date:
+        type: "object"
+        
+  User:
+    type: "object"
+    properties:
+      login:
+        type: "string"
+      password:
+        type: "string"

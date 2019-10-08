@@ -1,7 +1,8 @@
 package com.epam.jtc.spring.datalayer.oracleDB.rowMappers;
 
 import com.epam.jtc.spring.datalayer.dto.Book;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
  * Forms book entity from DB entry
  */
 @Component
-public class BookRowMapper extends BeanPropertyRowMapper<Book> {
+public class BookRowMapper implements RowMapper<Book> {
     
     @Override
     public Book mapRow(ResultSet rs, int rowNum)

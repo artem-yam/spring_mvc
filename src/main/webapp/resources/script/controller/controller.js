@@ -45,8 +45,8 @@ function Controller(booksModel, notificationsModel) {
 
     function loginUser(loginFormData) {
         return Utils.sendRequest(
-            AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGIN_URL, loginFormData,
-            requestType.POST)
+            AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGIN_URL,
+            loginFormData, requestType.POST)
             .then(function (response) {
                 if (response instanceof Array) {
                     throw response;

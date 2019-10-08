@@ -3,7 +3,6 @@ package com.epam.jtc.spring.datalayer.dto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,8 +11,8 @@ import java.util.Objects;
  * Book entity
  */
 @Component("book")
-public class Book implements Serializable {
-
+public class Book {
+    
     /**
      * Default book rating
      */
@@ -22,17 +21,17 @@ public class Book implements Serializable {
      * Book id
      */
     private int id;
-
+    
     /**
      * Book title
      */
     private String title;
-
+    
     /**
      * Book author
      */
     private String author;
-
+    
     private CommonsMultipartFile image;
     /**
      * Book rating
@@ -46,13 +45,13 @@ public class Book implements Serializable {
      * is book deleted
      */
     private boolean isDeleted = false;
-
+    
     /**
      * Default constructor
      */
     public Book() {
     }
-
+    
     /**
      * Image getter
      *
@@ -61,7 +60,7 @@ public class Book implements Serializable {
     public CommonsMultipartFile getImage() {
         return image;
     }
-
+    
     /**
      * Image setter
      *
@@ -70,7 +69,7 @@ public class Book implements Serializable {
     public void setImage(CommonsMultipartFile image) {
         this.image = image;
     }
-
+    
     /**
      * Getter for boolean isDeleted
      *
@@ -79,7 +78,7 @@ public class Book implements Serializable {
     public boolean isDeleted() {
         return isDeleted;
     }
-
+    
     /**
      * Setter for isDeleted
      *
@@ -88,7 +87,7 @@ public class Book implements Serializable {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
-
+    
     /**
      * Getter for id
      *
@@ -97,7 +96,7 @@ public class Book implements Serializable {
     public int getId() {
         return id;
     }
-
+    
     /**
      * Setter for id
      *
@@ -106,7 +105,7 @@ public class Book implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-
+    
     /**
      * Getter for title
      *
@@ -115,7 +114,7 @@ public class Book implements Serializable {
     public String getTitle() {
         return title;
     }
-
+    
     /**
      * Setter for title
      *
@@ -124,7 +123,7 @@ public class Book implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     /**
      * Getter for author
      *
@@ -133,7 +132,7 @@ public class Book implements Serializable {
     public String getAuthor() {
         return author;
     }
-
+    
     /**
      * Setter for author
      *
@@ -142,7 +141,7 @@ public class Book implements Serializable {
     public void setAuthor(String author) {
         this.author = author;
     }
-
+    
     /**
      * Getter for rating
      *
@@ -151,7 +150,7 @@ public class Book implements Serializable {
     public int getRating() {
         return rating;
     }
-
+    
     /**
      * Setter for rating
      *
@@ -160,7 +159,7 @@ public class Book implements Serializable {
     public void setRating(int rating) {
         this.rating = rating;
     }
-
+    
     /**
      * Getter for tags
      *
@@ -169,7 +168,7 @@ public class Book implements Serializable {
     public List<String> getTags() {
         return tags;
     }
-
+    
     /**
      * Setter for tags
      *
@@ -178,18 +177,19 @@ public class Book implements Serializable {
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
-
-    @Override
-    public String toString() {
-        return "{id:" + id +
-                ", title:'" + title + '\'' +
-                ", author:'" + author + '\'' +
-                ", image:" + image +
-                ", rating:" + rating +
-                ", tags:" + tags +
-                ", isDeleted:" + isDeleted + '}';
+    
+    @Override public String toString() {
+        return "Book{" +
+                   "id=" + id +
+                   ", title='" + title + '\'' +
+                   ", author='" + author + '\'' +
+                   ", image=" + image +
+                   ", rating=" + rating +
+                   ", tags=" + tags +
+                   ", isDeleted=" + isDeleted +
+                   '}';
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -202,20 +202,22 @@ public class Book implements Serializable {
             return false;
         }
         Book book = (Book) o;
+        
+        if (!(Objects.equals(getTitle(), book.getTitle()) &&
+                  Objects.equals(getAuthor(), book.getAuthor()) &&
+                  Objects.equals(getImage(), book.getImage()) &&
+                  Objects.equals(getTags(), book.getTags()))) {
+            return false;
+        }
+        
         return getId() == book.getId() &&
-                getRating() == book.getRating() &&
-                isDeleted() == book.isDeleted() &&
-                Objects.equals(getTitle(), book.getTitle()) &&
-                Objects.equals(getAuthor(), book.getAuthor()) &&
-                Objects.equals(getImage(), book.getImage()) &&
-                Objects.equals(getTags(), book.getTags());
+                   getRating() == book.getRating() &&
+                   isDeleted() == book.isDeleted();
     }
-
+    
     @Override
     public int hashCode() {
-        return Objects
-                .hash(getId(), getTitle(), getAuthor(), getImage(),
-                        getRating(),
-                        getTags(), isDeleted());
+        return Objects.hash(getId(), getTitle(), getAuthor(), getImage(),
+            getRating(), getTags(), isDeleted());
     }
 }

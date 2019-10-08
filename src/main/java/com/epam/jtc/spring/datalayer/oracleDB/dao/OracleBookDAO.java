@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -86,6 +87,7 @@ public class OracleBookDAO implements BookDAO {
     private TagDAO tagDAO;
     
     @Override
+    @Transactional
     public List<Book> getAllBooks() {
         List<Book> books = jdbcTemplate.query(ALL_BOOKS_QUERY, bookRowMapper);
         
@@ -97,6 +99,7 @@ public class OracleBookDAO implements BookDAO {
     }
     
     @Override
+    @Transactional
     public Book addBook(String title, String author,
                         byte[] coverImage) {
         
@@ -123,29 +126,37 @@ public class OracleBookDAO implements BookDAO {
     }
     
     @Override
-    public Book changeRating(int bookId, int newRating) throws SQLException {
-        Book book = getBook(bookId);
+    @Transactional
+    public Book changeRating(int bookId, int newRating) throws Exception {
+        
+        try {
+            getBook(bookId);
+        } catch (RuntimeException getBookException) {
+            DAOLogger.warn(getBookException);
+            throw new SQLException("Can't get book", getBookException);
+        }
         
         //DAOLogger.info("Changing rating for book: {}; set = {}", book, newRating);
         
-        if (book == null) {
-            throw new SQLException("The book doesn't exist");
-        }
-        
         jdbcTemplate.update(RATING_CHANGE_QUERY, newRating, bookId);
         
-        book = getBook(bookId);
-        
-        return book;
+        return getBook(bookId);
     }
     
     @Override
-    public byte[] getBookImage(int bookId) {
-        byte[] image = jdbcTemplate
-                           .queryForObject(IMAGE_BY_BOOK_ID_QUERY,
-                               imageRowMapper, bookId);
+    public byte[] getBookImage(int bookId) throws Exception {
+        byte[] image;
         
-        if (image == null) {
+        try {
+            image = jdbcTemplate
+                        .queryForObject(IMAGE_BY_BOOK_ID_QUERY,
+                            imageRowMapper, bookId);
+        } catch (RuntimeException getImageException) {
+            DAOLogger.warn(getImageException);
+            throw new SQLException("Can't get image", getImageException);
+        }
+        
+        if (image == null || image.length == 0) {
             image = getDefaultImage();
         }
         

@@ -4,7 +4,8 @@ import com.epam.jtc.spring.datalayer.dto.Notification;
 import com.epam.jtc.spring.datalayer.dto.NotificationTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
@@ -14,9 +15,9 @@ import java.sql.SQLException;
  * Forms notification entity from DB entry
  */
 @Component
-public class NotificationRowMapper extends BeanPropertyRowMapper<Notification> {
+public class NotificationRowMapper implements RowMapper<Notification> {
     
-    private static final Logger DAOLogger =
+    private static final Logger logger =
         LogManager.getLogger(NotificationRowMapper.class);
     
     @Override
@@ -33,7 +34,7 @@ public class NotificationRowMapper extends BeanPropertyRowMapper<Notification> {
         
         notification.setDate(rs.getTimestamp(6));
         
-        //DAOLogger.info("Notification: {}", notification);
+        //logger.info("Notification: {}", notification);
         
         return notification;
     }

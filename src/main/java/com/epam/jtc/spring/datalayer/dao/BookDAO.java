@@ -33,7 +33,7 @@ public interface BookDAO {
      * @param bookId    id of the book
      * @param newRating new book rating
      */
-    Book changeRating(int bookId, int newRating) throws SQLException;
+    Book changeRating(int bookId, int newRating) throws Exception;
     
     /**
      * Gets book image
@@ -41,7 +41,7 @@ public interface BookDAO {
      * @param bookId id of the book
      * @return images bytes string
      */
-    byte[] getBookImage(int bookId);
+    byte[] getBookImage(int bookId) throws Exception;
     
     void deleteBook(int bookId);
 }

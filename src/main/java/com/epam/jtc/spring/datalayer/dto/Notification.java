@@ -176,12 +176,16 @@ public class Notification {
             return false;
         }
         Notification that = (Notification) o;
+        
+        if (!(Objects.equals(getContent(), that.getContent()) &&
+                  Objects.equals(getCategory(), that.getCategory()) &&
+                  Objects.equals(getDate(), that.getDate()))) {
+            return false;
+        }
+        
         return getId() == that.getId() &&
                    getBookId() == that.getBookId() &&
-                   Objects.equals(getContent(), that.getContent()) &&
-                   Objects.equals(getCategory(), that.getCategory()) &&
-                   getType() == that.getType() &&
-                   Objects.equals(getDate(), that.getDate());
+                   getType() == that.getType();
     }
     
     @Override

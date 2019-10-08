@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" session="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -32,8 +33,8 @@
         <div class="header_user-profile">
             <a href="#">
                 <c:choose>
-                    <c:when test="${not empty sessionScope.get('scopedTarget.user').login}">
-                        ${sessionScope.get('scopedTarget.user').login}
+                    <c:when test="${not empty activeUser.login}">
+                        ${activeUser.login}
                     </c:when>
                     <c:otherwise>
                         John Doe
@@ -41,7 +42,7 @@
                 </c:choose>
             </a>
         </div>
-        <div class="header_logout ${empty sessionScope.get('scopedTarget.user').login ? 'hidden':''} ">
+        <div class="header_logout ${not activeUser.active ? 'hidden':''} ">
             <a id="logout_user" href="#">LogOut</a>
         </div>
     </header>

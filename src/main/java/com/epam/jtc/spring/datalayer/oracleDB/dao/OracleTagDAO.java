@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -74,6 +75,7 @@ public class OracleTagDAO implements TagDAO {
     }
     
     @Override
+    @Transactional
     public List<String> addTagToBook(int bookId, String tag) {
         
         addTag(tag);

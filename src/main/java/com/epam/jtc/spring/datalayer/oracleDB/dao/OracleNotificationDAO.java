@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class OracleNotificationDAO implements NotificationDAO {
     }
     
     @Override
+    @Transactional
     public Notification addNotification(int bookId, String content,
                                         String category,
                                         NotificationTypes type) {
