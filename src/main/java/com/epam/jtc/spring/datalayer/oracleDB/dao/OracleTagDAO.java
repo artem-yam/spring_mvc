@@ -19,7 +19,7 @@ public class OracleTagDAO implements TagDAO {
     /**
      * Logger for class
      */
-    private static final Logger DAOLogger =
+    private static final Logger logger =
         LogManager.getLogger(OracleTagDAO.class);
     /**
      * Query to get all available tags
@@ -53,6 +53,7 @@ public class OracleTagDAO implements TagDAO {
     
     @Override
     public List<String> getAllTags() {
+        logger.debug("Getting all tags");
         return jdbcTemplate
                    .queryForList(GET_ALL_TAGS_QUERY, String.class);
     }
@@ -64,12 +65,15 @@ public class OracleTagDAO implements TagDAO {
      */
     private void addTag(String text) {
         if (!getAllTags().contains(text)) {
+            logger
+                .debug("Adding tag \'{}\' to list of all available tags", text);
             jdbcTemplate.update(INSERT_NEW_TAG_QUERY, text);
         }
     }
     
     @Override
     public List<String> getBookTags(int bookId) {
+        logger.debug("Getting tags to book {}", bookId);
         return jdbcTemplate
                    .queryForList(GET_TAGS_FOR_BOOK_QUERY, String.class, bookId);
     }
@@ -77,11 +81,14 @@ public class OracleTagDAO implements TagDAO {
     @Override
     @Transactional
     public List<String> addTagToBook(int bookId, String tag) {
+        logger.debug("Adding tag \'{}\' to book {}", tag, bookId);
         
         addTag(tag);
         
         if (!getBookTags(bookId).contains(tag)) {
-            jdbcTemplate.update(INSERT_TAG_TO_BOOK_QUERY, bookId, tag);
+            logger.debug("Tag was added? {}",
+                jdbcTemplate.update(INSERT_TAG_TO_BOOK_QUERY,
+                    bookId, tag) == 1);
         }
         
         return getBookTags(bookId);

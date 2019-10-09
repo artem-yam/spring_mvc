@@ -59,6 +59,8 @@ public class BooksController {
      */
     @GetMapping
     public List<Book> getAllBooks() {
+        logger.debug("getAllBooks method triggered");
+        
         return dao.getAllBooks();
     }
     
@@ -70,14 +72,15 @@ public class BooksController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity addBook(@ModelAttribute("book") @Valid Book newBook,
                                   BindingResult bindingResult) {
-        
         logger.info("Adding book : {}", newBook);
+        
         List<String> errors = new ArrayList<>();
         Object toReturn = errors;
         
         if (bindingResult.hasErrors()) {
+            logger.debug("Book {} is not valid", newBook);
             for (ObjectError er : bindingResult.getAllErrors()) {
-                logger.warn(er);
+                logger.debug(er);
                 errors.add(er.getDefaultMessage());
             }
         } else {
@@ -86,13 +89,15 @@ public class BooksController {
                     newBook.getImage().getBytes());
                 
                 toReturn = newBook;
+                
+                logger.info("Successful add");
             } catch (Exception ex) {
                 String errorMessage = ex.getClass().getSimpleName();
                 if (ex instanceof DuplicateKeyException) {
                     errorMessage = DUPLICATE_KEY_ERROR_MESSAGE;
                 }
                 
-                logger.warn(ex);
+                logger.debug("Can't add new book", ex);
                 
                 errors.add(errorMessage);
             }
@@ -101,7 +106,7 @@ public class BooksController {
         ResponseEntity responseEntity =
             new ResponseEntity<>(toReturn, HttpStatus.ACCEPTED);
         
-        //logger.info("After add try: {}", responseEntity)
+        logger.info("Add book method returns: {}", toReturn);
         
         return responseEntity;
     }
@@ -117,7 +122,7 @@ public class BooksController {
     public Book changeBookRating(@PathVariable int bookId,
                                  @RequestBody int newRating)
         throws Exception {
-        //logger.info("New rating for book {} = {}", bookId, newRating);
+        logger.info("Changing book {} rating to {}", bookId, newRating);
         
         return dao.changeRating(bookId, newRating);
     }
@@ -131,6 +136,7 @@ public class BooksController {
     @GetMapping(value = "/{bookId}/image",
         produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public byte[] getBookImage(@PathVariable int bookId) throws Exception {
+        logger.debug("Getting image for book {}", bookId);
         return dao.getBookImage(bookId);
     }
     
@@ -143,6 +149,7 @@ public class BooksController {
     public void deleteBook(@PathVariable int bookId) {
         logger.info("Deleting book {}", bookId);
         dao.deleteBook(bookId);
+        logger.info("Successful deletion");
     }
     
 }

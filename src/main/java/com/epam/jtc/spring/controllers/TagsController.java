@@ -21,7 +21,8 @@ public class TagsController {
     /**
      * logger for class
      */
-    private static final Logger logger = LogManager.getLogger(TagsController.class);
+    private static final Logger logger =
+        LogManager.getLogger(TagsController.class);
     
     /**
      * DAO for operations with tags
@@ -47,6 +48,7 @@ public class TagsController {
     //@GetMapping("/tags")
     @GetMapping
     public List<String> getAllTags() {
+        logger.debug("getAllTags method triggered");
         return dao.getAllTags();
     }
     
@@ -61,7 +63,7 @@ public class TagsController {
     @PostMapping("/{tag}")
     public List<String> addTagToBook(@RequestBody int bookId,
                                      @PathVariable String tag) {
-        
+        logger.info("Adding tag \'{}\' to book {}", tag, bookId);
         return dao.addTagToBook(bookId, tag);
     }
 }

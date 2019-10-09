@@ -20,27 +20,14 @@ public class OracleUserDAO implements UserDAO {
     /**
      * Logger for class
      */
-    private static final Logger DAOLogger =
+    private static final Logger logger =
         LogManager.getLogger(OracleUserDAO.class);
     
-    private static final String NULL_USER_MESSAGE =
-        "User with this login doesn't exist!";
-    private static final String USER_ALREADY_ONLINE_MESSAGE =
-        "The user is already online!";
-    private static final String DIFFERENT_PASS_MESSAGE =
-        "The password doesn't correspond!";
-    
     /**
-     * Query to get all books
+     * Query to get user by login
      */
     private static final String FIND_USER_QUERY =
         "select * from users where login=?";
-    
-    private static final String SET_ONLINE_QUERY =
-        "update users set is_online=1 where login=?";
-    
-    private static final String SET_OFFLINE_QUERY =
-        "update users set is_online=0 where login=?";
     
     /**
      * JDBC template to connect DB
@@ -63,6 +50,7 @@ public class OracleUserDAO implements UserDAO {
      */
     @Override
     public User getUser(String login) {
+        logger.debug("Getting user with login: \'{}\'", login);
         return jdbcTemplate
                    .queryForObject(FIND_USER_QUERY, userRowMapper, login);
     }

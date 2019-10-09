@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" session="false" %>
+         pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -32,6 +32,7 @@
         </div>
         <div class="header_user-profile">
             <a href="#">
+                <%--${sessionScope.keySet()}--%>
                 <c:choose>
                     <c:when test="${not empty activeUser.login}">
                         ${activeUser.login}
@@ -43,7 +44,7 @@
             </a>
         </div>
         <div class="header_logout ${not activeUser.active ? 'hidden':''} ">
-            <a id="logout_user" href="#">LogOut</a>
+            <a id="logout_user" href="#">Log out</a>
         </div>
     </header>
 
@@ -54,13 +55,11 @@
                        action="books" name="addBookForm"
                        modelAttribute="book" id="addBookForm">
 
-                <%--<a id="add_book">--%>
                 <label for="submit_form" id="add_book">
                     <input type="submit" id="submit_form" class="hidden"/>
                     <span>&#10010;</span>
                     ADD A BOOK
                 </label>
-                <%--</a>--%>
 
                 <form:input id="add_book_title" placeholder="Title"
                             type="text" name="title" path="title"/>

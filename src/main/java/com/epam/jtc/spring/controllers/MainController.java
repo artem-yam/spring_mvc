@@ -31,7 +31,7 @@ public class MainController {
         
         model.addAttribute("book", new Book());
         model.addAttribute("activeUser", activeUser);
-        logger.info("Init model = {}", model);
+        logger.debug("Initial model = {}", model);
         
         return "lib";
     }

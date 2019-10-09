@@ -60,7 +60,6 @@ public class OracleDAOFactory implements DAOFactory, AutoCloseable {
             synchronized (OracleDAOFactory.class) {
                 AnnotationConfigApplicationContext ctx =
                     new AnnotationConfigApplicationContext();
-                //ctx.register(SpringConfiguration.class);
                 ctx.scan(DAO_BEANS_PACKAGE);
                 ctx.refresh();
                 

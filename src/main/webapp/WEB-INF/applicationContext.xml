@@ -11,4 +11,6 @@
 
     <util:constant id="DATA_SOURCE_TYPE_ORACLE"
                    static-field="com.epam.jtc.spring.datalayer.DataSourceType.ORACLE"/>
+
+    <bean class="org.springframework.security.core.session.SessionRegistryImpl"/>
 </beans>

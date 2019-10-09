@@ -35,7 +35,7 @@ public class BookImageRowMapper implements RowMapper<byte[]> {
             try {
                 image = toByteArray(imageBlobStream);
             } catch (IOException bookImageIOException) {
-                logger.warn("Can't get image",
+                logger.debug("Can't get image",
                     bookImageIOException);
             }
         }

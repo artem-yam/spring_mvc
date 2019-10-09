@@ -7,32 +7,6 @@
 
     <display-name>SpringMVC</display-name>
 
-    <security-constraint>
-        <display-name>empty security</display-name>
-        <web-resource-collection>
-            <web-resource-name/>
-            <url-pattern/>
-        </web-resource-collection>
-    </security-constraint>
-
-
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener
-        </listener-class>
-    </listener>
-    <listener>
-        <listener-class>com.epam.jtc.spring.SessionListener</listener-class>
-    </listener>
-
-
-    <filter>
-        <filter-name>SessionFilter</filter-name>
-        <filter-class>com.epam.jtc.spring.SessionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <servlet>
         <servlet-name>dispatcher</servlet-name>
@@ -48,9 +22,44 @@
     </servlet-mapping>
 
 
+    <security-constraint>
+        <display-name>empty security</display-name>
+        <web-resource-collection>
+            <web-resource-name/>
+            <url-pattern/>
+        </web-resource-collection>
+    </security-constraint>
+
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.epam.jtc.spring.SessionListener</listener-class>
+    </listener>
+
+
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>com.epam.jtc.spring.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
     <session-config>
-        <session-timeout>10</session-timeout>
+        <session-timeout>5</session-timeout>
     </session-config>
+
     <resource-ref>
         <res-ref-name>jdbc/oracle</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>

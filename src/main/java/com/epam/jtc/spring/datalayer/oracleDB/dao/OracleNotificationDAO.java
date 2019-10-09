@@ -22,7 +22,7 @@ public class OracleNotificationDAO implements NotificationDAO {
     /**
      * Logger for class
      */
-    private static final Logger DAOLogger =
+    private static final Logger logger =
         LogManager.getLogger(OracleNotificationDAO.class);
     /**
      * Query to get all notifications
@@ -65,6 +65,7 @@ public class OracleNotificationDAO implements NotificationDAO {
     
     @Override
     public List<Notification> getAllNotifications() {
+        logger.debug("Getting all notifications");
         return jdbcTemplate
                    .query(ALL_NOTIFICATIONS_QUERY, notificationRowMapper);
     }
@@ -74,8 +75,14 @@ public class OracleNotificationDAO implements NotificationDAO {
     public Notification addNotification(int bookId, String content,
                                         String category,
                                         NotificationTypes type) {
-        jdbcTemplate.update(ADD_NOTIFICATION_QUERY,
-            bookId > 0 ? bookId : null, content, category, type.toString());
+        logger.debug(
+            "Adding notification: bookId = {}, content = {}, category = {}, type = {}",
+            bookId, content, category, type);
+        
+        logger.debug("Successful add? {}",
+            jdbcTemplate.update(ADD_NOTIFICATION_QUERY,
+                bookId > 0 ? bookId : null, content, category,
+                type.toString()) == 1);
         
         return jdbcTemplate.queryForObject(GET_NOTIFICATION_QUERY,
             notificationRowMapper, bookId, content, category);

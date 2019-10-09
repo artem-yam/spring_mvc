@@ -1,5 +1,6 @@
 package com.epam.jtc.spring.datalayer.dto;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -15,21 +16,25 @@ import java.util.Objects;
 @Component("user")
 @Scope(value = WebApplicationContext.SCOPE_SESSION,
     proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Lazy(false)
 public class User {
+    
+    public static String DEFAULT_LOGIN = "";
+    public static String DEFAULT_PASS = "";
     
     /**
      * User login
      */
     @NotNull
     @Size(min = 5, max = 20)
-    private String login = "";
+    private String login = DEFAULT_LOGIN;
     
     /**
      * User pass
      */
     @NotNull
     @Size(min = 5, max = 20)
-    private String pass = "";
+    private String pass = DEFAULT_PASS;
     
     /**
      * Default constructor
@@ -86,7 +91,7 @@ public class User {
     public String toString() {
         return "User{" +
                    "login='" + login + '\'' +
-                   ", pass='" + pass +
+                   ", pass='" + pass + '\'' +
                    '}';
     }
     

@@ -47,6 +47,7 @@ public class NotificationsController {
      */
     @GetMapping
     public List<Notification> getAllNotifications() {
+        logger.debug("getAllNotifications method triggered");
         return dao.getAllNotifications();
     }
     
@@ -58,6 +59,7 @@ public class NotificationsController {
      */
     @PostMapping
     public Notification addNotification(@RequestBody Notification newNote) {
+        logger.info("Adding notification: {}", newNote);
         return dao.addNotification(newNote.getBookId(), newNote.getContent(),
             newNote.getCategory(), newNote.getType());
     }
