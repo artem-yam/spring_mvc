@@ -1,7 +1,5 @@
 package com.epam.jtc.spring.controllers;
 
-import com.epam.jtc.spring.datalayer.DAOFactory;
-import com.epam.jtc.spring.datalayer.DataSourceType;
 import com.epam.jtc.spring.datalayer.dao.TagDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,29 +15,28 @@ import java.util.List;
 //@RequestMapping
 @RequestMapping("/tags")
 public class TagsController {
-    
+
     /**
      * logger for class
      */
     private static final Logger logger =
-        LogManager.getLogger(TagsController.class);
-    
+            LogManager.getLogger(TagsController.class);
+
     /**
      * DAO for operations with tags
      */
+    @Autowired
     private TagDAO dao;
-    
+
     /**
      * Constructor
      *
-     * @param dataSourceType type of data source
+     * @param dao tags dao
      */
-    @Autowired
-    public TagsController(DataSourceType dataSourceType) {
-        dao = DAOFactory.getInstance(dataSourceType)
-                  .getTagDAO();
+    public TagsController(TagDAO dao) {
+        this.dao = dao;
     }
-    
+
     /**
      * Gets all tags from dao
      *
@@ -51,7 +48,7 @@ public class TagsController {
         logger.debug("getAllTags method triggered");
         return dao.getAllTags();
     }
-    
+
     /**
      * Add some tag to the book
      *

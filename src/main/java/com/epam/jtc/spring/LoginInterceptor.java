@@ -40,19 +40,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect(request.getContextPath());
             return false;
         } else {
-            
-            /*Enumeration attrs = session.getAttributeNames();
-            
-            while (attrs.hasMoreElements()) {
-                logger.info(attrs.nextElement());
-            }*/
-            
-            //logger.info("User = {}", activeUser);
             if (!activeUser.isActive()) {
                 logger.info("Redirecting to user authorization");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
                     "Not logged in user");
-                return true;
+                return false;
             }
         }
         

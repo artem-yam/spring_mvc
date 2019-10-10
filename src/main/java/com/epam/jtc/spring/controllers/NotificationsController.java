@@ -1,7 +1,5 @@
 package com.epam.jtc.spring.controllers;
 
-import com.epam.jtc.spring.datalayer.DAOFactory;
-import com.epam.jtc.spring.datalayer.DataSourceType;
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
 import com.epam.jtc.spring.datalayer.dto.Notification;
 import org.apache.logging.log4j.LogManager;
@@ -17,29 +15,28 @@ import java.util.List;
 @RestController
 @RequestMapping("/notifications")
 public class NotificationsController {
-    
+
     /**
      * logger for class
      */
     private static final Logger logger =
-        LogManager.getLogger(NotificationsController.class);
-    
+            LogManager.getLogger(NotificationsController.class);
+
     /**
      * DAO for operations with notifications
      */
+    @Autowired
     private NotificationDAO dao;
-    
+
     /**
      * Constructor
      *
-     * @param dataSourceType type of data source
+     * @param dao notifications dao
      */
-    @Autowired
-    public NotificationsController(DataSourceType dataSourceType) {
-        dao = DAOFactory.getInstance(dataSourceType)
-                  .getNotificationDAO();
+    public NotificationsController(NotificationDAO dao) {
+        this.dao = dao;
     }
-    
+
     /**
      * Gets all notifications from dao
      *
@@ -50,7 +47,7 @@ public class NotificationsController {
         logger.debug("getAllNotifications method triggered");
         return dao.getAllNotifications();
     }
-    
+
     /**
      * Adds the notification to dao
      *
@@ -61,6 +58,6 @@ public class NotificationsController {
     public Notification addNotification(@RequestBody Notification newNote) {
         logger.info("Adding notification: {}", newNote);
         return dao.addNotification(newNote.getBookId(), newNote.getContent(),
-            newNote.getCategory(), newNote.getType());
+                newNote.getCategory(), newNote.getType());
     }
 }

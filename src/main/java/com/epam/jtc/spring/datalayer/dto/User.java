@@ -15,33 +15,30 @@ import java.util.Objects;
  */
 @Component("user")
 @Scope(value = WebApplicationContext.SCOPE_SESSION,
-    proxyMode = ScopedProxyMode.TARGET_CLASS)
+        proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Lazy(false)
 public class User {
-    
-    public static String DEFAULT_LOGIN = "";
-    public static String DEFAULT_PASS = "";
-    
+
     /**
      * User login
      */
     @NotNull
     @Size(min = 5, max = 20)
-    private String login = DEFAULT_LOGIN;
-    
+    private String login = "";
+
     /**
      * User pass
      */
     @NotNull
     @Size(min = 5, max = 20)
-    private String pass = DEFAULT_PASS;
-    
+    private String pass = "";
+
     /**
      * Default constructor
      */
     public User() {
     }
-    
+
     /**
      * Login getter
      *
@@ -50,7 +47,7 @@ public class User {
     public String getLogin() {
         return login;
     }
-    
+
     /**
      * Login setter
      *
@@ -59,7 +56,7 @@ public class User {
     public void setLogin(String login) {
         this.login = login;
     }
-    
+
     /**
      * Password getter
      *
@@ -68,7 +65,7 @@ public class User {
     public String getPassword() {
         return pass;
     }
-    
+
     /**
      * Password setter
      *
@@ -77,24 +74,19 @@ public class User {
     public void setPassword(String password) {
         this.pass = password;
     }
-    
+
     public boolean isActive() {
         return (login.length() != 0 && pass.length() != 0);
     }
-    
-    public void reset() {
-        this.login = "";
-        this.pass = "";
-    }
-    
+
     @Override
     public String toString() {
         return "User{" +
-                   "login='" + login + '\'' +
-                   ", pass='" + pass + '\'' +
-                   '}';
+                "login='" + login + '\'' +
+                ", pass='" + pass + '\'' +
+                '}';
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -108,9 +100,9 @@ public class User {
         }
         User user = (User) o;
         return Objects.equals(getLogin(), user.getLogin()) &&
-                   Objects.equals(getPassword(), user.getPassword());
+                Objects.equals(getPassword(), user.getPassword());
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(getLogin(), getPassword());
