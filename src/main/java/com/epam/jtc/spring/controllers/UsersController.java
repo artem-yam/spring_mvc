@@ -80,26 +80,36 @@ public class UsersController {
                 errors.add(er.getDefaultMessage());
             }
         } else {
-            User userFromDAO = dao.getUser(user.getLogin());
+            try {
+                User userFromDAO = dao.getUser(user.getLogin());
 
-            logger.debug("User from DAO: {}", userFromDAO);
+                logger.debug("User from DAO: {}", userFromDAO);
 
-            if (userFromDAO == null ||
-                    !userFromDAO.getPassword().equals(user.getPassword())) {
-                logger.debug("Incorrect login or password");
-                errors.add(WRONG_USER_DATA_ERROR_MESSAGE);
-            } else {
-                activeUser.setLogin(userFromDAO.getLogin());
-                activeUser.setPassword(userFromDAO.getPassword());
+                if (userFromDAO == null ||
+                        !userFromDAO.getPassword().equals(user.getPassword())) {
+                    logger.debug("Incorrect login or password");
+                    errors.add(WRONG_USER_DATA_ERROR_MESSAGE);
+                } else {
+                    activeUser.setLogin(userFromDAO.getLogin());
+                    activeUser.setPassword(userFromDAO.getPassword());
 
-                toReturn = userFromDAO;
+                    toReturn = userFromDAO;
 
-                logger.info("Successful log in: {}", userFromDAO);
+                    logger.info("Successful log in: {}", userFromDAO);
+                }
+            } catch (Exception ex) {
+                String errorMessage = ex.getClass().getSimpleName();
+
+                logger.debug("Can't log in user", ex);
+
+                errors.add(errorMessage);
             }
+
+
         }
 
         ResponseEntity responseEntity =
-                new ResponseEntity<>(toReturn, HttpStatus.ACCEPTED);
+                new ResponseEntity<>(toReturn, HttpStatus.OK);
 
         logger.info("Log in user method returns: {}", toReturn);
 
@@ -111,15 +121,8 @@ public class UsersController {
      */
     @PostMapping(value = "/logout")
     public void logOutUser(HttpServletRequest req) {
-        logger.info("Start log out for user: {}", activeUser);
+        logger.info("Log out for user: {}", activeUser);
 
-        User userToLogOut = dao.getUser(activeUser.getLogin());
-
-        if (userToLogOut != null) {
-            logger.info("Successful log out: {} ", userToLogOut);
-
-            req.getSession().invalidate();
-        }
-
+        req.getSession().invalidate();
     }
 }

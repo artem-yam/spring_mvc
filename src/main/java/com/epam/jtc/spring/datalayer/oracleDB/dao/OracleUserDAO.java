@@ -16,31 +16,31 @@ import java.sql.SQLException;
  */
 @Component
 public class OracleUserDAO implements UserDAO {
-    
+
     /**
      * Logger for class
      */
     private static final Logger logger =
-        LogManager.getLogger(OracleUserDAO.class);
-    
+            LogManager.getLogger(OracleUserDAO.class);
+
     /**
      * Query to get user by login
      */
     private static final String FIND_USER_QUERY =
-        "select * from users where login=?";
-    
+            "select * from users where login=?";
+
     /**
      * JDBC template to connect DB
      */
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     /**
      * Row mapper for result sets from DB 'users' table
      */
     @Autowired
     private RowMapper<User> userRowMapper;
-    
+
     /**
      * Gets user by it's login
      *
@@ -52,6 +52,6 @@ public class OracleUserDAO implements UserDAO {
     public User getUser(String login) {
         logger.debug("Getting user with login: \'{}\'", login);
         return jdbcTemplate
-                   .queryForObject(FIND_USER_QUERY, userRowMapper, login);
+                .queryForObject(FIND_USER_QUERY, userRowMapper, login);
     }
 }

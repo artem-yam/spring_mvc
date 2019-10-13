@@ -14,4 +14,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan({"com.epam.jtc.spring"})
 @Lazy(false)
 public class SpringConfiguration implements WebMvcConfigurer {
+
+    /*@Bean
+    public PlatformTransactionManager dbTransactionManager() {
+        return new JpaTransactionManager();
+    }*/
 }

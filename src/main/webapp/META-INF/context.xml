@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<GlobalNamingResources>-->
-<Context path="/myApp" docBase="myApp"
-         crossContext="true" reloadable="true" debug="1">
+<Context path="/myApp" docBase="myApp" crossContext="true" reloadable="true">
     <Resource name="jdbc/oracle"
               auth="Container"
               type="javax.sql.DataSource"

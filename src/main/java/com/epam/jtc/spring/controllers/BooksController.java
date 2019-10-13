@@ -39,12 +39,16 @@ public class BooksController {
     @Autowired
     private BookDAO dao;
 
-    /**
-     * Constructor
-     *
-     * @param dao books dao
-     */
+    @Autowired
     public BooksController(BookDAO dao) {
+        this.dao = dao;
+    }
+
+    public BooksController() {
+    }
+
+    @Autowired
+    public void setDao(BookDAO dao) {
         this.dao = dao;
     }
 
@@ -56,6 +60,7 @@ public class BooksController {
     @GetMapping
     public List<Book> getAllBooks() {
         logger.debug("getAllBooks method triggered");
+        //logger.info("BookDAO: {}", dao);
 
         return dao.getAllBooks();
     }
@@ -81,8 +86,11 @@ public class BooksController {
             }
         } else {
             try {
+                logger.info("Add try");
+
                 newBook = dao.addBook(newBook.getTitle(), newBook.getAuthor(),
-                        newBook.getImage().getBytes());
+                        newBook.getImage() == null ? new byte[0] :
+                                newBook.getImage().getBytes());
 
                 toReturn = newBook;
 
@@ -100,7 +108,7 @@ public class BooksController {
         }
 
         ResponseEntity responseEntity =
-                new ResponseEntity<>(toReturn, HttpStatus.ACCEPTED);
+                new ResponseEntity<>(toReturn, HttpStatus.OK);
 
         logger.info("Add book method returns: {}", toReturn);
 
@@ -130,7 +138,8 @@ public class BooksController {
      * @return bytes representation of the image
      */
     @GetMapping(value = "/{bookId}/image",
-            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+            produces = {MediaType.IMAGE_JPEG_VALUE,
+                    MediaType.IMAGE_PNG_VALUE})
     public byte[] getBookImage(@PathVariable int bookId) throws Exception {
         logger.debug("Getting image for book {}", bookId);
         return dao.getBookImage(bookId);
