@@ -24,6 +24,9 @@ public class OracleJdbcTemplate extends JdbcTemplate {
             LogManager.getLogger(OracleJdbcTemplate.class);
 
 
+    public OracleJdbcTemplate() {
+    }
+
     @Autowired
     public OracleJdbcTemplate(DataSource dataSource) {
         super(dataSource);

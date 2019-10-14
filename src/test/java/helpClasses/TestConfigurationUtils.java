@@ -1,27 +1,26 @@
 package helpClasses;
 
+import com.epam.jtc.spring.controllers.BooksController;
+import com.epam.jtc.spring.datalayer.OracleJdbcTemplate;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
+import com.epam.jtc.spring.datalayer.dto.Book;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
+import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-/*@EnableJpaRepositories(basePackages = {
-        "org.baeldung.repository",
-        "org.baeldung.boot.repository"
-})*/
 @TestConfiguration
 public class TestConfigurationUtils {
-    
+
     public TestConfigurationUtils() {
         try {
             setUpDataSourceJNDI();
@@ -29,49 +28,46 @@ public class TestConfigurationUtils {
             e.printStackTrace();
         }
     }
-    
+
     @Bean
     public JdbcTemplate jdbcTemplate() {
-        return mock(JdbcTemplate.class);
+        return mock(OracleJdbcTemplate.class);
     }
-    
-    /*@Bean("testBookDAO")
-    public OracleBookDAO bookDAO() {
-        return mock(OracleBookDAO.class);
-    }*/
-    
+
+    private BookDAO getTestingBookDAO() {
+        OracleBookDAO dao = mock(OracleBookDAO.class);
+
+        when(dao.getAllBooks()).thenReturn(Arrays.asList(new Book()));
+
+        return dao;
+    }
+
     @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        
-        ds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-        ds.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
-        ds.setUsername("SYSTEM");
-        ds.setPassword("SYSTEM");
-        
-        return ds;
+    public BooksController booksController() {
+        return new BooksController(getTestingBookDAO());
     }
-    
+
+
     public void setUpDataSourceJNDI() throws NamingException {
-        
+
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY,
-            "org.apache.naming.java.javaURLContextFactory");
+                "org.apache.naming.java.javaURLContextFactory");
         System.setProperty(Context.URL_PKG_PREFIXES, "org.apache.naming");
         InitialContext ic = new InitialContext();
-        
+
         ic.createSubcontext("java:");
         ic.createSubcontext("java:comp");
         ic.createSubcontext("java:comp/env");
         ic.createSubcontext("java:comp/env/jdbc");
         ic.createSubcontext("java:comp/env/jdbc/oracle");
-        
+
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        
+
         ds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
         ds.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
         ds.setUsername("SYSTEM");
         ds.setPassword("SYSTEM");
-        
+
         ic.rebind("java:comp/env/jdbc/oracle", ds);
     }
 }

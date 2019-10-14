@@ -19,7 +19,6 @@ import java.util.List;
  * Book DAO for oracle DB
  */
 @Component
-//@Profile("oracle")
 public class OracleBookDAO implements BookDAO {
     
     /**
@@ -105,7 +104,7 @@ public class OracleBookDAO implements BookDAO {
             book.setTags(tagDAO.getBookTags(book.getId()));
         }
         
-        logger.debug(books);
+        logger.info(books);
         
         return books;
     }
