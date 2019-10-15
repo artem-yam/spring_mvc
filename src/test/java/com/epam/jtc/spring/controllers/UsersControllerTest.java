@@ -1,7 +1,6 @@
 package com.epam.jtc.spring.controllers;
 
 import com.epam.jtc.spring.SpringConfiguration;
-import helpClasses.TestConfigurationUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -13,8 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-
-import javax.naming.NamingException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -37,11 +34,6 @@ public class UsersControllerTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        try {
-            new TestConfigurationUtils().setUpDataSourceJNDI();
-        } catch (NamingException ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Before

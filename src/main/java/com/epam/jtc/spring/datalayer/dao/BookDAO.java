@@ -31,9 +31,9 @@ public interface BookDAO {
      * Changes rating of the book
      *
      * @param bookId    id of the book
-     * @param newRating new book rating
+     * @param changedBook book with changes
      */
-    Book changeRating(int bookId, int newRating) throws Exception;
+    Book updateBook(int bookId, Book changedBook) throws Exception;
     
     /**
      * Gets book image

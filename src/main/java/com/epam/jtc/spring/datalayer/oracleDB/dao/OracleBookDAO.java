@@ -139,8 +139,8 @@ public class OracleBookDAO implements BookDAO {
     
     @Override
     @Transactional
-    public Book changeRating(int bookId, int newRating) throws Exception {
-        logger.debug("Changing book {} rating to {}", bookId, newRating);
+    public Book updateBook(int bookId, Book changedBook) throws Exception {
+        logger.debug("Changing book {} to {}", bookId, changedBook);
         
         try {
             getBook(bookId);
@@ -150,7 +150,7 @@ public class OracleBookDAO implements BookDAO {
         }
         
         logger.debug("Successful rating change? {}",
-            jdbcTemplate.update(RATING_CHANGE_QUERY, newRating, bookId) ==
+            jdbcTemplate.update(RATING_CHANGE_QUERY, bookId) ==
                 1);
         
         return getBook(bookId);

@@ -62,11 +62,11 @@ paths:
       security:
       - user_login: []
       
-  /books/{bookId}/rating:
+  /books/{bookId}:
     post:
       tags:
       - "books"
-      summary: "Changes the book rating"
+      summary: "Changes the book"
       operationId: "changeBookRating"
       consumes:
       - "application/json"
@@ -74,10 +74,27 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "newRating"
-        description: "New rating value for the book"
+        name: "changedBook"
+        description: "Book object with changed info"
         schema:
-          type: "integer"
+          $ref: "#/definitions/Book"
+      - in: "path"
+        name: "bookId"
+        description: "Id of the book"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - user_login: []
+      
+    delete:
+      tags:
+      - "books"
+      summary: "Deletes the book"
+      operationId: "deleteBook"
+      parameters:
       - in: "path"
         name: "bookId"
         description: "Id of the book"

@@ -1,10 +1,22 @@
 package helpClasses;
 
 import com.epam.jtc.spring.controllers.BooksController;
+import com.epam.jtc.spring.controllers.NotificationsController;
+import com.epam.jtc.spring.controllers.TagsController;
+import com.epam.jtc.spring.controllers.UsersController;
 import com.epam.jtc.spring.datalayer.OracleJdbcTemplate;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
+import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
+import com.epam.jtc.spring.datalayer.dao.TagDAO;
+import com.epam.jtc.spring.datalayer.dao.UserDAO;
 import com.epam.jtc.spring.datalayer.dto.Book;
+import com.epam.jtc.spring.datalayer.dto.Notification;
+import com.epam.jtc.spring.datalayer.dto.NotificationTypes;
+import com.epam.jtc.spring.datalayer.dto.User;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO;
+import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleNotificationDAO;
+import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleTagDAO;
+import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleUserDAO;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,8 +61,45 @@ public class TestConfigurationUtils {
         bookForRatingChange.setId(1);
         bookForRatingChange.setRating(0);
 
-        when(dao.changeRating(1, 0))
+        when(dao.updateBook(1, bookForRatingChange))
                 .thenReturn(bookForRatingChange);
+
+        return dao;
+    }
+
+    private NotificationDAO getTestingNotificationDAO() throws Exception {
+        OracleNotificationDAO dao = mock(OracleNotificationDAO.class);
+
+        when(dao.getAllNotifications())
+                .thenReturn(Arrays.asList(new Notification()));
+
+        when(dao.addNotification(0, null, null, NotificationTypes.ADD_BOOK))
+                .thenReturn(new Notification());
+
+        return dao;
+    }
+
+    private TagDAO getTestingTagDAO() throws Exception {
+        OracleTagDAO dao = mock(OracleTagDAO.class);
+
+        when(dao.getAllTags())
+                .thenReturn(Arrays.asList("Test tag"));
+
+        when(dao.addTagToBook(1, "Test tag"))
+                .thenReturn(Arrays.asList("Test tag"));
+
+        return dao;
+    }
+
+    private UserDAO getTestingUserDAO() throws Exception {
+        OracleUserDAO dao = mock(OracleUserDAO.class);
+
+        User testUser = new User();
+        testUser.setLogin("Test login");
+        testUser.setPassword("Test password");
+
+        when(dao.getUser("Test login"))
+                .thenReturn(testUser);
 
         return dao;
     }
@@ -60,8 +109,23 @@ public class TestConfigurationUtils {
         return new BooksController(getTestingBookDAO());
     }
 
+    @Bean
+    public NotificationsController notificationsController() throws Exception {
+        return new NotificationsController(getTestingNotificationDAO());
+    }
 
-    public void setUpDataSourceJNDI() throws NamingException {
+    @Bean
+    public TagsController tagsController() throws Exception {
+        return new TagsController(getTestingTagDAO());
+    }
+
+    @Bean
+    public UsersController usersController() throws Exception {
+        return new UsersController(getTestingUserDAO());
+    }
+
+
+    private void setUpDataSourceJNDI() throws NamingException {
 
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY,
                 "org.apache.naming.java.javaURLContextFactory");

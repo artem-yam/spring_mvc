@@ -127,16 +127,16 @@ public class BooksController {
      * Changes the book rating
      *
      * @param bookId    id of the book
-     * @param newRating book's new rating
+     * @param changedBook book object with changed info
      * @return book
      */
-    @PostMapping("/{bookId}/rating")
-    public Book changeBookRating(@PathVariable int bookId,
-                                 @RequestBody int newRating)
+    @PostMapping("/{bookId}")
+    public Book updateBook(@PathVariable int bookId,
+                                 @RequestBody Book changedBook)
             throws Exception {
-        logger.info("Changing book {} rating to {}", bookId, newRating);
+        logger.info("Changing book {} to {}", bookId, changedBook);
 
-        return dao.changeRating(bookId, newRating);
+        return dao.updateBook(bookId, changedBook);
     }
 
     /**
@@ -158,7 +158,7 @@ public class BooksController {
      *
      * @param bookId id of the book to delete
      */
-    @PostMapping("/{bookId}")
+    @DeleteMapping("/{bookId}")
     public void deleteBook(@PathVariable int bookId) {
         logger.info("Deleting book {}", bookId);
         dao.deleteBook(bookId);

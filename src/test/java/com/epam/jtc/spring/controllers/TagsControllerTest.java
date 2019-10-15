@@ -39,11 +39,6 @@ public class TagsControllerTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        try {
-            new TestConfigurationUtils().setUpDataSourceJNDI();
-        } catch (NamingException ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Before

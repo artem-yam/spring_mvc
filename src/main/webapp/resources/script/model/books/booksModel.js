@@ -152,7 +152,7 @@ function BooksModel() {
 
     function deleteBook(bookId) {
         return Utils.sendRequest(AJAX_BOOKS_URL + URL_SEPARATOR + bookId,
-            null, requestType.POST)
+            null, requestType.DELETE)
             .then(async function () {
                 await refreshModel();
 
