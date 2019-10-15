@@ -54,8 +54,6 @@ let Utils = function () {
                 onLoginError.notify();
             }
             throw(error);
-        }).catch(function (er) {
-            console.log(er);
         });
 
         return ajaxRequest;

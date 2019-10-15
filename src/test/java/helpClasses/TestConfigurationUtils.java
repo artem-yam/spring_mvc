@@ -34,16 +34,29 @@ public class TestConfigurationUtils {
         return mock(OracleJdbcTemplate.class);
     }
 
-    private BookDAO getTestingBookDAO() {
+    private BookDAO getTestingBookDAO() throws Exception {
         OracleBookDAO dao = mock(OracleBookDAO.class);
 
         when(dao.getAllBooks()).thenReturn(Arrays.asList(new Book()));
+
+        when(dao.addBook("Test title", "Test author", new byte[0]))
+                .thenReturn(new Book("Test title", "Test author"));
+
+        when(dao.addBook("Test title", "Test author", new byte[0]))
+                .thenReturn(new Book("Test title", "Test author"));
+
+        Book bookForRatingChange = new Book();
+        bookForRatingChange.setId(1);
+        bookForRatingChange.setRating(0);
+
+        when(dao.changeRating(1, 0))
+                .thenReturn(bookForRatingChange);
 
         return dao;
     }
 
     @Bean
-    public BooksController booksController() {
+    public BooksController booksController() throws Exception {
         return new BooksController(getTestingBookDAO());
     }
 

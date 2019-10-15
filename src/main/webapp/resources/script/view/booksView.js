@@ -261,7 +261,7 @@ function BooksView(controller, model) {
         Utils.resetInnerHTML(errorsDiv);
 
         mainController.addBook(bookFormData).catch(function (errors) {
-            for (let error of errors) {
+            for (let error of errors.responseJSON) {
                 errorsDiv.innerHTML += error + "<br>";
             }
         });

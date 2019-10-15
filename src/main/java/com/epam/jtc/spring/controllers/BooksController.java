@@ -85,7 +85,8 @@ public class BooksController {
         logger.info("Adding book : {}", newBook);
 
         List<String> errors = new ArrayList<>();
-        Object toReturn = errors;
+        ResponseEntity responseEntity =
+                new ResponseEntity<>(errors, HttpStatus.NOT_ACCEPTABLE);
 
         if (bindingResult.hasErrors()) {
             logger.debug("Book {} is not valid", newBook);
@@ -101,7 +102,8 @@ public class BooksController {
                         newBook.getImage() == null ? new byte[0] :
                                 newBook.getImage().getBytes());
 
-                toReturn = newBook;
+                responseEntity =
+                        new ResponseEntity<>(newBook, HttpStatus.OK);
 
                 logger.info("Successful add");
             } catch (Exception ex) {
@@ -116,10 +118,7 @@ public class BooksController {
             }
         }
 
-        ResponseEntity responseEntity =
-                new ResponseEntity<>(toReturn, HttpStatus.OK);
-
-        logger.info("Add book method returns: {}", toReturn);
+        logger.info("Add book method returns: {}", responseEntity);
 
         return responseEntity;
     }

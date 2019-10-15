@@ -53,11 +53,9 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String author,
-                MultipartFile image) {
+    public Book(String title, String author) {
         this.title = title;
         this.author = author;
-        this.image = image;
     }
 
     /**

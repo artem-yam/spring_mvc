@@ -1,6 +1,5 @@
 package com.epam.jtc.spring.controllers;
 
-import com.epam.jtc.spring.BookValidator;
 import com.epam.jtc.spring.SpringConfiguration;
 import helpClasses.TestConfigurationUtils;
 import org.junit.After;
@@ -10,12 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,23 +25,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = {SpringConfiguration.class, TestConfigurationUtils.class})
 @WebAppConfiguration
 //@WebMvcTest(controllers = BooksController.class)
-//@AutoConfigureMockMvc
+@AutoConfigureMockMvc
 //@ActiveProfiles("test")
 public class BooksControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
 
-    //@Autowired
+    @Autowired
     private MockMvc mockMvc;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        /*try {
-            new TestConfigurationUtils().setUpDataSourceJNDI();
-        } catch (NamingException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
     @Before
@@ -53,7 +45,7 @@ public class BooksControllerTest {
         //        MockMvcBuilders.standaloneSetup(BooksController.class)
         //                .setValidator(new BookValidator()).build();
 
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        //this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
     @After
@@ -85,7 +77,8 @@ public class BooksControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(
                         content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$").isNotEmpty());
+                .andExpect(jsonPath("$").isNotEmpty()
+                );
 
     }
 
@@ -99,7 +92,8 @@ public class BooksControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(
                         content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$").isNotEmpty());
+                .andExpect(jsonPath("$").isNotEmpty()
+                );
     }
 
     @Test
@@ -110,13 +104,14 @@ public class BooksControllerTest {
 
                 .andExpect(handler().methodName("getBookImage"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith("image/*"));
+                .andExpect(content().contentTypeCompatibleWith("image/*")
+                );
     }
 
     @Test
     public void deleteBook() throws Exception {
         this.mockMvc.perform(
-                post("/books/{bookId}", -1)).andDo(print())
+                post("/books/{bookId}", 1)).andDo(print())
 
                 .andExpect(handler().methodName("deleteBook"))
                 .andExpect(status().isOk());

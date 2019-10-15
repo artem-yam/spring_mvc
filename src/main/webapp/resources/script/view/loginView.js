@@ -41,7 +41,7 @@ function LoginView(controller) {
                 alert("Successful login");
                 window.document.location.reload(true);
             }).catch(function (errors) {
-                for (let error of errors) {
+                for (let error of errors.responseJSON) {
                     errorsDiv.innerHTML += error + "<br>";
                 }
             });

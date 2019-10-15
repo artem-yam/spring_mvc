@@ -5,6 +5,7 @@ import com.epam.jtc.spring.datalayer.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,8 @@ public class UsersController {
     private static final Logger logger =
             LogManager.getLogger(UsersController.class);
 
+    private static final String WRONG_USER_PASSWORD_ERROR_MESSAGE =
+            "Wrong password";
     private static final String WRONG_USER_DATA_ERROR_MESSAGE =
             "Wrong user data";
 
@@ -71,7 +74,8 @@ public class UsersController {
         logger.info("Start log in for user: {}", user);
 
         List<String> errors = new ArrayList<>();
-        Object toReturn = errors;
+        ResponseEntity responseEntity =
+                new ResponseEntity<>(errors, HttpStatus.NOT_ACCEPTABLE);
 
         if (bindingResult.hasErrors()) {
             logger.debug("User {} data is not valid", user);
@@ -85,20 +89,23 @@ public class UsersController {
 
                 logger.debug("User from DAO: {}", userFromDAO);
 
-                if (userFromDAO == null ||
-                        !userFromDAO.getPassword().equals(user.getPassword())) {
+                if (!userFromDAO.getPassword().equals(user.getPassword())) {
                     logger.debug("Incorrect login or password");
-                    errors.add(WRONG_USER_DATA_ERROR_MESSAGE);
+                    errors.add(WRONG_USER_PASSWORD_ERROR_MESSAGE);
                 } else {
                     activeUser.setLogin(userFromDAO.getLogin());
                     activeUser.setPassword(userFromDAO.getPassword());
 
-                    toReturn = userFromDAO;
+                    responseEntity =
+                            new ResponseEntity<>(userFromDAO, HttpStatus.OK);
 
                     logger.info("Successful log in: {}", userFromDAO);
                 }
             } catch (Exception ex) {
                 String errorMessage = ex.getClass().getSimpleName();
+                if (ex instanceof EmptyResultDataAccessException) {
+                    errorMessage = WRONG_USER_DATA_ERROR_MESSAGE;
+                }
 
                 logger.debug("Can't log in user", ex);
 
@@ -108,10 +115,7 @@ public class UsersController {
 
         }
 
-        ResponseEntity responseEntity =
-                new ResponseEntity<>(toReturn, HttpStatus.OK);
-
-        logger.info("Log in user method returns: {}", toReturn);
+        logger.info("Log in user method returns: {}", responseEntity);
 
         return responseEntity;
     }

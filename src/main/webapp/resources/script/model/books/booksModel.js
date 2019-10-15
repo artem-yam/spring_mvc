@@ -65,10 +65,6 @@ function BooksModel() {
     function addBook(bookFormData) {
         return Utils.sendRequest(AJAX_BOOKS_URL, bookFormData, requestType.POST)
             .then(function (response) {
-                if (response instanceof Array) {
-                    throw response;
-                }
-
                 onBookAdd.notify(response.id, response.title, response.author);
             });
     }
