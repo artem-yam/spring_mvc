@@ -36,8 +36,13 @@ let Utils = function () {
                 processData: false,
                 data: data
             });
+        } else if (data instanceof BookTag) {
+            ajaxRequest = $.ajax({
+                url: url,
+                type: requestType,
+                data: data
+            });
         } else {
-
             ajaxRequest = $.ajax({
                 url: url,
                 type: requestType,

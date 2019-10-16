@@ -162,12 +162,36 @@ paths:
       security:
       - user_login: []
       
-  /tags/{tag}:
     post:
       tags:
       - "tags"
       summary: "Add some tag to the book"
       operationId: "addTagToBook"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "formData"
+        name: "bookId"
+        description: "Book id"
+        type: "integer"
+      - in: "formData"
+        name: "tag"
+        description: "Tag to add"
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - user_login: []
+      
+  /tags/{tag}:
+    post:
+      tags:
+      - "tags"
+      summary: "Unbinds tag from the book"
+      operationId: "unbindTag"
       consumes:
       - "application/json"
       produces:
@@ -180,7 +204,7 @@ paths:
           type: "integer"
       - in: "path"
         name: "tag"
-        description: "tag to add"
+        description: "Tag to add"
         required: true
         type: "string"
       responses:
@@ -188,7 +212,6 @@ paths:
           description: "successful operation"
       security:
       - user_login: []
-      
 
   /users/login:    
     post:

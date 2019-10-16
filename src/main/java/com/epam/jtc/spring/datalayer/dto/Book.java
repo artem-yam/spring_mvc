@@ -211,9 +211,7 @@ public class Book {
         Book book = (Book) o;
 
         if (!(Objects.equals(getTitle(), book.getTitle()) &&
-                Objects.equals(getAuthor(), book.getAuthor()) &&
-                Objects.equals(getImage(), book.getImage()) &&
-                Objects.equals(getTags(), book.getTags()))) {
+                Objects.equals(getAuthor(), book.getAuthor()))) {
             return false;
         }
 

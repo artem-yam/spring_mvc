@@ -9,14 +9,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-
-import javax.naming.NamingException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-        classes = {SpringConfiguration.class, MockMvcAutoConfiguration.class})
+        classes = {SpringConfiguration.class, TestConfigurationUtils.class})
 @WebAppConfiguration
 @AutoConfigureMockMvc
 public class TagsControllerTest {
@@ -58,20 +55,41 @@ public class TagsControllerTest {
                         content().contentType("application/json;charset=UTF-8"))
                 .andExpect(handler().methodName("getAllTags"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isNotEmpty()
+                );
     }
 
 
     @Test
     public void addTagToBook() throws Exception {
-        this.mockMvc.perform(post("/tags/{tag}", "test tag")
+        this.mockMvc.perform(post("/tags")
                 .contentType("application/json;charset=UTF-8")
-                .content("1")).andDo(print())
+                .param("bookId", "1")
+                .param("tag", "Test tag"))
+                .andDo(print())
 
                 .andExpect(handler().methodName("addTagToBook"))
                 .andExpect(status().isOk())
                 .andExpect(
                         content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isNotEmpty()
+                );
+    }
+
+    @Test
+    public void unbindTag() throws Exception {
+        this.mockMvc.perform(post("/tags/{tag}", "Test tag")
+                .contentType("application/json;charset=UTF-8")
+                .content("1")).andDo(print())
+
+                .andExpect(handler().methodName("unbindTag"))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isEmpty()
+                );
     }
 }

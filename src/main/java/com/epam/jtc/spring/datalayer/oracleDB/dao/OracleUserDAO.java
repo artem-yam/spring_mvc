@@ -9,8 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.SQLException;
-
 /**
  * User DAO for oracle DB
  */
@@ -46,7 +44,6 @@ public class OracleUserDAO implements UserDAO {
      *
      * @param login login
      * @return found user
-     * @throws SQLException if user not found
      */
     @Override
     public User getUser(String login) {

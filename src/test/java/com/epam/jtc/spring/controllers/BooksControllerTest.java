@@ -1,7 +1,11 @@
 package com.epam.jtc.spring.controllers;
 
 import com.epam.jtc.spring.SpringConfiguration;
+import com.epam.jtc.spring.datalayer.dto.Book;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import helpClasses.TestConfigurationUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -25,14 +29,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(
         classes = {SpringConfiguration.class, TestConfigurationUtils.class})
 @WebAppConfiguration
-//@WebMvcTest(controllers = BooksController.class)
 @AutoConfigureMockMvc
-//@ActiveProfiles("test")
 public class BooksControllerTest {
+
+    private static final Logger logger =
+            LogManager.getLogger(BooksControllerTest.class);
 
     @Autowired
     private WebApplicationContext wac;
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -84,12 +88,22 @@ public class BooksControllerTest {
     }
 
     @Test
-    public void changeBookRating() throws Exception {
-        this.mockMvc.perform(post("/books/{bookId}/rating", 1)
-                .contentType("application/json;charset=UTF-8")
-                .content("0")).andDo(print())
+    public void updateBook() throws Exception {
 
-                .andExpect(handler().methodName("changeBookRating"))
+        Book bookForUpdate = new Book();
+        bookForUpdate.setId(1);
+        bookForUpdate.setRating(0);
+
+        String json = new ObjectMapper().writer().withDefaultPrettyPrinter()
+                .writeValueAsString(bookForUpdate);
+
+
+        this.mockMvc.perform(post("/books/{bookId}", 1)
+                .contentType("application/json;charset=UTF-8")
+                .content(json))
+                .andDo(print())
+
+                .andExpect(handler().methodName("updateBook"))
                 .andExpect(status().isOk())
                 .andExpect(
                         content().contentType("application/json;charset=UTF-8"))

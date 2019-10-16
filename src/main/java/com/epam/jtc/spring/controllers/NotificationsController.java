@@ -25,7 +25,6 @@ public class NotificationsController {
     /**
      * DAO for operations with notifications
      */
-    @Autowired
     private NotificationDAO dao;
 
     /**
@@ -33,6 +32,7 @@ public class NotificationsController {
      *
      * @param dao notifications dao
      */
+    @Autowired
     public NotificationsController(NotificationDAO dao) {
         this.dao = dao;
     }
@@ -45,6 +45,7 @@ public class NotificationsController {
     @GetMapping
     public List<Notification> getAllNotifications() {
         logger.debug("getAllNotifications method triggered");
+
         return dao.getAllNotifications();
     }
 
@@ -57,6 +58,9 @@ public class NotificationsController {
     @PostMapping
     public Notification addNotification(@RequestBody Notification newNote) {
         logger.info("Adding notification: {}", newNote);
+        logger.info("book = {} cont = {} cat = {} type = {}",
+                newNote.getBookId(), newNote.getContent(),
+                newNote.getCategory(), newNote.getType());
         return dao.addNotification(newNote.getBookId(), newNote.getContent(),
                 newNote.getCategory(), newNote.getType());
     }

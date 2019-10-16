@@ -15,49 +15,55 @@ import java.util.List;
  */
 @Component
 public class OracleTagDAO implements TagDAO {
-    
+
     /**
      * Logger for class
      */
     private static final Logger logger =
-        LogManager.getLogger(OracleTagDAO.class);
+            LogManager.getLogger(OracleTagDAO.class);
     /**
      * Query to get all available tags
      */
     private static final String GET_ALL_TAGS_QUERY =
-        "select tag from AVAILABLE_TAGS";
-    
+            "select tag from AVAILABLE_TAGS";
+
     /**
      * Query to insert new tag
      */
     private static final String INSERT_NEW_TAG_QUERY =
-        "insert into AVAILABLE_TAGS(tag) values(?)";
-    
+            "insert into AVAILABLE_TAGS(tag) values(?)";
+
     /**
      * Query to get all tags of the book
      */
     private static final String GET_TAGS_FOR_BOOK_QUERY =
-        "select tag from AVAILABLE_TAGS where id in (select tag from BOOK_TAGS where book = ?)";
-    
+            "select tag from AVAILABLE_TAGS where id in (select tag from BOOK_TAGS where book = ?)";
+
     /**
      * Query to insert the tag to the book
      */
     private static final String INSERT_TAG_TO_BOOK_QUERY =
-        "insert into BOOK_TAGS(book, tag) values (?,(select id from AVAILABLE_TAGS where tag = ?))";
-    
+            "insert into BOOK_TAGS(book, tag) values (?,(select id from AVAILABLE_TAGS where tag = ?))";
+
+    /**
+     * Query to unbind tag from the book
+     */
+    private static final String UNBIND_TAG_FROM_BOOK_QUERY =
+            "delete from BOOK_TAGS where book=? and tag in (select id from AVAILABLE_TAGS where tag = ?)";
+
     /**
      * JDBC template to connect DB
      */
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     @Override
     public List<String> getAllTags() {
         logger.debug("Getting all tags");
         return jdbcTemplate
-                   .queryForList(GET_ALL_TAGS_QUERY, String.class);
+                .queryForList(GET_ALL_TAGS_QUERY, String.class);
     }
-    
+
     /**
      * Adds tag to the collection of all available tags
      *
@@ -66,31 +72,47 @@ public class OracleTagDAO implements TagDAO {
     private void addTag(String text) {
         if (!getAllTags().contains(text)) {
             logger
-                .debug("Adding tag \'{}\' to list of all available tags", text);
+                    .debug("Adding tag \'{}\' to list of all available tags",
+                            text);
             jdbcTemplate.update(INSERT_NEW_TAG_QUERY, text);
         }
     }
-    
+
     @Override
     public List<String> getBookTags(int bookId) {
         logger.debug("Getting tags to book {}", bookId);
         return jdbcTemplate
-                   .queryForList(GET_TAGS_FOR_BOOK_QUERY, String.class, bookId);
+                .queryForList(GET_TAGS_FOR_BOOK_QUERY, String.class, bookId);
     }
-    
+
     @Override
     @Transactional
     public List<String> addTagToBook(int bookId, String tag) {
         logger.debug("Adding tag \'{}\' to book {}", tag, bookId);
-        
+
         addTag(tag);
-        
+
         if (!getBookTags(bookId).contains(tag)) {
             logger.debug("Tag was added? {}",
-                jdbcTemplate.update(INSERT_TAG_TO_BOOK_QUERY,
-                    bookId, tag) == 1);
+                    jdbcTemplate.update(INSERT_TAG_TO_BOOK_QUERY,
+                            bookId, tag) == 1);
         }
-        
+
+        return getBookTags(bookId);
+    }
+
+    @Override
+    @Transactional
+    public List<String> unbindTag(int bookId, String tag) {
+        logger.debug("Unbinding tag \'{}\' from book {}", tag, bookId);
+
+        if (getBookTags(bookId).contains(tag)) {
+
+            logger.debug("Tag was unbind? {}",
+                    jdbcTemplate.update(UNBIND_TAG_FROM_BOOK_QUERY,
+                            bookId, tag) == 1);
+        }
+
         return getBookTags(bookId);
     }
 }

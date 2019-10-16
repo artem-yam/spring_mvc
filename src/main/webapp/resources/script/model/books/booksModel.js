@@ -6,7 +6,6 @@ function BooksModel() {
     const TEXT_NOT_FOUND = -1;
 
     const AJAX_BOOKS_URL = "books";
-    const AJAX_BOOK_RATING_URL = "rating";
     const AJAX_TAGS_URL = "tags";
     const URL_SEPARATOR = "/";
 
@@ -58,8 +57,7 @@ function BooksModel() {
         bookToUpdate.rating = newRating;
 
         return Utils.sendRequest(
-            AJAX_BOOKS_URL + URL_SEPARATOR + bookId + URL_SEPARATOR +
-            AJAX_BOOK_RATING_URL, newRating, requestType.POST);
+            AJAX_BOOKS_URL + URL_SEPARATOR + bookId, bookToUpdate, requestType.POST);
     }
 
     function addBook(bookFormData) {
@@ -78,13 +76,29 @@ function BooksModel() {
 
                 book.tags.push(newTag);
 
-                Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR + newTag,
-                    bookId, requestType.POST)
+                Utils.sendRequest(AJAX_TAGS_URL, //+ URL_SEPARATOR + newTag,
+                    new BookTag(bookId, newTag), requestType.POST)
                     .then(function (bookTags) {
                         onTagsChange.notify(findBook(bookId),
                             addNewTagToTheList(bookTags[bookTags.length - 1]));
                     });
             }
+        }
+    }
+
+    function unbindTag(bookId, tag) {
+        let book = findBook(bookId);
+
+        if (book && hasTag(book, tag)) {
+
+            Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR + tag,
+                bookId, requestType.POST)
+                .then(function (bookTags) {
+                    book = findBook(bookId);
+                    book.tags = bookTags;
+
+                    onTagsChange.notify(book);
+                });
         }
     }
 
@@ -177,6 +191,7 @@ function BooksModel() {
         onBookAdd,
         onTagsChange,
         refreshModel,
-        deleteBook
+        deleteBook,
+        unbindTag
     }
 }

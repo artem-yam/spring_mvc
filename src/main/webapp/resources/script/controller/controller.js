@@ -30,6 +30,11 @@ function Controller(booksModel, notificationsModel) {
         controlledBooksModel.addBookTag(bookId, newTag);
     }
 
+
+    function unbindTag(bookId, tag) {
+        controlledBooksModel.unbindTag(bookId, tag);
+    }
+
     function deleteBook(bookId) {
         return controlledBooksModel.deleteBook(bookId);
     }
@@ -59,6 +64,7 @@ function Controller(booksModel, notificationsModel) {
             });
     }
 
+
     return {
         updateRating,
         addBook,
@@ -68,6 +74,7 @@ function Controller(booksModel, notificationsModel) {
         loginUser,
         logoutUser,
         deleteBook,
-        addNewBookNotification
+        addNewBookNotification,
+        unbindTag
     };
 }

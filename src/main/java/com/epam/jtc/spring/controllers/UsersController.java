@@ -41,7 +41,6 @@ public class UsersController {
     /**
      * DAO for operations with users
      */
-    @Autowired
     private UserDAO dao;
 
     @Autowired
@@ -52,6 +51,7 @@ public class UsersController {
      *
      * @param dao users dao
      */
+    @Autowired
     public UsersController(UserDAO dao) {
         this.dao = dao;
     }
@@ -107,7 +107,7 @@ public class UsersController {
                     errorMessage = WRONG_USER_DATA_ERROR_MESSAGE;
                 }
 
-                logger.debug("Can't log in user", ex);
+                logger.info("Can't log in user", ex);
 
                 errors.add(errorMessage);
             }

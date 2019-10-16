@@ -2,11 +2,9 @@ package com.epam.jtc.spring.controllers;
 
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dto.Book;
-import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,14 +43,14 @@ public class BooksController {
         this.dao = dao;
     }
 
-    public BooksController() {
+    /*public BooksController() {
         AnnotationConfigApplicationContext ctx =
                 new AnnotationConfigApplicationContext();
         ctx.scan("com.epam.jtc.spring.datalayer");
         ctx.refresh();
 
         dao = ctx.getBean(OracleBookDAO.class);
-    }
+    }*/
 
     public BookDAO getDao() {
         return dao;
@@ -82,6 +80,7 @@ public class BooksController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity addBook(@ModelAttribute("book") @Valid Book newBook,
                                   BindingResult bindingResult) {
+
         logger.info("Adding book : {}", newBook);
 
         List<String> errors = new ArrayList<>();
@@ -96,16 +95,12 @@ public class BooksController {
             }
         } else {
             try {
-                logger.info("Add try");
-
                 newBook = dao.addBook(newBook.getTitle(), newBook.getAuthor(),
                         newBook.getImage() == null ? new byte[0] :
                                 newBook.getImage().getBytes());
 
                 responseEntity =
                         new ResponseEntity<>(newBook, HttpStatus.OK);
-
-                logger.info("Successful add");
             } catch (Exception ex) {
                 String errorMessage = ex.getClass().getSimpleName();
                 if (ex instanceof DuplicateKeyException) {
@@ -126,15 +121,15 @@ public class BooksController {
     /**
      * Changes the book rating
      *
-     * @param bookId    id of the book
+     * @param bookId      id of the book
      * @param changedBook book object with changed info
      * @return book
      */
     @PostMapping("/{bookId}")
     public Book updateBook(@PathVariable int bookId,
-                                 @RequestBody Book changedBook)
+                           @RequestBody Book changedBook)
             throws Exception {
-        logger.info("Changing book {} to {}", bookId, changedBook);
+        logger.info("Changing book {} data to {}", bookId, changedBook);
 
         return dao.updateBook(bookId, changedBook);
     }
@@ -164,5 +159,4 @@ public class BooksController {
         dao.deleteBook(bookId);
         logger.info("Successful deletion");
     }
-
 }

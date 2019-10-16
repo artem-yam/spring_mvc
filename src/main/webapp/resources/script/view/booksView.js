@@ -84,7 +84,7 @@ function BooksView(controller, model) {
         changeSelectTagList(book);
 
         window.document.querySelector(
-            "#modal" + book.id + " .modal-body button")
+            "#modal" + book.id + " .modal-body>button")
             .addEventListener('click', function () {
                 addBookTag(book.id);
             });
@@ -96,18 +96,26 @@ function BooksView(controller, model) {
             "#modal" + book.id + " .modal-body");
         let tagsDiv = modalBody.querySelector("div");
 
-        let tagsCode = "";
-
         if (book.tags.length === 0) {
-            tagsCode += "Empty";
+            tagsDiv.innerHTML = "Empty";
         } else {
-            tagsCode += "<ul>";
+            tagsDiv.innerHTML = "<ul></ul>";
+
             for (let tag of book.tags) {
-                tagsCode += "<li>" + tag + "</li>";
+                tagsDiv.querySelector("ul").innerHTML += "<li id=\"tag" + book.tags.indexOf(tag) + "\">" + tag + " <button>Unbind tag</button></li>";
             }
-            tagsCode += "</ul>";
+
+            for (let tag of book.tags) {
+                tagsDiv.querySelector("#tag" + book.tags.indexOf(tag) + " button")
+                    .addEventListener('click', function () {
+                        unbindTag(book.id, tag);
+                    });
+            }
         }
-        tagsDiv.innerHTML = tagsCode;
+    }
+
+    function unbindTag(bookId, tag) {
+        mainController.unbindTag(bookId, tag);
     }
 
     function changeSelectTagList(book) {

@@ -25,7 +25,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -57,12 +59,15 @@ public class TestConfigurationUtils {
         when(dao.addBook("Test title", "Test author", new byte[0]))
                 .thenReturn(new Book("Test title", "Test author"));
 
-        Book bookForRatingChange = new Book();
-        bookForRatingChange.setId(1);
-        bookForRatingChange.setRating(0);
+        Book bookForUpdate = new Book();
+        bookForUpdate.setId(1);
+        bookForUpdate.setRating(0);
 
-        when(dao.updateBook(1, bookForRatingChange))
-                .thenReturn(bookForRatingChange);
+        when(dao.updateBook(1, bookForUpdate))
+                .thenReturn(bookForUpdate);
+
+        when(dao.getBookImage(1))
+                .thenReturn(new byte[0]);
 
         return dao;
     }
@@ -82,11 +87,18 @@ public class TestConfigurationUtils {
     private TagDAO getTestingTagDAO() throws Exception {
         OracleTagDAO dao = mock(OracleTagDAO.class);
 
+        List<String> testTags = Arrays.asList("Test tag");
+
         when(dao.getAllTags())
-                .thenReturn(Arrays.asList("Test tag"));
+                .thenReturn(testTags);
 
         when(dao.addTagToBook(1, "Test tag"))
-                .thenReturn(Arrays.asList("Test tag"));
+                .thenReturn(testTags);
+
+        testTags = new ArrayList<>();
+
+        when(dao.unbindTag(1, "Test tag"))
+                .thenReturn(testTags);
 
         return dao;
     }

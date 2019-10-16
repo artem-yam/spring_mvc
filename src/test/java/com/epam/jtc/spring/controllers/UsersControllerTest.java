@@ -1,6 +1,7 @@
 package com.epam.jtc.spring.controllers;
 
 import com.epam.jtc.spring.SpringConfiguration;
+import helpClasses.TestConfigurationUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-        classes = {SpringConfiguration.class, MockMvcAutoConfiguration.class})
+        classes = {SpringConfiguration.class, TestConfigurationUtils.class})
 @WebAppConfiguration
 @AutoConfigureMockMvc
 public class UsersControllerTest {

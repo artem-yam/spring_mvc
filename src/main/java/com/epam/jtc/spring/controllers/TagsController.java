@@ -4,6 +4,7 @@ import com.epam.jtc.spring.datalayer.dao.TagDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
  * Controller for tags
  */
 @RestController
-//@RequestMapping
 @RequestMapping("/tags")
 public class TagsController {
 
@@ -25,7 +25,6 @@ public class TagsController {
     /**
      * DAO for operations with tags
      */
-    @Autowired
     private TagDAO dao;
 
     /**
@@ -33,6 +32,7 @@ public class TagsController {
      *
      * @param dao tags dao
      */
+    @Autowired
     public TagsController(TagDAO dao) {
         this.dao = dao;
     }
@@ -42,7 +42,6 @@ public class TagsController {
      *
      * @return list of tags
      */
-    //@GetMapping("/tags")
     @GetMapping
     public List<String> getAllTags() {
         logger.debug("getAllTags method triggered");
@@ -56,11 +55,24 @@ public class TagsController {
      * @param tag    tag to add
      * @return list of the book tags
      */
-    //@PostMapping("/books/{bookId}/tags")
-    @PostMapping("/{tag}")
-    public List<String> addTagToBook(@RequestBody int bookId,
-                                     @PathVariable String tag) {
+    @PostMapping
+    public List<String> addTagToBook(@RequestParam int bookId,
+                                     @RequestParam String tag) {
         logger.info("Adding tag \'{}\' to book {}", tag, bookId);
         return dao.addTagToBook(bookId, tag);
+    }
+
+    /**
+     * Unbinds some tag from the book
+     *
+     * @param bookId book id
+     * @param tag    tag to add
+     * @return list of the book tags
+     */
+    @PostMapping("/{tag}")
+    public List<String> unbindTag(@RequestBody int bookId,
+                                  @PathVariable String tag) {
+        logger.info("Unbinding tag \'{}\' from book {}", tag, bookId);
+        return dao.unbindTag(bookId, tag);
     }
 }
