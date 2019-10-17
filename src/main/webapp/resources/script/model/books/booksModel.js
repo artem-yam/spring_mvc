@@ -91,8 +91,9 @@ function BooksModel() {
 
         if (book && hasTag(book, tag)) {
 
-            Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR + tag,
-                bookId, requestType.POST)
+            Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR + tag +
+                URL_SEPARATOR + AJAX_BOOKS_URL + URL_SEPARATOR + bookId,
+                null, requestType.DELETE)
                 .then(function (bookTags) {
                     book = findBook(bookId);
                     book.tags = bookTags;

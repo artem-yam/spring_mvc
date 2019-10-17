@@ -4,7 +4,6 @@ import com.epam.jtc.spring.controllers.BooksController;
 import com.epam.jtc.spring.controllers.NotificationsController;
 import com.epam.jtc.spring.controllers.TagsController;
 import com.epam.jtc.spring.controllers.UsersController;
-import com.epam.jtc.spring.datalayer.OracleJdbcTemplate;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
 import com.epam.jtc.spring.datalayer.dao.TagDAO;
@@ -17,14 +16,15 @@ import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleNotificationDAO;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleTagDAO;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleUserDAO;
+import org.apache.log4j.BasicConfigurator;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,16 +36,17 @@ import static org.mockito.Mockito.when;
 public class TestConfigurationUtils {
 
     public TestConfigurationUtils() {
-        try {
+        BasicConfigurator.configure();
+        /*try {
             setUpDataSourceJNDI();
         } catch (NamingException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return mock(OracleJdbcTemplate.class);
+    public DataSource dataSource() {
+        return new DriverManagerDataSource();
     }
 
     private BookDAO getTestingBookDAO() throws Exception {
@@ -150,13 +151,6 @@ public class TestConfigurationUtils {
         ic.createSubcontext("java:comp/env/jdbc");
         ic.createSubcontext("java:comp/env/jdbc/oracle");
 
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-
-        ds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-        ds.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
-        ds.setUsername("SYSTEM");
-        ds.setPassword("SYSTEM");
-
-        ic.rebind("java:comp/env/jdbc/oracle", ds);
+        ic.rebind("java:comp/env/jdbc/oracle", new DriverManagerDataSource());
     }
 }

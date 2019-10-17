@@ -4,6 +4,7 @@ import com.epam.jtc.spring.SpringConfiguration;
 import com.epam.jtc.spring.datalayer.dto.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helpClasses.TestConfigurationUtils;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -18,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
@@ -37,11 +39,13 @@ public class BooksControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
+
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+
     }
 
     @Before

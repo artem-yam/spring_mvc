@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +37,15 @@ public class UsersController {
             "Wrong password";
     private static final String WRONG_USER_DATA_ERROR_MESSAGE =
             "Wrong user data";
+    private static final String CANT_ACCESS_USER_ERROR_MESSAGE =
+            "Can't access to user in DB";
 
     /**
      * DAO for operations with users
      */
     private UserDAO dao;
 
-    @Autowired
+
     private User activeUser;
 
     /**
@@ -56,6 +58,7 @@ public class UsersController {
         this.dao = dao;
     }
 
+    @Autowired
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
     }
@@ -102,7 +105,7 @@ public class UsersController {
                     logger.info("Successful log in: {}", userFromDAO);
                 }
             } catch (Exception ex) {
-                String errorMessage = ex.getClass().getSimpleName();
+                String errorMessage = CANT_ACCESS_USER_ERROR_MESSAGE;
                 if (ex instanceof EmptyResultDataAccessException) {
                     errorMessage = WRONG_USER_DATA_ERROR_MESSAGE;
                 }
@@ -124,9 +127,9 @@ public class UsersController {
      * Method to logout the user
      */
     @PostMapping(value = "/logout")
-    public void logOutUser(HttpServletRequest req) {
+    public void logOutUser(HttpSession session) {
         logger.info("Log out for user: {}", activeUser);
 
-        req.getSession().invalidate();
+        session.invalidate();
     }
 }

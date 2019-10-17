@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/books")
 public class BooksController {
 
-    /**
+    /*
      * logger for class
      */
     private static final Logger logger =
@@ -33,7 +33,7 @@ public class BooksController {
     private static final String DUPLICATE_KEY_ERROR_MESSAGE =
             "This book already exists";
 
-    /**
+    /*
      * DAO for operations with books
      */
     private BookDAO dao;
@@ -42,15 +42,6 @@ public class BooksController {
     public BooksController(BookDAO dao) {
         this.dao = dao;
     }
-
-    /*public BooksController() {
-        AnnotationConfigApplicationContext ctx =
-                new AnnotationConfigApplicationContext();
-        ctx.scan("com.epam.jtc.spring.datalayer");
-        ctx.refresh();
-
-        dao = ctx.getBean(OracleBookDAO.class);
-    }*/
 
     public BookDAO getDao() {
         return dao;
@@ -78,7 +69,7 @@ public class BooksController {
      * @return added book
      */
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity addBook(@ModelAttribute("book") @Valid Book newBook,
+    public ResponseEntity addBook(@Valid Book newBook,
                                   BindingResult bindingResult) {
 
         logger.info("Adding book : {}", newBook);

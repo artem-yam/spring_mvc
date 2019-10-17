@@ -4,7 +4,6 @@ import com.epam.jtc.spring.datalayer.dao.TagDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,8 +68,8 @@ public class TagsController {
      * @param tag    tag to add
      * @return list of the book tags
      */
-    @PostMapping("/{tag}")
-    public List<String> unbindTag(@RequestBody int bookId,
+    @DeleteMapping("/{tag}/books/{bookId}")
+    public List<String> unbindTag(@PathVariable int bookId,
                                   @PathVariable String tag) {
         logger.info("Unbinding tag \'{}\' from book {}", tag, bookId);
         return dao.unbindTag(bookId, tag);

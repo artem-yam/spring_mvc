@@ -15,25 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class MainController {
-    
+
     private static final Logger logger =
-        LogManager.getLogger(MainController.class);
-    
-    @Autowired
+            LogManager.getLogger(MainController.class);
+
+
     private User activeUser;
-    
+
+    @Autowired
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
     }
-    
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String init(Model model) {
-        
+
         model.addAttribute("book", new Book());
         model.addAttribute("activeUser", activeUser);
         logger.debug("Initial model = {}", model);
-        
+
         return "lib";
     }
-    
+
 }

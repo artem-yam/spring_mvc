@@ -58,9 +58,7 @@ public class NotificationsController {
     @PostMapping
     public Notification addNotification(@RequestBody Notification newNote) {
         logger.info("Adding notification: {}", newNote);
-        logger.info("book = {} cont = {} cat = {} type = {}",
-                newNote.getBookId(), newNote.getContent(),
-                newNote.getCategory(), newNote.getType());
+
         return dao.addNotification(newNote.getBookId(), newNote.getContent(),
                 newNote.getCategory(), newNote.getType());
     }
