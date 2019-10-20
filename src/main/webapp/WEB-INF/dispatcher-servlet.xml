@@ -7,7 +7,6 @@
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-
     <bean id="bookValidator" class="com.epam.jtc.spring.BookValidator"/>
 
 
@@ -34,7 +33,6 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/*"/>
-            <!--<mvc:exclude-mapping path="/"/>-->
             <bean class="com.epam.jtc.spring.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

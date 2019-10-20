@@ -17,6 +17,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Date;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -68,8 +70,11 @@ public class NotificationsControllerTest {
     @Test
     public void addNotification() throws Exception {
 
+        Notification testNotification = new Notification();
+        testNotification.setDate(new Date(0));
+
         String json = new ObjectMapper().writer().withDefaultPrettyPrinter()
-                .writeValueAsString(new Notification());
+                .writeValueAsString(testNotification);
 
         this.mockMvc.perform(post("/notifications")
                 .contentType("application/json;charset=UTF-8")

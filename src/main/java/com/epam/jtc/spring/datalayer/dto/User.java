@@ -1,5 +1,6 @@
 package com.epam.jtc.spring.datalayer.dto;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -70,7 +71,7 @@ public class User {
     }
 
     public boolean isActive() {
-        return (login.length() != 0 && pass.length() != 0);
+        return (login.length() != 0);
     }
 
     @Override

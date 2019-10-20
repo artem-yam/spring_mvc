@@ -4,7 +4,6 @@ import com.epam.jtc.spring.SpringConfiguration;
 import com.epam.jtc.spring.datalayer.dto.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helpClasses.TestConfigurationUtils;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -19,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
@@ -62,12 +60,12 @@ public class BooksControllerTest {
     }
 
     @Test
-    public void getAllBooks() throws Exception {
+    public void getBooks() throws Exception {
         this.mockMvc.perform(get("/books")).andDo(print())
 
                 .andExpect(
                         content().contentType("application/json;charset=UTF-8"))
-                .andExpect(handler().methodName("getAllBooks"))
+                .andExpect(handler().methodName("getBooks"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isNotEmpty()
@@ -102,7 +100,7 @@ public class BooksControllerTest {
                 .writeValueAsString(bookForUpdate);
 
 
-        this.mockMvc.perform(post("/books/{bookId}", 1)
+        this.mockMvc.perform(put("/books/{bookId}", 1)
                 .contentType("application/json;charset=UTF-8")
                 .content(json))
                 .andDo(print())

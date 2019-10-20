@@ -1,13 +1,14 @@
 package com.epam.jtc.spring.controllers;
 
 import com.epam.jtc.spring.SpringConfiguration;
+import com.epam.jtc.spring.datalayer.dto.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import helpClasses.TestConfigurationUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -47,10 +48,12 @@ public class UsersControllerTest {
 
     @Test
     public void logInUser() throws Exception {
-        this.mockMvc.perform(post("/users/login")
-                .contentType("multipart/form-data").characterEncoding("UTF-8")
+        this.mockMvc.perform(post("/users/login").characterEncoding("UTF-8")
+                //.contentType("application/json;charset=UTF-8")
+                .contentType("multipart/form-data")
                 .param("login", "Test login")
-                .param("password", "Test password")).andDo(print())
+                .param("password", "Test password")
+        ).andDo(print())
 
                 .andExpect(
                         content().contentType("application/json;charset=UTF-8"))

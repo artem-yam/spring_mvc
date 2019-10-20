@@ -53,6 +53,10 @@ public class NotificationsController {
     public Notification addNotification(@RequestBody Notification newNote) {
         logger.info("Adding notification: {}", newNote);
 
-        return dao.addNotification(newNote);
+        Notification addedNote = dao.addNotification(newNote);
+
+        logger.info("Added notification: {}", addedNote);
+
+        return addedNote;
     }
 }

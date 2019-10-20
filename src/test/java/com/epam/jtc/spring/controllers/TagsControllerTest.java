@@ -15,8 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -63,11 +62,9 @@ public class TagsControllerTest {
 
     @Test
     public void addTagToBook() throws Exception {
-        this.mockMvc.perform(post("/tags")
+        this.mockMvc.perform(post("/tags/{tag}/books", "Test tag")
                 .contentType("application/json;charset=UTF-8")
-                .param("bookId", "1")
-                .param("tag", "Test tag"))
-                .andDo(print())
+                .content("1")).andDo(print())
 
                 .andExpect(handler().methodName("addTagToBook"))
                 .andExpect(status().isOk())
@@ -80,9 +77,8 @@ public class TagsControllerTest {
 
     @Test
     public void unbindTag() throws Exception {
-        this.mockMvc.perform(post("/tags/{tag}", "Test tag")
-                .contentType("application/json;charset=UTF-8")
-                .content("1")).andDo(print())
+        this.mockMvc.perform(delete("/tags/{tag}/books/{bookId}", "Test tag", 1)
+                .contentType("application/json;charset=UTF-8")).andDo(print())
 
                 .andExpect(handler().methodName("unbindTag"))
                 .andExpect(status().isOk())

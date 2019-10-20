@@ -91,7 +91,7 @@ public class UsersController {
                     errors.add(WRONG_USER_PASSWORD_ERROR_MESSAGE);
                 } else {
                     activeUser.setLogin(userFromDAO.getLogin());
-                    activeUser.setPassword(userFromDAO.getPassword());
+                    userFromDAO.setPassword("");
 
                     responseEntity =
                             new ResponseEntity<>(userFromDAO, HttpStatus.OK);

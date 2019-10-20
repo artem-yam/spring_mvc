@@ -26,6 +26,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -36,11 +37,12 @@ public class TestConfigurationUtils {
 
     public TestConfigurationUtils() {
         BasicConfigurator.configure();
-        /*try {
+
+        try {
             setUpDataSourceJNDI();
         } catch (NamingException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Bean
@@ -75,11 +77,14 @@ public class TestConfigurationUtils {
     private NotificationDAO getTestingNotificationDAO() throws Exception {
         OracleNotificationDAO dao = mock(OracleNotificationDAO.class);
 
-        when(dao.getAllNotifications())
-                .thenReturn(Arrays.asList(new Notification()));
+        Notification testNotification = new Notification();
+        testNotification.setDate(new Date(0));
 
-        when(dao.addNotification(new Notification()))
-                .thenReturn(new Notification());
+        when(dao.getAllNotifications())
+                .thenReturn(Arrays.asList(testNotification));
+
+        when(dao.addNotification(testNotification))
+                .thenReturn(testNotification);
 
         return dao;
     }
