@@ -10,7 +10,6 @@ import com.epam.jtc.spring.datalayer.dao.TagDAO;
 import com.epam.jtc.spring.datalayer.dao.UserDAO;
 import com.epam.jtc.spring.datalayer.dto.Book;
 import com.epam.jtc.spring.datalayer.dto.Notification;
-import com.epam.jtc.spring.datalayer.dto.NotificationTypes;
 import com.epam.jtc.spring.datalayer.dto.User;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleBookDAO;
 import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleNotificationDAO;
@@ -79,7 +78,7 @@ public class TestConfigurationUtils {
         when(dao.getAllNotifications())
                 .thenReturn(Arrays.asList(new Notification()));
 
-        when(dao.addNotification(0, null, null, NotificationTypes.ADD_BOOK))
+        when(dao.addNotification(new Notification()))
                 .thenReturn(new Notification());
 
         return dao;

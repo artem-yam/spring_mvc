@@ -1,10 +1,6 @@
 function BooksModel() {
     "use strict";
 
-    const MAX_RATING = 5;
-    const MOST_POPULAR_FILTER = "Most Popular";
-    const TEXT_NOT_FOUND = -1;
-
     const AJAX_BOOKS_URL = "books";
     const AJAX_TAGS_URL = "tags";
     const URL_SEPARATOR = "/";
@@ -15,41 +11,8 @@ function BooksModel() {
     let onTagsChange = new EventEmitter();
 
     function search(text, filter) {
-
-        let result = [];
-
-        for (let i = 0; i < booksStorage.length; i++) {
-            let book = booksStorage[i];
-
-            if (checkWithFilter(book, filter) &&
-                (substringSearch(book.title, text) ||
-                    substringSearch(book.author, text))) {
-                result.push(book);
-            }
-        }
-
-        return result;
-    }
-
-    function substringSearch(string, substring) {
-        return string.toString().toLowerCase()
-            .indexOf(substring.toLowerCase()) !== TEXT_NOT_FOUND;
-    }
-
-    function checkWithFilter(book, filter) {
-        let result = true;
-
-        switch (filter.trim()) {
-            case (MOST_POPULAR_FILTER):
-                result = (book.rating === MAX_RATING);
-                break;
-        }
-
-        return result;
-    }
-
-    function getMostPopular() {
-        return search("", MOST_POPULAR_FILTER);
+        return Utils.sendRequest(AJAX_BOOKS_URL, new Filter(filter, text),
+            requestType.GET);
     }
 
     function updateRating(bookId, newRating) {
@@ -57,7 +20,8 @@ function BooksModel() {
         bookToUpdate.rating = newRating;
 
         return Utils.sendRequest(
-            AJAX_BOOKS_URL + URL_SEPARATOR + bookId, bookToUpdate, requestType.POST);
+            AJAX_BOOKS_URL + URL_SEPARATOR + bookId, bookToUpdate,
+            requestType.PUT);
     }
 
     function addBook(bookFormData) {
@@ -76,8 +40,9 @@ function BooksModel() {
 
                 book.tags.push(newTag);
 
-                Utils.sendRequest(AJAX_TAGS_URL, //+ URL_SEPARATOR + newTag,
-                    new BookTag(bookId, newTag), requestType.POST)
+                Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR
+                    + newTag + URL_SEPARATOR + AJAX_BOOKS_URL,
+                    bookId, requestType.POST)
                     .then(function (bookTags) {
                         onTagsChange.notify(findBook(bookId),
                             addNewTagToTheList(bookTags[bookTags.length - 1]));
@@ -182,7 +147,6 @@ function BooksModel() {
         addBook,
         addBookTag,
         findBook,
-        getMostPopular,
 
         getBooksStorage,
         getTags,

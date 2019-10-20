@@ -8,34 +8,16 @@ import java.util.Objects;
  */
 public class Notification {
 
-    /**
-     * Notification id
-     */
     private int id;
 
-    /**
-     * Id of related book
-     */
     private int bookId;
 
-    /**
-     * Content of Notification
-     */
     private String content;
 
-    /**
-     * Category in which Notification creation was triggered
-     */
     private String category;
 
-    /**
-     * Notification type
-     */
     private NotificationTypes type = NotificationTypes.ADD_BOOK;
 
-    /**
-     * Date of Notification creation
-     */
     private Date date = new Date();
 
     /**

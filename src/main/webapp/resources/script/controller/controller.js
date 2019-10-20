@@ -30,7 +30,6 @@ function Controller(booksModel, notificationsModel) {
         controlledBooksModel.addBookTag(bookId, newTag);
     }
 
-
     function unbindTag(bookId, tag) {
         controlledBooksModel.unbindTag(bookId, tag);
     }
@@ -42,6 +41,16 @@ function Controller(booksModel, notificationsModel) {
     function addSearchNotification(searchText, category) {
         controlledNotificationsModel.addSearchNotification(searchText,
             category);
+    }
+
+    function filterBooks(text, filter) {
+        return controlledBooksModel.search(text, filter)
+            .then(function (result) {
+                if (text.trim() !== '') {
+                    addSearchNotification(text, filter);
+                }
+                return result;
+            });
     }
 
     function getBookById(id) {
@@ -64,7 +73,6 @@ function Controller(booksModel, notificationsModel) {
             });
     }
 
-
     return {
         updateRating,
         addBook,
@@ -75,6 +83,7 @@ function Controller(booksModel, notificationsModel) {
         logoutUser,
         deleteBook,
         addNewBookNotification,
-        unbindTag
+        unbindTag,
+        filterBooks
     };
 }

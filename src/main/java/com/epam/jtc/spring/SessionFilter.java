@@ -10,10 +10,7 @@ import java.io.IOException;
  * Adds session ID as parameter
  */
 public class SessionFilter implements Filter {
-    
-    /**
-     * Name of parameter containing session id
-     */
+
     private static final String SESSION_ID_PARAMETER_NAME = "sessionId";
     
     @Override

@@ -14,37 +14,20 @@ import java.util.Objects;
 @Component("book")
 public class Book {
 
-    /**
-     * Default book rating
-     */
     private static final int DEFAULT_RATING = 0;
-    /**
-     * Book id
-     */
+
     private int id;
 
-    /**
-     * Book title
-     */
     private String title;
 
-    /**
-     * Book author
-     */
     private String author;
 
     private MultipartFile image;
-    /**
-     * Book rating
-     */
+
     private int rating = DEFAULT_RATING;
-    /**
-     * Book tags
-     */
+
     private List<String> tags = new ArrayList<>();
-    /**
-     * is book deleted
-     */
+
     private boolean isDeleted = false;
 
     /**

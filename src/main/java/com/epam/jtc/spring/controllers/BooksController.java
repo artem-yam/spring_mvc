@@ -4,11 +4,13 @@ import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dto.Book;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -24,18 +26,14 @@ import java.util.List;
 @RequestMapping("/books")
 public class BooksController {
 
-    /*
-     * logger for class
-     */
     private static final Logger logger =
             LogManager.getLogger(BooksController.class);
 
     private static final String DUPLICATE_KEY_ERROR_MESSAGE =
             "This book already exists";
+    private static final String BOOK_ADD_ERROR_MESSAGE =
+            "Server error. Can't add the book";
 
-    /*
-     * DAO for operations with books
-     */
     private BookDAO dao;
 
     @Autowired
@@ -52,15 +50,27 @@ public class BooksController {
     }
 
     /**
-     * Gets all books from dao
+     * Gets books from dao
      *
+     * @param filterName some filter
+     * @param searchText text to search
      * @return list of books
      */
     @GetMapping
-    public List<Book> getAllBooks() {
-        logger.debug("Getting all books with dao: {}", dao);
+    public List<Book> getBooks(@Nullable @RequestParam String filterName,
+                               @Nullable @RequestParam String searchText) {
+        logger.info("Filter books with: filter \'{}\', search text = \'{}\'",
+                filterName, searchText);
 
-        return dao.getAllBooks();
+        List<Book> booksList;
+
+        if (Strings.isBlank(filterName) && Strings.isBlank(searchText)) {
+            booksList = dao.getAllBooks();
+        } else {
+            booksList = dao.filterBooks(filterName, searchText);
+        }
+
+        return booksList;
     }
 
     /**
@@ -93,7 +103,7 @@ public class BooksController {
                 responseEntity =
                         new ResponseEntity<>(newBook, HttpStatus.OK);
             } catch (Exception ex) {
-                String errorMessage = ex.getClass().getSimpleName();
+                String errorMessage = BOOK_ADD_ERROR_MESSAGE;
                 if (ex instanceof DuplicateKeyException) {
                     errorMessage = DUPLICATE_KEY_ERROR_MESSAGE;
                 }
@@ -116,7 +126,7 @@ public class BooksController {
      * @param changedBook book object with changed info
      * @return book
      */
-    @PostMapping("/{bookId}")
+    @PutMapping("/{bookId}")
     public Book updateBook(@PathVariable int bookId,
                            @RequestBody Book changedBook)
             throws Exception {

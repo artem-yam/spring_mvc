@@ -16,44 +16,24 @@ import java.util.List;
 @Component
 public class OracleTagDAO implements TagDAO {
 
-    /**
-     * Logger for class
-     */
     private static final Logger logger =
             LogManager.getLogger(OracleTagDAO.class);
-    /**
-     * Query to get all available tags
-     */
+
     private static final String GET_ALL_TAGS_QUERY =
             "select tag from AVAILABLE_TAGS";
 
-    /**
-     * Query to insert new tag
-     */
     private static final String INSERT_NEW_TAG_QUERY =
             "insert into AVAILABLE_TAGS(tag) values(?)";
 
-    /**
-     * Query to get all tags of the book
-     */
     private static final String GET_TAGS_FOR_BOOK_QUERY =
             "select tag from AVAILABLE_TAGS where id in (select tag from BOOK_TAGS where book = ?)";
 
-    /**
-     * Query to insert the tag to the book
-     */
     private static final String INSERT_TAG_TO_BOOK_QUERY =
             "insert into BOOK_TAGS(book, tag) values (?,(select id from AVAILABLE_TAGS where tag = ?))";
 
-    /**
-     * Query to unbind tag from the book
-     */
     private static final String UNBIND_TAG_FROM_BOOK_QUERY =
             "delete from BOOK_TAGS where book=? and tag in (select id from AVAILABLE_TAGS where tag = ?)";
 
-    /**
-     * JDBC template to connect DB
-     */
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -64,11 +44,6 @@ public class OracleTagDAO implements TagDAO {
                 .queryForList(GET_ALL_TAGS_QUERY, String.class);
     }
 
-    /**
-     * Adds tag to the collection of all available tags
-     *
-     * @param text tag text
-     */
     private void addTag(String text) {
         if (!getAllTags().contains(text)) {
             logger

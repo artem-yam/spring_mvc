@@ -15,15 +15,9 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagsController {
 
-    /**
-     * logger for class
-     */
     private static final Logger logger =
             LogManager.getLogger(TagsController.class);
 
-    /**
-     * DAO for operations with tags
-     */
     private TagDAO dao;
 
     /**
@@ -54,9 +48,9 @@ public class TagsController {
      * @param tag    tag to add
      * @return list of the book tags
      */
-    @PostMapping
-    public List<String> addTagToBook(@RequestParam int bookId,
-                                     @RequestParam String tag) {
+    @PostMapping("/{tag}/books")
+    public List<String> addTagToBook(@RequestBody int bookId,
+                                     @PathVariable String tag) {
         logger.info("Adding tag \'{}\' to book {}", tag, bookId);
         return dao.addTagToBook(bookId, tag);
     }

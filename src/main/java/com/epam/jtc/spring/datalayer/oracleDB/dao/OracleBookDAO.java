@@ -20,75 +20,50 @@ import java.util.List;
 @Component
 public class OracleBookDAO implements BookDAO {
 
-    /**
-     * Logger for class
-     */
     private static final Logger logger =
             LogManager.getLogger(OracleBookDAO.class);
-    /**
-     * Query to get all books
-     */
+
     private static final String ALL_BOOKS_QUERY =
             "select * from books order by id";
-    /**
-     * Query to add new book
-     */
+
     private static final String ADD_BOOK_QUERY =
             "insert into books(title, author,image) values (?, ?, ?)";
-    /**
-     * Query to get book with certain title and author
-     */
+
     private static final String SEARCH_BOOK_QUERY =
             "select * from books where title=? and author=?";
-    /**
-     * Query to update book rating
-     */
+
     private static final String BOOK_UPDATE_QUERY =
             "update books set title=?, author=?,rating=?,is_deleted=? where id=?";
-    /**
-     * Query to get image by book id
-     */
+
     private static final String IMAGE_BY_BOOK_ID_QUERY =
             "select image from books where id=?";
 
-    /**
-     * Query to get book by id
-     */
     private static final String BOOK_BY_ID_QUERY =
             "select * from books where id=?";
 
-    /**
-     * Query to get default book image
-     */
     private static final String DEFAULT_IMAGE_QUERY =
             "select image from books where id=0";
 
-    /**
-     * Query to delete book
-     */
     private static final String DELETE_BOOK_QUERY =
             "update books set is_deleted=1 where id=?";
 
-    /**
-     * Row mapper for result sets from DB 'books' table
-     */
+    private static final String SEARCH_BOOKS_QUERY =
+            "select * from books where instr(lower(title || author),?)>0";
+
+    private static final String MOST_POPULAR_BOOKS_QUERY_SUFFIX =
+            " and rating=5";
+
+    private static final String MOST_POPULAR_FILTER = "most popular";
+
     @Autowired
     private RowMapper<Book> bookRowMapper;
 
-    /**
-     * Row mapper to get byte of image
-     */
     @Autowired
     private RowMapper<byte[]> imageRowMapper;
-    /**
-     * JDBC template to connect DB
-     */
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    /**
-     * Tags DAO
-     */
     @Autowired
     private TagDAO tagDAO;
 
@@ -109,6 +84,33 @@ public class OracleBookDAO implements BookDAO {
     }
 
     @Override
+    public List<Book> filterBooks(String filter, String searchText) {
+        logger.info(
+                "Getting filtered books. Filter: \'{}\'; Search text: \'{}\'",
+                filter, searchText);
+
+        String filterQuery = SEARCH_BOOKS_QUERY;
+
+        if (MOST_POPULAR_FILTER.toLowerCase().equals(filter.toLowerCase())) {
+            filterQuery += MOST_POPULAR_BOOKS_QUERY_SUFFIX;
+        }
+
+        logger.info("filter query: {}", filterQuery);
+
+        List<Book> books =
+                jdbcTemplate.query(filterQuery, bookRowMapper,
+                        searchText.isEmpty() ? " " : searchText.toLowerCase());
+
+        for (Book book : books) {
+            book.setTags(tagDAO.getBookTags(book.getId()));
+        }
+
+        logger.info(books);
+
+        return books;
+    }
+
+    @Override
     @Transactional
     public Book addBook(String title, String author,
                         byte[] coverImage) {
@@ -124,12 +126,6 @@ public class OracleBookDAO implements BookDAO {
                         author);
     }
 
-    /**
-     * Gets the book by it's id
-     *
-     * @param bookId id of the book
-     * @return found book
-     */
     private Book getBook(int bookId) {
         logger.debug("Getting book {}", bookId);
         return jdbcTemplate
@@ -195,11 +191,6 @@ public class OracleBookDAO implements BookDAO {
         return image;
     }
 
-    /**
-     * Gets default image for book
-     *
-     * @return default image
-     */
     private byte[] getDefaultImage() {
         logger.debug("Getting default image");
         return jdbcTemplate

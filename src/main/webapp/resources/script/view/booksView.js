@@ -102,11 +102,14 @@ function BooksView(controller, model) {
             tagsDiv.innerHTML = "<ul></ul>";
 
             for (let tag of book.tags) {
-                tagsDiv.querySelector("ul").innerHTML += "<li id=\"tag" + book.tags.indexOf(tag) + "\">" + tag + " <button>Unbind tag</button></li>";
+                tagsDiv.querySelector("ul").innerHTML +=
+                    "<li id=\"tag" + book.tags.indexOf(tag) + "\">" + tag +
+                    " <button>Unbind tag</button></li>";
             }
 
             for (let tag of book.tags) {
-                tagsDiv.querySelector("#tag" + book.tags.indexOf(tag) + " button")
+                tagsDiv.querySelector(
+                    "#tag" + book.tags.indexOf(tag) + " button")
                     .addEventListener('click', function () {
                         unbindTag(book.id, tag);
                     });
@@ -132,15 +135,6 @@ function BooksView(controller, model) {
 
             modalBody.querySelector("optgroup").appendChild(tagOption);
         }
-    }
-
-    function search() {
-        Utils.resetInnerHTML(window.document.querySelector(".main_content"));
-        let searchText = window.document.querySelector("#search").value;
-        let activeCategory = window.document.querySelector(
-            ".main_sort .sort .active").innerText;
-
-        return booksModel.search(searchText, activeCategory);
     }
 
     function showLoadedImage() {
@@ -184,7 +178,7 @@ function BooksView(controller, model) {
         mainController.addBookTag(bookId, newTag);
     }
 
-    async function chooseCategory(category) {
+    function chooseCategory(category) {
         Utils.resetInnerHTML(window.document.querySelector(".main_content"));
 
         let modalContainer = window.document.querySelector(".modal_container");
@@ -201,40 +195,66 @@ function BooksView(controller, model) {
 
         let elem = window.document.getElementById(category);
         elem.classList.add("active");
-
-        await booksModel.refreshModel();
     }
 
     function showAllBooks() {
-        chooseCategory("all_books")
-            .then(function () {
-                Utils.resetInnerHTML(
-                    window.document.querySelector(".main_content"));
+        chooseCategory("all_books");
 
-                for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
-                    if (!booksModel.getBooksStorage()[i].deleted) {
-                        createBlock(booksModel.getBooksStorage()[i]);
-                    }
-                }
-            });
-    }
+        booksModel.refreshModel().then(function () {
+            Utils.resetInnerHTML(
+                window.document.querySelector(".main_content"));
 
-    async function filter(filterMethod) {
-        await booksModel.refreshModel();
-
-        let result = filterMethod() || booksModel.getBooksStorage();
-
-        if (result.length !== 0) {
-            for (let i = 0; i < result.length; i++) {
-                if (!result[i].deleted) {
-                    createBlock(result[i]);
+            for (let i = 0; i < booksModel.getBooksStorage().length; i++) {
+                if (!booksModel.getBooksStorage()[i].deleted) {
+                    createBlock(booksModel.getBooksStorage()[i]);
                 }
             }
-        } else {
-            window.document.querySelector(".main_content").innerHTML =
-                "<h2>Not found!</h2>";
-        }
+        });
     }
+
+    function filter() {
+        search().then(function (result) {
+
+            if (result.length !== 0) {
+                for (let i = 0; i < result.length; i++) {
+                    if (!result[i].deleted) {
+                        createBlock(result[i]);
+                    }
+                }
+            } else {
+                window.document.querySelector(".main_content").innerHTML =
+                    "<h2>Not found!</h2>";
+            }
+
+        });
+    }
+
+    function search() {
+        Utils.resetInnerHTML(window.document.querySelector(".main_content"));
+        let searchText = window.document.querySelector("#search").value;
+        let activeCategory = window.document.querySelector(
+            ".main_sort .sort .active").innerText;
+
+        return mainController.filterBooks(searchText, activeCategory);
+    }
+
+    window.document.querySelector("#most_popular")
+        .addEventListener("click", function () {
+            chooseCategory("most_popular");
+
+            filter();
+        })
+    ;
+
+    window.document.querySelector("#search")
+        .addEventListener("input", function () {
+            filter();
+        });
+
+    window.document.querySelector("#search")
+        .addEventListener("change", function () {
+            filter();
+        });
 
     function browsePage() {
         for (let elem of window.document.querySelectorAll(".nav_menu a")) {
@@ -322,24 +342,6 @@ function BooksView(controller, model) {
     window.document.querySelector("#all_books")
         .addEventListener("click", function () {
             showAllBooks();
-        });
-
-    window.document.querySelector("#most_popular")
-        .addEventListener("click", function () {
-            chooseCategory("most_popular").then(function () {
-                filter(booksModel.getMostPopular);
-            });
-        })
-    ;
-
-    window.document.querySelector("#search")
-        .addEventListener("input", function () {
-            filter(search);
-        });
-
-    window.document.querySelector("#search")
-        .addEventListener("change", function () {
-            filter(search);
         });
 
     model.onTagsChange.subscribe(function (updatedBook, userTagPushed) {

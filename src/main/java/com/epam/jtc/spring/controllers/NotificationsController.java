@@ -16,15 +16,9 @@ import java.util.List;
 @RequestMapping("/notifications")
 public class NotificationsController {
 
-    /**
-     * logger for class
-     */
     private static final Logger logger =
             LogManager.getLogger(NotificationsController.class);
 
-    /**
-     * DAO for operations with notifications
-     */
     private NotificationDAO dao;
 
     /**
@@ -59,7 +53,6 @@ public class NotificationsController {
     public Notification addNotification(@RequestBody Notification newNote) {
         logger.info("Adding notification: {}", newNote);
 
-        return dao.addNotification(newNote.getBookId(), newNote.getContent(),
-                newNote.getCategory(), newNote.getType());
+        return dao.addNotification(newNote);
     }
 }

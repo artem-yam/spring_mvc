@@ -27,9 +27,6 @@ import java.util.List;
 @RequestMapping("/users")
 public class UsersController {
 
-    /**
-     * logger for class
-     */
     private static final Logger logger =
             LogManager.getLogger(UsersController.class);
 
@@ -40,9 +37,6 @@ public class UsersController {
     private static final String CANT_ACCESS_USER_ERROR_MESSAGE =
             "Can't access to user in DB";
 
-    /**
-     * DAO for operations with users
-     */
     private UserDAO dao;
 
 

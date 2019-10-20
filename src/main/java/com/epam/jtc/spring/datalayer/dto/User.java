@@ -19,16 +19,10 @@ import java.util.Objects;
 @Lazy(false)
 public class User {
 
-    /**
-     * User login
-     */
     @NotNull
     @Size(min = 5, max = 20)
     private String login = "";
 
-    /**
-     * User pass
-     */
     @NotNull
     @Size(min = 5, max = 20)
     private String pass = "";
