@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +30,7 @@ public class UsersController {
     private static final Logger logger =
             LogManager.getLogger(UsersController.class);
 
-    private static final String WRONG_USER_PASSWORD_ERROR_MESSAGE =
+    private static final String WRONG_USER_PASS_ERROR_MESSAGE =
             "Wrong password";
     private static final String WRONG_USER_DATA_ERROR_MESSAGE =
             "Wrong user data";
@@ -39,7 +39,7 @@ public class UsersController {
 
     private UserDAO dao;
 
-
+    @Autowired
     private User activeUser;
 
     /**
@@ -52,8 +52,14 @@ public class UsersController {
         this.dao = dao;
     }
 
-    @Autowired
-    public void setActiveUser(User activeUser) {
+    public UsersController() {
+    }
+
+    public void setDao(UserDAO dao) {
+        this.dao = dao;
+    }
+
+    public void setActiveUser(@Autowired User activeUser) {
         this.activeUser = activeUser;
     }
 
@@ -64,7 +70,7 @@ public class UsersController {
      * @param user          user to login
      * @param bindingResult {@link BindingResult} binding result with user's validity check
      */
-    @PostMapping(value = "/login",
+    @PutMapping(value = "/login",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity logInUser(@Valid User user,
                                     BindingResult bindingResult) {
@@ -88,7 +94,7 @@ public class UsersController {
 
                 if (!userFromDAO.getPassword().equals(user.getPassword())) {
                     logger.debug("Incorrect login or password");
-                    errors.add(WRONG_USER_PASSWORD_ERROR_MESSAGE);
+                    errors.add(WRONG_USER_PASS_ERROR_MESSAGE);
                 } else {
                     activeUser.setLogin(userFromDAO.getLogin());
                     userFromDAO.setPassword("");
@@ -120,7 +126,7 @@ public class UsersController {
     /**
      * Method to logout the user
      */
-    @PostMapping(value = "/logout")
+    @PutMapping(value = "/logout")
     public void logOutUser(HttpSession session) {
         logger.info("Log out for user: {}", activeUser);
 

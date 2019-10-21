@@ -22,10 +22,19 @@ paths:
     get:
       tags:
       - "books"
-      summary: "Gets all books from the library"
-      operationId: "getAllBooks"
+      summary: "Gets books from the library"
+      operationId: "getBooks"
       produces:
       - "application/json"
+      parameters:
+      - in: "query"
+        name: "filterName"
+        description: "Name of filter which filters books to return"
+        type: "string"
+      - in: "query"
+        name: "searchText"
+        description: "Text to search in title/author of books"
+        type: "string"
       responses:
         200:
           description: "successful operation"
@@ -63,7 +72,7 @@ paths:
       - user_login: []
       
   /books/{bookId}:
-    post:
+    put:
       tags:
       - "books"
       summary: "Changes the book"
@@ -162,6 +171,7 @@ paths:
       security:
       - user_login: []
       
+  /tags/{tag}/books:
     post:
       tags:
       - "tags"
@@ -176,9 +186,10 @@ paths:
         name: "bookId"
         description: "Book id"
         type: "integer"
-      - in: "formData"
+      - in: "path"
         name: "tag"
         description: "Tag to add"
+        required: true
         type: "string"
       responses:
         200:
@@ -186,8 +197,8 @@ paths:
       security:
       - user_login: []
       
-  /tags/{tag}:
-    post:
+  /tags/{tag}/books/{bookId}:
+    delete:
       tags:
       - "tags"
       summary: "Unbinds tag from the book"
@@ -197,11 +208,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - in: "body"
+      - in: "path"
         name: "bookId"
         description: "Book id"
-        schema:
-          type: "integer"
+        required: true
+        type: "integer"
       - in: "path"
         name: "tag"
         description: "Tag to add"
@@ -214,7 +225,7 @@ paths:
       - user_login: []
 
   /users/login:    
-    post:
+    put:
       tags:
       - "users"
       summary: "Login user"
@@ -242,7 +253,7 @@ paths:
       - user_login: []
       
   /users/logout:    
-    post:
+    put:
       tags:
       - "users"
       summary: "Logout user"

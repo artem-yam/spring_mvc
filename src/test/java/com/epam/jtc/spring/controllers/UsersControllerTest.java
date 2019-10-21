@@ -1,37 +1,35 @@
 package com.epam.jtc.spring.controllers;
 
-import com.epam.jtc.spring.SpringConfiguration;
-import com.epam.jtc.spring.datalayer.dto.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import helpClasses.TestConfigurationUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-        classes = {SpringConfiguration.class, TestConfigurationUtils.class})
+        classes = {/*SpringConfiguration.class, */TestConfigurationUtils.class})
 @WebAppConfiguration
-@AutoConfigureMockMvc
+//@AutoConfigureMockMvc
 public class UsersControllerTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
     @Autowired
     private WebApplicationContext wac;
-    @Autowired
+
+    //@Autowired
     private MockMvc mockMvc;
 
     @BeforeClass
@@ -40,6 +38,11 @@ public class UsersControllerTest {
 
     @Before
     public void setUp() throws Exception {
+        UsersController contr =
+                wac.getBean("testUserController", UsersController.class);
+
+        this.mockMvc =
+                MockMvcBuilders.standaloneSetup(wac.getBean("testUserController", UsersController.class)).build();
     }
 
     @After
@@ -48,8 +51,7 @@ public class UsersControllerTest {
 
     @Test
     public void logInUser() throws Exception {
-        this.mockMvc.perform(post("/users/login").characterEncoding("UTF-8")
-                //.contentType("application/json;charset=UTF-8")
+        this.mockMvc.perform(put("/users/login").characterEncoding("UTF-8")
                 .contentType("multipart/form-data")
                 .param("login", "Test login")
                 .param("password", "Test password")
@@ -65,7 +67,7 @@ public class UsersControllerTest {
 
     @Test
     public void logOutUser() throws Exception {
-        this.mockMvc.perform(post("/users/logout")).andDo(print())
+        this.mockMvc.perform(put("/users/logout")).andDo(print())
 
                 .andExpect(handler().methodName("logOutUser"))
                 .andExpect(status().isOk());

@@ -41,14 +41,6 @@ public class BooksController {
         this.dao = dao;
     }
 
-    public BookDAO getDao() {
-        return dao;
-    }
-
-    public void setDao(@Autowired BookDAO dao) {
-        this.dao = dao;
-    }
-
     /**
      * Gets books from dao
      *

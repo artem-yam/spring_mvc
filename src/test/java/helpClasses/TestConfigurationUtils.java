@@ -4,6 +4,7 @@ import com.epam.jtc.spring.controllers.BooksController;
 import com.epam.jtc.spring.controllers.NotificationsController;
 import com.epam.jtc.spring.controllers.TagsController;
 import com.epam.jtc.spring.controllers.UsersController;
+import com.epam.jtc.spring.datalayer.OracleJdbcTemplate;
 import com.epam.jtc.spring.datalayer.dao.BookDAO;
 import com.epam.jtc.spring.datalayer.dao.NotificationDAO;
 import com.epam.jtc.spring.datalayer.dao.TagDAO;
@@ -18,6 +19,7 @@ import com.epam.jtc.spring.datalayer.oracleDB.dao.OracleUserDAO;
 import org.apache.log4j.BasicConfigurator;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.naming.Context;
@@ -38,16 +40,27 @@ public class TestConfigurationUtils {
     public TestConfigurationUtils() {
         BasicConfigurator.configure();
 
-        try {
+        /*try {
             setUpDataSourceJNDI();
         } catch (NamingException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return mock(OracleJdbcTemplate.class);
+    }
+
+    @Bean
+    public User user() {
+        return mock(User.class);
+    }
+
+
+    @Bean
     public DataSource dataSource() {
-        return new DriverManagerDataSource();
+        return mock(DataSource.class);
     }
 
     private BookDAO getTestingBookDAO() throws Exception {
@@ -74,6 +87,11 @@ public class TestConfigurationUtils {
         return dao;
     }
 
+    @Bean
+    public BooksController booksController() throws Exception {
+        return new BooksController(getTestingBookDAO());
+    }
+
     private NotificationDAO getTestingNotificationDAO() throws Exception {
         OracleNotificationDAO dao = mock(OracleNotificationDAO.class);
 
@@ -87,6 +105,11 @@ public class TestConfigurationUtils {
                 .thenReturn(testNotification);
 
         return dao;
+    }
+
+    @Bean
+    public NotificationsController notificationsController() throws Exception {
+        return new NotificationsController(getTestingNotificationDAO());
     }
 
     private TagDAO getTestingTagDAO() throws Exception {
@@ -108,6 +131,12 @@ public class TestConfigurationUtils {
         return dao;
     }
 
+    @Bean
+    public TagsController tagsController() throws Exception {
+        return new TagsController(getTestingTagDAO());
+    }
+
+
     private UserDAO getTestingUserDAO() throws Exception {
         OracleUserDAO dao = mock(OracleUserDAO.class);
 
@@ -121,22 +150,7 @@ public class TestConfigurationUtils {
         return dao;
     }
 
-    @Bean
-    public BooksController booksController() throws Exception {
-        return new BooksController(getTestingBookDAO());
-    }
-
-    @Bean
-    public NotificationsController notificationsController() throws Exception {
-        return new NotificationsController(getTestingNotificationDAO());
-    }
-
-    @Bean
-    public TagsController tagsController() throws Exception {
-        return new TagsController(getTestingTagDAO());
-    }
-
-    @Bean
+    @Bean("testUserController")
     public UsersController usersController() throws Exception {
         return new UsersController(getTestingUserDAO());
     }
@@ -155,6 +169,8 @@ public class TestConfigurationUtils {
         ic.createSubcontext("java:comp/env/jdbc");
         ic.createSubcontext("java:comp/env/jdbc/oracle");
 
-        ic.rebind("java:comp/env/jdbc/oracle", new DriverManagerDataSource());
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+
+        ic.rebind("java:comp/env/jdbc/oracle", ds);
     }
 }

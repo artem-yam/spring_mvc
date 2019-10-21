@@ -85,27 +85,30 @@ public class OracleBookDAO implements BookDAO {
 
     @Override
     public List<Book> filterBooks(String filter, String searchText) {
-        logger.info(
+        logger.debug(
                 "Getting filtered books. Filter: \'{}\'; Search text: \'{}\'",
                 filter, searchText);
 
-        String filterQuery = SEARCH_BOOKS_QUERY;
+        final String filterQuery;
 
         if (MOST_POPULAR_FILTER.toLowerCase().equals(filter.toLowerCase())) {
-            filterQuery += MOST_POPULAR_BOOKS_QUERY_SUFFIX;
+            filterQuery = SEARCH_BOOKS_QUERY + MOST_POPULAR_BOOKS_QUERY_SUFFIX;
+        } else {
+            filterQuery = SEARCH_BOOKS_QUERY;
         }
 
-        logger.info("filter query: {}", filterQuery);
+        logger.debug("filter query: {}", filterQuery);
 
         List<Book> books =
                 jdbcTemplate.query(filterQuery, bookRowMapper,
-                        searchText.isEmpty() ? " " : searchText.toLowerCase());
+                        (searchText.isEmpty() ? " " :
+                                searchText.toLowerCase()));
 
         for (Book book : books) {
             book.setTags(tagDAO.getBookTags(book.getId()));
         }
 
-        logger.info(books);
+        logger.debug(books);
 
         return books;
     }

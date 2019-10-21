@@ -60,13 +60,13 @@ function Controller(booksModel, notificationsModel) {
     function loginUser(loginFormData) {
         return Utils.sendRequest(
             AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGIN_URL,
-            loginFormData, requestType.POST);
+            loginFormData, requestType.PUT);
     }
 
     function logoutUser() {
         return Utils.sendRequest(
             AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGOUT_URL,
-            null, requestType.POST)
+            null, requestType.PUT)
             .catch(function (error) {
                 alert("Can't logout : " + error);
                 throw error;
