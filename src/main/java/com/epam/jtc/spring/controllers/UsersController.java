@@ -11,7 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * Controller for books
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/userSession")
 public class UsersController {
 
     private static final Logger logger =
@@ -70,8 +71,7 @@ public class UsersController {
      * @param user          user to login
      * @param bindingResult {@link BindingResult} binding result with user's validity check
      */
-    @PutMapping(value = "/login",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity logInUser(@Valid User user,
                                     BindingResult bindingResult) {
         logger.info("Start log in for user: {}", user);
@@ -126,7 +126,7 @@ public class UsersController {
     /**
      * Method to logout the user
      */
-    @PutMapping(value = "/logout")
+    @DeleteMapping
     public void logOutUser(HttpSession session) {
         logger.info("Log out for user: {}", activeUser);
 

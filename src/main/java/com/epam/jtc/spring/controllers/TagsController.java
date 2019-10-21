@@ -4,7 +4,6 @@ import com.epam.jtc.spring.datalayer.dao.TagDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,17 +42,36 @@ public class TagsController {
     }
 
     /**
-     * Add some tag to the book
+     * Add new tag to the book
      *
      * @param bookId book id
      * @param tag    tag to add
      * @return list of the book tags
      */
+    @PostMapping
+    public List<String> addNewTag(@RequestParam int bookId,
+                                  @RequestParam String tag) {
+        logger.info("Adding new tag \'{}\' and binding it to book {}",
+                tag, bookId);
+
+        dao.addTag(tag);
+
+        return dao.bindTagToBook(bookId, tag);
+    }
+
+
+    /**
+     * Binds some tag to the book
+     *
+     * @param bookId book id
+     * @param tag    tag to bind
+     * @return list of the book tags
+     */
     @PostMapping("/{tag}/books")
     public List<String> addTagToBook(@RequestBody int bookId,
                                      @PathVariable String tag) {
-        logger.info("Adding tag \'{}\' to book {}", tag, bookId);
-        return dao.addTagToBook(bookId, tag);
+        logger.info("Binding tag \'{}\' to book {}", tag, bookId);
+        return dao.bindTagToBook(bookId, tag);
     }
 
     /**
@@ -63,8 +81,8 @@ public class TagsController {
      * @param tag    tag to add
      * @return list of the book tags
      */
-    @DeleteMapping("/{tag}/books/{bookId}")
-    public List<String> unbindTag(@PathVariable int bookId,
+    @DeleteMapping("/{tag}/books")
+    public List<String> unbindTag(@RequestBody int bookId,
                                   @PathVariable String tag) {
         logger.info("Unbinding tag \'{}\' from book {}", tag, bookId);
         return dao.unbindTag(bookId, tag);

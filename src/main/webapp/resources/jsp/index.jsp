@@ -318,6 +318,8 @@
     <script type="text/javascript"
             src="static/script/model/books/filter.js"></script>
     <script type="text/javascript"
+            src="static/script/model/books/newTagBinding.js"></script>
+    <script type="text/javascript"
             src="static/script/model/books/booksModel.js"></script>
     <script type="text/javascript"
             src="static/script/model/notifications/notificationTypes.js"></script>

@@ -23,13 +23,20 @@ public interface TagDAO {
     List<String> getBookTags(int bookId);
 
     /**
-     * Adds tag to the book
+     * Adds new tag
+     *
+     * @param text text of tag
+     */
+    void addTag(String text);
+
+    /**
+     * Binds tag to the book
      *
      * @param bookId id of the book
      * @param tag    tag to add
      * @return list of the book tags
      */
-    List<String> addTagToBook(int bookId, String tag);
+    List<String> bindTagToBook(int bookId, String tag);
 
     /**
      * Unbinds tag from the book

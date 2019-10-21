@@ -3,10 +3,7 @@ function Controller(booksModel, notificationsModel) {
 
     let controlledBooksModel = booksModel;
     let controlledNotificationsModel = notificationsModel;
-    const AJAX_USERS_URL = "users";
-    const URL_SEPARATOR = "/";
-    const AJAX_LOGIN_URL = "login";
-    const AJAX_LOGOUT_URL = "logout";
+    const AJAX_USERS_URL = "userSession";
 
     function updateRating(bookId, newRating) {
         controlledBooksModel.updateRating(bookId, newRating)
@@ -58,15 +55,12 @@ function Controller(booksModel, notificationsModel) {
     }
 
     function loginUser(loginFormData) {
-        return Utils.sendRequest(
-            AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGIN_URL,
-            loginFormData, requestType.PUT);
+        return Utils.sendRequest(AJAX_USERS_URL, loginFormData,
+            requestType.POST);
     }
 
     function logoutUser() {
-        return Utils.sendRequest(
-            AJAX_USERS_URL + URL_SEPARATOR + AJAX_LOGOUT_URL,
-            null, requestType.PUT)
+        return Utils.sendRequest(AJAX_USERS_URL, null, requestType.DELETE)
             .catch(function (error) {
                 alert("Can't logout : " + error);
                 throw error;

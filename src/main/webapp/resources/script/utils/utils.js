@@ -36,7 +36,8 @@ let Utils = function () {
                 processData: false,
                 data: data
             });
-        } else if (data instanceof Filter) {
+        } else if (data instanceof Filter
+            || data instanceof NewTagBinding) {
             ajaxRequest = $.ajax({
                 url: url,
                 type: requestType,

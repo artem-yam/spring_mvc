@@ -176,7 +176,7 @@ paths:
       tags:
       - "tags"
       summary: "Add some tag to the book"
-      operationId: "addTagToBook"
+      operationId: "bindTagToBook"
       consumes:
       - "application/x-www-form-urlencoded"
       produces:

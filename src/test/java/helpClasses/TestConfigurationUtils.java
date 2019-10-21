@@ -120,7 +120,7 @@ public class TestConfigurationUtils {
         when(dao.getAllTags())
                 .thenReturn(testTags);
 
-        when(dao.addTagToBook(1, "Test tag"))
+        when(dao.bindTagToBook(1, "Test tag"))
                 .thenReturn(testTags);
 
         testTags = new ArrayList<>();

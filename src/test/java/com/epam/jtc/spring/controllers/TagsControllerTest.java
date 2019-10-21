@@ -66,7 +66,7 @@ public class TagsControllerTest {
                 .contentType("application/json;charset=UTF-8")
                 .content("1")).andDo(print())
 
-                .andExpect(handler().methodName("addTagToBook"))
+                .andExpect(handler().methodName("bindTagToBook"))
                 .andExpect(status().isOk())
                 .andExpect(
                         content().contentType("application/json;charset=UTF-8"))

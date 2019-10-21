@@ -33,10 +33,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler)
             throws Exception {
+
+        logger.debug("URL: {}", request.getRequestURI());
+
         HttpSession session = request.getSession(false);
         boolean result = true;
 
-        if (session == null) {
+        /*if (session == null) {
             response.sendRedirect(request.getContextPath());
             result = false;
         } else {
@@ -46,7 +49,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                         "Not logged in user");
                 result = false;
             }
-        }
+        }*/
 
         return result;
     }

@@ -20,7 +20,7 @@ public class OracleTagDAO implements TagDAO {
             LogManager.getLogger(OracleTagDAO.class);
 
     private static final String GET_ALL_TAGS_QUERY =
-            "select tag from AVAILABLE_TAGS";
+            "select tag from AVAILABLE_TAGS order by id";
 
     private static final String INSERT_NEW_TAG_QUERY =
             "insert into AVAILABLE_TAGS(tag) values(?)";
@@ -49,7 +49,9 @@ public class OracleTagDAO implements TagDAO {
                 .queryForList(GET_ALL_TAGS_QUERY, String.class);
     }
 
-    private void addTag(String text) {
+    @Override
+    @Transactional
+    public void addTag(String text) {
         if (!getAllTags().contains(text)) {
             logger
                     .debug("Adding tag \'{}\' to list of all available tags",
@@ -67,10 +69,8 @@ public class OracleTagDAO implements TagDAO {
 
     @Override
     @Transactional
-    public List<String> addTagToBook(int bookId, String tag) {
+    public List<String> bindTagToBook(int bookId, String tag) {
         logger.debug("Adding tag \'{}\' to book {}", tag, bookId);
-
-        addTag(tag);
 
         if (!getBookTags(bookId).contains(tag)) {
             logger.debug("Tag was added? {}",

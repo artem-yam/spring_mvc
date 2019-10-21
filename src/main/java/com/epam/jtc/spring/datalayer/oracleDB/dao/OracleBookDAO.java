@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,8 +48,11 @@ public class OracleBookDAO implements BookDAO {
     private static final String DELETE_BOOK_QUERY =
             "update books set is_deleted=1 where id=?";
 
-    private static final String SEARCH_BOOKS_QUERY =
-            "select * from books where instr(lower(title || author),?)>0";
+    private static final String FILTER_BOOKS_QUERY =
+            "select * from books where 1=1";
+
+    private static final String SEARCH_BOOKS_QUERY_SUFFIX =
+            " and instr(lower(title || author),?)>0";
 
     private static final String MOST_POPULAR_BOOKS_QUERY_SUFFIX =
             " and rating=5";
@@ -89,20 +93,22 @@ public class OracleBookDAO implements BookDAO {
                 "Getting filtered books. Filter: \'{}\'; Search text: \'{}\'",
                 filter, searchText);
 
-        final String filterQuery;
+        String filterQuery = FILTER_BOOKS_QUERY;
+        List<Book> books = new ArrayList<>();
+
 
         if (MOST_POPULAR_FILTER.toLowerCase().equals(filter.toLowerCase())) {
-            filterQuery = SEARCH_BOOKS_QUERY + MOST_POPULAR_BOOKS_QUERY_SUFFIX;
-        } else {
-            filterQuery = SEARCH_BOOKS_QUERY;
+            filterQuery += MOST_POPULAR_BOOKS_QUERY_SUFFIX;
         }
+        if (!searchText.isEmpty()) {
+            filterQuery += SEARCH_BOOKS_QUERY_SUFFIX;
 
-        logger.debug("filter query: {}", filterQuery);
+            books = jdbcTemplate.query(filterQuery, bookRowMapper,
+                    (searchText.toLowerCase()));
 
-        List<Book> books =
-                jdbcTemplate.query(filterQuery, bookRowMapper,
-                        (searchText.isEmpty() ? " " :
-                                searchText.toLowerCase()));
+        } else {
+            books = jdbcTemplate.query(filterQuery, bookRowMapper);
+        }
 
         for (Book book : books) {
             book.setTags(tagDAO.getBookTags(book.getId()));

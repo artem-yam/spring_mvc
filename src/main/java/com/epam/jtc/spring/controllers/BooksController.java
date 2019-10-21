@@ -51,7 +51,7 @@ public class BooksController {
     @GetMapping
     public List<Book> getBooks(@Nullable @RequestParam String filterName,
                                @Nullable @RequestParam String searchText) {
-        logger.info("Filter books with: filter \'{}\', search text = \'{}\'",
+        logger.debug("Filter books with: filter \'{}\', search text = \'{}\'",
                 filterName, searchText);
 
         List<Book> booksList;
@@ -146,8 +146,8 @@ public class BooksController {
      *
      * @param bookId id of the book to delete
      */
-    @DeleteMapping("/{bookId}")
-    public void deleteBook(@PathVariable int bookId) {
+    @DeleteMapping
+    public void deleteBook(@RequestBody int bookId) {
         logger.info("Deleting book {}", bookId);
         dao.deleteBook(bookId);
         logger.info("Successful deletion");

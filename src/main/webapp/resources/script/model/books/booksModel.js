@@ -31,22 +31,30 @@ function BooksModel() {
             });
     }
 
-    function addBookTag(bookId, newTag) {
-        if (!Utils.isEmpty(newTag)) {
+    function addBookTag(bookId, tag) {
+        if (!Utils.isEmpty(tag)) {
 
             let book = findBook(bookId);
 
-            if (book && !hasTag(book, newTag)) {
+            if (book && !hasTag(book, tag)) {
 
-                book.tags.push(newTag);
+                book.tags.push(tag);
 
-                Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR
-                    + newTag + URL_SEPARATOR + AJAX_BOOKS_URL,
-                    bookId, requestType.POST)
-                    .then(function (bookTags) {
-                        onTagsChange.notify(findBook(bookId),
-                            addNewTagToTheList(bookTags[bookTags.length - 1]));
-                    });
+                if (isExists(tag)) {
+                    Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR
+                        + tag + URL_SEPARATOR + AJAX_BOOKS_URL,
+                        bookId, requestType.POST)
+                        .then(function (bookTags) {
+                            onTagsChange.notify(findBook(bookId), false);
+                        });
+                } else {
+                    Utils.sendRequest(AJAX_TAGS_URL,
+                        new NewTagBinding(bookId, tag), requestType.POST)
+                        .then(function (bookTags) {
+                            onTagsChange.notify(findBook(bookId), true);
+                        });
+                }
+
             }
         }
     }
@@ -57,8 +65,7 @@ function BooksModel() {
         if (book && hasTag(book, tag)) {
 
             Utils.sendRequest(AJAX_TAGS_URL + URL_SEPARATOR + tag +
-                URL_SEPARATOR + AJAX_BOOKS_URL + URL_SEPARATOR + bookId,
-                null, requestType.DELETE)
+                URL_SEPARATOR + AJAX_BOOKS_URL, bookId, requestType.DELETE)
                 .then(function (bookTags) {
                     book = findBook(bookId);
                     book.tags = bookTags;
@@ -78,15 +85,14 @@ function BooksModel() {
         return hasTag;
     }
 
-    function addNewTagToTheList(newTag) {
-        let isAdded = false;
+    function isExists(tag) {
+        let isExists = false;
 
-        if (!availableTags.includes(newTag)) {
-            availableTags.push(newTag);
-            isAdded = true;
+        if (availableTags.includes(tag)) {
+            isExists = true;
         }
 
-        return isAdded;
+        return isExists;
     }
 
     function findBook(bookId) {
@@ -131,8 +137,7 @@ function BooksModel() {
     }
 
     function deleteBook(bookId) {
-        return Utils.sendRequest(AJAX_BOOKS_URL + URL_SEPARATOR + bookId,
-            null, requestType.DELETE)
+        return Utils.sendRequest(AJAX_BOOKS_URL, bookId, requestType.DELETE)
             .then(async function () {
                 await refreshModel();
 
