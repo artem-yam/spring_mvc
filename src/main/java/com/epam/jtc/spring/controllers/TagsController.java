@@ -18,17 +18,8 @@ public class TagsController {
     private static final Logger logger =
             LogManager.getLogger(TagsController.class);
 
-    private TagDAO dao;
-
-    /**
-     * Constructor
-     *
-     * @param dao tags dao
-     */
     @Autowired
-    public TagsController(TagDAO dao) {
-        this.dao = dao;
-    }
+    private TagDAO dao;
 
     /**
      * Gets all tags from dao
@@ -68,8 +59,8 @@ public class TagsController {
      * @return list of the book tags
      */
     @PostMapping("/{tag}/books")
-    public List<String> addTagToBook(@RequestBody int bookId,
-                                     @PathVariable String tag) {
+    public List<String> bindTagToBook(@RequestBody int bookId,
+                                      @PathVariable String tag) {
         logger.info("Binding tag \'{}\' to book {}", tag, bookId);
         return dao.bindTagToBook(bookId, tag);
     }

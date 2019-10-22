@@ -115,6 +115,26 @@ paths:
       security:
       - user_login: []
       
+  /books/{bookId}/image:
+    get:
+      tags:
+      - "books"
+      summary: "Gets book's image"
+      operationId: "getBookImage"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "bookId"
+        description: "Id of the book"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - user_login: []
+      
   /notifications:
     get:
       tags:
@@ -170,22 +190,48 @@ paths:
               type: "string"
       security:
       - user_login: []
+    post:
+      tags:
+      - "tags"
+      summary: "Add new tag and bind it to the book"
+      operationId: "addNewTag"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "bookId"
+        description: "Id of book to bind"
+        type: "integer"
+      - in: "query"
+        name: "tag"
+        description: "Tag to bind"
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      security:
+      - user_login: []
       
   /tags/{tag}/books:
     post:
       tags:
       - "tags"
-      summary: "Add some tag to the book"
+      summary: "Binds some tag to the book"
       operationId: "bindTagToBook"
       consumes:
-      - "application/x-www-form-urlencoded"
+       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - in: "formData"
+      - in: "body"
         name: "bookId"
         description: "Book id"
-        type: "integer"
+        schema:
+          type: "integer"
       - in: "path"
         name: "tag"
         description: "Tag to add"
@@ -196,8 +242,6 @@ paths:
           description: "successful operation"
       security:
       - user_login: []
-      
-  /tags/{tag}/books/{bookId}:
     delete:
       tags:
       - "tags"
@@ -208,11 +252,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - in: "path"
+      - in: "body"
         name: "bookId"
         description: "Book id"
-        required: true
-        type: "integer"
+        schema:
+          type: "integer"
       - in: "path"
         name: "tag"
         description: "Tag to add"
@@ -224,8 +268,8 @@ paths:
       security:
       - user_login: []
 
-  /users/login:    
-    put:
+  /userSession:    
+    post:
       tags:
       - "users"
       summary: "Login user"
@@ -252,8 +296,7 @@ paths:
       security:
       - user_login: []
       
-  /users/logout:    
-    put:
+    delete:
       tags:
       - "users"
       summary: "Logout user"
@@ -262,7 +305,8 @@ paths:
         200:
           description: "successful operation"
       security:
-      - user_login: []   
+      - user_login: [] 
+      
 
 
           

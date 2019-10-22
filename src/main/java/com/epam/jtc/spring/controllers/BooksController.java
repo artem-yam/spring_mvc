@@ -34,12 +34,8 @@ public class BooksController {
     private static final String BOOK_ADD_ERROR_MESSAGE =
             "Server error. Can't add the book";
 
-    private BookDAO dao;
-
     @Autowired
-    public BooksController(BookDAO dao) {
-        this.dao = dao;
-    }
+    private BookDAO dao;
 
     /**
      * Gets books from dao

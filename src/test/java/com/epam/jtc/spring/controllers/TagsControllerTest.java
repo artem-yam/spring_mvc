@@ -1,6 +1,5 @@
 package com.epam.jtc.spring.controllers;
 
-import com.epam.jtc.spring.SpringConfiguration;
 import helpClasses.TestConfigurationUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -8,11 +7,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -22,15 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-        classes = {SpringConfiguration.class, TestConfigurationUtils.class})
+        classes = {TestConfigurationUtils.class})
 @WebAppConfiguration
-@AutoConfigureMockMvc
 public class TagsControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
 
-    @Autowired
     private MockMvc mockMvc;
 
     @BeforeClass
@@ -39,6 +36,8 @@ public class TagsControllerTest {
 
     @Before
     public void setUp() throws Exception {
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(wac.getBean(TagsController.class)).build();
     }
 
 
@@ -54,6 +53,22 @@ public class TagsControllerTest {
                         content().contentType("application/json;charset=UTF-8"))
                 .andExpect(handler().methodName("getAllTags"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isNotEmpty()
+                );
+    }
+
+    @Test
+    public void addNewTag() throws Exception {
+        this.mockMvc.perform(post("/tags")
+                .contentType("application/json;charset=UTF-8")
+                .param("bookId", "1")
+                .param("tag", "Test tag")).andDo(print())
+
+                .andExpect(handler().methodName("addNewTag"))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isNotEmpty()
                 );
@@ -77,8 +92,9 @@ public class TagsControllerTest {
 
     @Test
     public void unbindTag() throws Exception {
-        this.mockMvc.perform(delete("/tags/{tag}/books/{bookId}", "Test tag", 1)
-                .contentType("application/json;charset=UTF-8")).andDo(print())
+        this.mockMvc.perform(delete("/tags/{tag}/books", "Test tag")
+                .contentType("application/json;charset=UTF-8")
+                .content("1")).andDo(print())
 
                 .andExpect(handler().methodName("unbindTag"))
                 .andExpect(status().isOk())

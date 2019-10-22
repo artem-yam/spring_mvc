@@ -12,7 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -26,6 +27,7 @@ public class UsersControllerTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
+
     @Autowired
     private WebApplicationContext wac;
 
@@ -38,11 +40,8 @@ public class UsersControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        UsersController contr =
-                wac.getBean("testUserController", UsersController.class);
-
-        this.mockMvc =
-                MockMvcBuilders.standaloneSetup(wac.getBean("testUserController", UsersController.class)).build();
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(wac.getBean(UsersController.class)).build();
     }
 
     @After
@@ -51,7 +50,7 @@ public class UsersControllerTest {
 
     @Test
     public void logInUser() throws Exception {
-        this.mockMvc.perform(put("/users/login").characterEncoding("UTF-8")
+        this.mockMvc.perform(post("/userSession").characterEncoding("UTF-8")
                 .contentType("multipart/form-data")
                 .param("login", "Test login")
                 .param("password", "Test password")
@@ -67,7 +66,7 @@ public class UsersControllerTest {
 
     @Test
     public void logOutUser() throws Exception {
-        this.mockMvc.perform(put("/users/logout")).andDo(print())
+        this.mockMvc.perform(delete("/userSession")).andDo(print())
 
                 .andExpect(handler().methodName("logOutUser"))
                 .andExpect(status().isOk());

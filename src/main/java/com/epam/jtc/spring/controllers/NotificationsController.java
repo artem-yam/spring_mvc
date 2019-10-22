@@ -19,17 +19,8 @@ public class NotificationsController {
     private static final Logger logger =
             LogManager.getLogger(NotificationsController.class);
 
-    private NotificationDAO dao;
-
-    /**
-     * Constructor
-     *
-     * @param dao notifications dao
-     */
     @Autowired
-    public NotificationsController(NotificationDAO dao) {
-        this.dao = dao;
-    }
+    private NotificationDAO dao;
 
     /**
      * Gets all notifications from dao

@@ -38,31 +38,11 @@ public class UsersController {
     private static final String CANT_ACCESS_USER_ERROR_MESSAGE =
             "Can't access to user in DB";
 
+    @Autowired
     private UserDAO dao;
 
     @Autowired
     private User activeUser;
-
-    /**
-     * Constructor
-     *
-     * @param dao users dao
-     */
-    @Autowired
-    public UsersController(UserDAO dao) {
-        this.dao = dao;
-    }
-
-    public UsersController() {
-    }
-
-    public void setDao(UserDAO dao) {
-        this.dao = dao;
-    }
-
-    public void setActiveUser(@Autowired User activeUser) {
-        this.activeUser = activeUser;
-    }
 
     /**
      * Method to login the user

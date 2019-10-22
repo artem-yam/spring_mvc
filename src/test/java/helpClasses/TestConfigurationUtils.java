@@ -20,12 +20,8 @@ import org.apache.log4j.BasicConfigurator;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.core.RowMapper;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -39,12 +35,6 @@ public class TestConfigurationUtils {
 
     public TestConfigurationUtils() {
         BasicConfigurator.configure();
-
-        /*try {
-            setUpDataSourceJNDI();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Bean
@@ -53,17 +43,17 @@ public class TestConfigurationUtils {
     }
 
     @Bean
+    public RowMapper rowMapper() {
+        return mock(RowMapper.class);
+    }
+
+    @Bean
     public User user() {
         return mock(User.class);
     }
 
-
     @Bean
-    public DataSource dataSource() {
-        return mock(DataSource.class);
-    }
-
-    private BookDAO getTestingBookDAO() throws Exception {
+    public BookDAO getTestingBookDAO() throws Exception {
         OracleBookDAO dao = mock(OracleBookDAO.class);
 
         when(dao.getAllBooks()).thenReturn(Arrays.asList(new Book()));
@@ -89,10 +79,11 @@ public class TestConfigurationUtils {
 
     @Bean
     public BooksController booksController() throws Exception {
-        return new BooksController(getTestingBookDAO());
+        return new BooksController();
     }
 
-    private NotificationDAO getTestingNotificationDAO() throws Exception {
+    @Bean
+    public NotificationDAO getTestingNotificationDAO() throws Exception {
         OracleNotificationDAO dao = mock(OracleNotificationDAO.class);
 
         Notification testNotification = new Notification();
@@ -109,10 +100,11 @@ public class TestConfigurationUtils {
 
     @Bean
     public NotificationsController notificationsController() throws Exception {
-        return new NotificationsController(getTestingNotificationDAO());
+        return new NotificationsController();
     }
 
-    private TagDAO getTestingTagDAO() throws Exception {
+    @Bean
+    public TagDAO getTestingTagDAO() throws Exception {
         OracleTagDAO dao = mock(OracleTagDAO.class);
 
         List<String> testTags = Arrays.asList("Test tag");
@@ -133,11 +125,12 @@ public class TestConfigurationUtils {
 
     @Bean
     public TagsController tagsController() throws Exception {
-        return new TagsController(getTestingTagDAO());
+        return new TagsController();
     }
 
 
-    private UserDAO getTestingUserDAO() throws Exception {
+    @Bean
+    public UserDAO getTestingUserDAO() throws Exception {
         OracleUserDAO dao = mock(OracleUserDAO.class);
 
         User testUser = new User();
@@ -150,27 +143,9 @@ public class TestConfigurationUtils {
         return dao;
     }
 
-    @Bean("testUserController")
+    @Bean
     public UsersController usersController() throws Exception {
-        return new UsersController(getTestingUserDAO());
+        return new UsersController();
     }
 
-
-    private void setUpDataSourceJNDI() throws NamingException {
-
-        System.setProperty(Context.INITIAL_CONTEXT_FACTORY,
-                "org.apache.naming.java.javaURLContextFactory");
-        System.setProperty(Context.URL_PKG_PREFIXES, "org.apache.naming");
-        InitialContext ic = new InitialContext();
-
-        ic.createSubcontext("java:");
-        ic.createSubcontext("java:comp");
-        ic.createSubcontext("java:comp/env");
-        ic.createSubcontext("java:comp/env/jdbc");
-        ic.createSubcontext("java:comp/env/jdbc/oracle");
-
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-
-        ic.rebind("java:comp/env/jdbc/oracle", ds);
-    }
 }

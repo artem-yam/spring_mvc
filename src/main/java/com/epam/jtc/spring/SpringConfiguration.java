@@ -1,23 +1,39 @@
 package com.epam.jtc.spring;
 
+import org.apache.log4j.BasicConfigurator;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Spring configuration
  */
 @Configuration
 @EnableWebMvc
+@EnableSwagger2
 @ComponentScan({"com.epam.jtc.spring"})
-@Lazy(false)
 public class SpringConfiguration implements WebMvcConfigurer {
-    
 
-    /*@Bean
-    public PlatformTransactionManager dbTransactionManager() {
-        return new JpaTransactionManager();
-    }*/
+    @PostConstruct
+    public void init() {
+        BasicConfigurator.configure();
+    }
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+    }
 }
