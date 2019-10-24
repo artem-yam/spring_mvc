@@ -28,6 +28,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class NotificationsControllerTest {
 
+    private static final String NOTIFICATIONS_MAPPING = "/notifications";
+
+    private static final String JSON_CONTENT_TYPE =
+            "application/json;charset=UTF-8";
+
+    private static final String DEFAULT_JSON_PATH = "$";
+
+    private static final String GET_NOTIFICATIONS_METHOD_NAME =
+            "getAllNotifications";
+    private static final String ADD_NOTIFICATION_METHOD_NAME =
+            "addNotification";
+
     @Autowired
     private WebApplicationContext wac;
 
@@ -43,14 +55,14 @@ public class NotificationsControllerTest {
 
     @Test
     public void getAllNotifications() throws Exception {
-        this.mockMvc.perform(get("/notifications")).andDo(print())
+        this.mockMvc.perform(get(NOTIFICATIONS_MAPPING)).andDo(print())
 
                 .andExpect(
-                        content().contentType("application/json;charset=UTF-8"))
-                .andExpect(handler().methodName("getAllNotifications"))
+                        content().contentType(JSON_CONTENT_TYPE))
+                .andExpect(handler().methodName(GET_NOTIFICATIONS_METHOD_NAME))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$").isNotEmpty()
+                .andExpect(jsonPath(DEFAULT_JSON_PATH).isArray())
+                .andExpect(jsonPath(DEFAULT_JSON_PATH).isNotEmpty()
                 );
     }
 
@@ -64,15 +76,15 @@ public class NotificationsControllerTest {
         String json = new ObjectMapper().writer().withDefaultPrettyPrinter()
                 .writeValueAsString(testNotification);
 
-        this.mockMvc.perform(post("/notifications")
-                .contentType("application/json;charset=UTF-8")
+        this.mockMvc.perform(post(NOTIFICATIONS_MAPPING)
+                .contentType(JSON_CONTENT_TYPE)
                 .content(json)).andDo(print())
 
-                .andExpect(handler().methodName("addNotification"))
+                .andExpect(handler().methodName(ADD_NOTIFICATION_METHOD_NAME))
                 .andExpect(status().isOk())
                 .andExpect(
-                        content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$").isNotEmpty());
+                        content().contentType(JSON_CONTENT_TYPE))
+                .andExpect(jsonPath(DEFAULT_JSON_PATH).isNotEmpty());
 
     }
 }

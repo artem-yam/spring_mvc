@@ -33,6 +33,14 @@ import static org.mockito.Mockito.when;
 @TestConfiguration
 public class TestConfigurationUtils {
 
+
+    private static final String TEST_BOOK_TITLE = "Test title";
+    private static final String TEST_BOOK_AUTHOR = "Test author";
+    private static final String TEST_TAG = "Test tag";
+    private static final String TEST_LOGIN = "Test login";
+    private static final String TEST_PASS = "Test password";
+
+
     public TestConfigurationUtils() {
         BasicConfigurator.configure();
     }
@@ -56,7 +64,7 @@ public class TestConfigurationUtils {
     public BookDAO getTestingBookDAO() throws Exception {
         OracleBookDAO dao = mock(OracleBookDAO.class);
 
-        Book testBook = new Book("Test title", "Test author");
+        Book testBook = new Book(TEST_BOOK_TITLE, TEST_BOOK_AUTHOR);
 
         when(dao.getAllBooks()).thenReturn(Arrays.asList(testBook));
 
@@ -67,13 +75,11 @@ public class TestConfigurationUtils {
                 new byte[0])).thenReturn(testBook);
 
         testBook = new Book();
-        testBook.setId(1);
-        testBook.setRating(0);
 
         when(dao.updateBook(testBook.getId(), testBook))
                 .thenReturn(testBook);
 
-        when(dao.getBookImage(testBook.getId())).thenReturn(new byte[0]);
+        when(dao.getBookImage(new Book().getId())).thenReturn(new byte[0]);
 
         return dao;
     }
@@ -108,20 +114,17 @@ public class TestConfigurationUtils {
     public TagDAO getTestingTagDAO() {
         OracleTagDAO dao = mock(OracleTagDAO.class);
 
-        String testTag = "Test tag";
-        int testBookId = 1;
-
-        List<String> testTags = Arrays.asList(testTag);
+        List<String> testTags = Arrays.asList(TEST_TAG);
 
         when(dao.getAllTags())
                 .thenReturn(testTags);
 
-        when(dao.bindTagToBook(testBookId, testTag))
+        when(dao.bindTagToBook(new Book().getId(), TEST_TAG))
                 .thenReturn(testTags);
 
         testTags = new ArrayList<>();
 
-        when(dao.unbindTag(testBookId, testTag))
+        when(dao.unbindTag(new Book().getId(), TEST_TAG))
                 .thenReturn(testTags);
 
         return dao;
@@ -138,8 +141,8 @@ public class TestConfigurationUtils {
         OracleUserDAO dao = mock(OracleUserDAO.class);
 
         User testUser = new User();
-        testUser.setLogin("Test login");
-        testUser.setPassword("Test password");
+        testUser.setLogin(TEST_LOGIN);
+        testUser.setPassword(TEST_PASS);
 
         when(dao.getUser(testUser.getLogin()))
                 .thenReturn(testUser);
