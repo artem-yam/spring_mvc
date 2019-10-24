@@ -37,11 +37,6 @@ public class OracleTagDAO implements TagDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    //@Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
     public List<String> getAllTags() {
         logger.debug("Getting all tags");

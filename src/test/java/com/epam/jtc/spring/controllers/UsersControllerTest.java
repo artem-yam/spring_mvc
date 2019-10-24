@@ -1,7 +1,9 @@
 package com.epam.jtc.spring.controllers;
 
 import helpClasses.TestConfigurationUtils;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-        classes = {/*SpringConfiguration.class, */TestConfigurationUtils.class})
+        classes = {TestConfigurationUtils.class})
 @WebAppConfiguration
-//@AutoConfigureMockMvc
 public class UsersControllerTest {
 
     @Rule
@@ -31,21 +32,12 @@ public class UsersControllerTest {
     @Autowired
     private WebApplicationContext wac;
 
-    //@Autowired
     private MockMvc mockMvc;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders
                 .standaloneSetup(wac.getBean(UsersController.class)).build();
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

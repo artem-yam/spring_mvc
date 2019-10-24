@@ -1,9 +1,7 @@
 package com.epam.jtc.spring.controllers;
 
 import helpClasses.TestConfigurationUtils;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +28,10 @@ public class TagsControllerTest {
 
     private MockMvc mockMvc;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders
                 .standaloneSetup(wac.getBean(TagsController.class)).build();
-    }
-
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

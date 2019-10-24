@@ -51,5 +51,10 @@ public interface BookDAO {
      */
     byte[] getBookImage(int bookId) throws Exception;
 
+    /**
+     * Deletes book
+     *
+     * @param bookId id of the book
+     */
     void deleteBook(int bookId);
 }

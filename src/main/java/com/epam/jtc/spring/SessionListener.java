@@ -22,22 +22,15 @@ public class SessionListener implements HttpSessionListener {
     private static final Logger logger =
             LogManager.getLogger(SessionListener.class);
 
-    private User activeUser;
-
     @Override
     public void sessionCreated(HttpSessionEvent ev) {
-        activeUser = getUserBean(ev);
-
         logger.info("New session created {}", ev.getSession().getId());
-
-
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent ev) {
         logger.info("Session destroyed {} for {}", ev.getSession().getId(),
-                activeUser);
-
+                getUserBean(ev));
     }
 
     private User getUserBean(HttpSessionEvent event) {

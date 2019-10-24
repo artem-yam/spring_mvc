@@ -28,14 +28,6 @@ public class OracleJdbcTemplate extends JdbcTemplate {
         super(new DriverManagerDataSource());
     }
 
-    /*public OracleJdbcTemplate() {
-        super(receiveDataSource());
-    }*/
-
-    /*public OracleJdbcTemplate() {
-        super();
-    }*/
-
     @Autowired
     public OracleJdbcTemplate(DataSource dataSource) {
         super(dataSource);

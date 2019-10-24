@@ -10,16 +10,4 @@
 
     <import resource="dispatcher-servlet.xml"/>
 
-    <!--<jee:jndi-lookup lookup-on-startup="false" resource-ref="false"
-                     id="oracleDataSource"
-                     jndi-name="jdbc/oracle"
-                     expected-type="javax.sql.DataSource"/>-->
-
-
-    <!--<bean id="DSFactoryBean"
-          class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/oracle"/>
-        <property name="expectedType" value="javax.sql.DataSource"/>
-    </bean>-->
-
 </beans>

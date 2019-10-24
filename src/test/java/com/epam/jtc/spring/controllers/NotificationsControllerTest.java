@@ -3,9 +3,7 @@ package com.epam.jtc.spring.controllers;
 import com.epam.jtc.spring.datalayer.dto.Notification;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helpClasses.TestConfigurationUtils;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +33,11 @@ public class NotificationsControllerTest {
 
     private MockMvc mockMvc;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders
                 .standaloneSetup(wac.getBean(NotificationsController.class))
                 .build();
-    }
-
-
-    @After
-    public void tearDown() throws Exception {
     }
 
 

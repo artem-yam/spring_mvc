@@ -130,18 +130,6 @@ function NotificationsView(controller, model) {
             loadHistoryPage();
         });
 
-    /*window.document.querySelector("#search")
-        .addEventListener("input", function () {
-            let searchText = window.document.querySelector("#search").value;
-
-            if (searchText.trim() !== '') {
-                let activeCategory = window.document.querySelector(
-                    ".main_sort .sort .active").innerText;
-                appController.addSearchNotification(searchText,
-                    activeCategory);
-            }
-        });*/
-
     model.onNotificationAdd.subscribe(function () {
         notificationsModel.getAllNotifications()
             .then(function () {

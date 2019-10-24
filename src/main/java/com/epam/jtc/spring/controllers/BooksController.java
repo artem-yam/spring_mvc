@@ -10,7 +10,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -45,8 +44,11 @@ public class BooksController {
      * @return list of books
      */
     @GetMapping
-    public List<Book> getBooks(@Nullable @RequestParam String filterName,
-                               @Nullable @RequestParam String searchText) {
+    public List<Book> getBooks(
+            @RequestParam(defaultValue = "", required = false)
+                    String filterName,
+            @RequestParam(defaultValue = "", required = false)
+                    String searchText) {
         logger.debug("Filter books with: filter \'{}\', search text = \'{}\'",
                 filterName, searchText);
 
@@ -96,7 +98,7 @@ public class BooksController {
                     errorMessage = DUPLICATE_KEY_ERROR_MESSAGE;
                 }
 
-                logger.debug("Can't add new book", ex);
+                logger.info("Can't add new book", ex);
 
                 errors.add(errorMessage);
             }

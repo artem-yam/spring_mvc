@@ -251,11 +251,6 @@ function BooksView(controller, model) {
             filter();
         });
 
-    window.document.querySelector("#search")
-        .addEventListener("change", function () {
-            filter();
-        });
-
     function browsePage() {
         for (let elem of window.document.querySelectorAll(".nav_menu a")) {
             elem.classList.remove("active")

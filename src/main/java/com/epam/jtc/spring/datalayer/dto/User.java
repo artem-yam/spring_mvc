@@ -1,6 +1,5 @@
 package com.epam.jtc.spring.datalayer.dto;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

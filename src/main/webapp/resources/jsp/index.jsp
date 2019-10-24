@@ -13,12 +13,10 @@
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>LIBRARY</title>
 
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <!-- default header name is X-CSRF-TOKEN -->
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-
-    <link rel="stylesheet" type="text/css"
-          href="static/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous"/>
     <link rel="stylesheet" type="text/css"
           href="static/css/normalize.css"/>
     <link rel="stylesheet" type="text/css"
@@ -34,7 +32,6 @@
     </div>
     <div class="header_user-profile">
         <a href="#">
-            <%--${sessionScope.keySet()}--%>
             <c:choose>
                 <c:when test="${sessionScope.get('scopedTarget.user').active}">
                     ${sessionScope.get('scopedTarget.user').login}
@@ -301,12 +298,12 @@
     </div>
 </template>
 
-<script type="text/javascript"
-        src="static/script/utils/jquery-3.4.1.slim.min.js"></script>
-<script type="text/javascript"
-        src="static/script/utils/jquery-3.4.1.min.js"></script>
-<script type="text/javascript"
-        src="static/script/utils/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
 <script type="text/javascript"
         src="static/script/utils/eventEmitter.js"></script>

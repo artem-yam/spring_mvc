@@ -56,34 +56,35 @@ public class TestConfigurationUtils {
     public BookDAO getTestingBookDAO() throws Exception {
         OracleBookDAO dao = mock(OracleBookDAO.class);
 
-        when(dao.getAllBooks()).thenReturn(Arrays.asList(new Book()));
+        Book testBook = new Book("Test title", "Test author");
 
-        when(dao.addBook("Test title", "Test author", new byte[0]))
-                .thenReturn(new Book("Test title", "Test author"));
+        when(dao.getAllBooks()).thenReturn(Arrays.asList(testBook));
 
-        when(dao.addBook("Test title", "Test author", new byte[0]))
-                .thenReturn(new Book("Test title", "Test author"));
+        when(dao.addBook(testBook.getTitle(), testBook.getAuthor(),
+                new byte[0])).thenReturn(testBook);
 
-        Book bookForUpdate = new Book();
-        bookForUpdate.setId(1);
-        bookForUpdate.setRating(0);
+        when(dao.addBook(testBook.getTitle(), testBook.getAuthor(),
+                new byte[0])).thenReturn(testBook);
 
-        when(dao.updateBook(1, bookForUpdate))
-                .thenReturn(bookForUpdate);
+        testBook = new Book();
+        testBook.setId(1);
+        testBook.setRating(0);
 
-        when(dao.getBookImage(1))
-                .thenReturn(new byte[0]);
+        when(dao.updateBook(testBook.getId(), testBook))
+                .thenReturn(testBook);
+
+        when(dao.getBookImage(testBook.getId())).thenReturn(new byte[0]);
 
         return dao;
     }
 
     @Bean
-    public BooksController booksController() throws Exception {
+    public BooksController booksController() {
         return new BooksController();
     }
 
     @Bean
-    public NotificationDAO getTestingNotificationDAO() throws Exception {
+    public NotificationDAO getTestingNotificationDAO() {
         OracleNotificationDAO dao = mock(OracleNotificationDAO.class);
 
         Notification testNotification = new Notification();
@@ -99,52 +100,55 @@ public class TestConfigurationUtils {
     }
 
     @Bean
-    public NotificationsController notificationsController() throws Exception {
+    public NotificationsController notificationsController() {
         return new NotificationsController();
     }
 
     @Bean
-    public TagDAO getTestingTagDAO() throws Exception {
+    public TagDAO getTestingTagDAO() {
         OracleTagDAO dao = mock(OracleTagDAO.class);
 
-        List<String> testTags = Arrays.asList("Test tag");
+        String testTag = "Test tag";
+        int testBookId = 1;
+
+        List<String> testTags = Arrays.asList(testTag);
 
         when(dao.getAllTags())
                 .thenReturn(testTags);
 
-        when(dao.bindTagToBook(1, "Test tag"))
+        when(dao.bindTagToBook(testBookId, testTag))
                 .thenReturn(testTags);
 
         testTags = new ArrayList<>();
 
-        when(dao.unbindTag(1, "Test tag"))
+        when(dao.unbindTag(testBookId, testTag))
                 .thenReturn(testTags);
 
         return dao;
     }
 
     @Bean
-    public TagsController tagsController() throws Exception {
+    public TagsController tagsController() {
         return new TagsController();
     }
 
 
     @Bean
-    public UserDAO getTestingUserDAO() throws Exception {
+    public UserDAO getTestingUserDAO() {
         OracleUserDAO dao = mock(OracleUserDAO.class);
 
         User testUser = new User();
         testUser.setLogin("Test login");
         testUser.setPassword("Test password");
 
-        when(dao.getUser("Test login"))
+        when(dao.getUser(testUser.getLogin()))
                 .thenReturn(testUser);
 
         return dao;
     }
 
     @Bean
-    public UsersController usersController() throws Exception {
+    public UsersController usersController() {
         return new UsersController();
     }
 
